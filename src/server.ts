@@ -4,6 +4,8 @@ import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import { typeDefs } from './interfaces/schema/evento-schema';
+import { resolvers } from './interfaces/resolvers/eventos-resolver';
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
     });
-  }
-  
-  startServer();
+}
+
+
+startServer();
