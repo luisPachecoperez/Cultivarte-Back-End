@@ -1,7 +1,8 @@
-import { EventoRepository } from "../../repositories/evento-repository";
+
+import {  EventoRepository } from "../../";
 
 export interface DeleteEventoUseCase {
-    execute( id: string ): Promise<boolean>;
+    execute( id_evento: string ): Promise<boolean>;
 }
 
 export class DeleteEventoUseCaseImpl implements DeleteEventoUseCase {
@@ -9,7 +10,7 @@ export class DeleteEventoUseCaseImpl implements DeleteEventoUseCase {
         private readonly eventoRepository: EventoRepository
     ) {}
 
-    execute( id: string ): Promise<boolean> {
-        return this.eventoRepository.delete( id );
+    execute( id_evento: string ): Promise<boolean> {
+        return this.eventoRepository.deleteById( id_evento );
     }
-}
+}   

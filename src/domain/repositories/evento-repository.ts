@@ -1,11 +1,9 @@
-import { Evento } from "../entities/evento";
+import { Evento } from "../";
 
 export interface EventoRepository {
- 
     getAll(): Promise<Evento[]>;
-    getById( id: string ): Promise<Evento | null>;
+    getById( id_evento: string ): Promise<Evento | null>;
     create( evento: Evento ): Promise<Evento>;
-    updateById( evento: Evento ): Promise<Evento>;
-    delete( id: string ): Promise<boolean>;
-
+    updateById( id_evento: string, evento: Evento ): Promise<Evento>;
+    deleteById( id_evento: string ): Promise<boolean>;
 }

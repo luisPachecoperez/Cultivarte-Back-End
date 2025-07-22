@@ -1,5 +1,5 @@
-import { Evento } from "../../entities/evento";
-import { EventoRepository } from "../../repositories/evento-repository";
+
+import {  EventoRepository,Evento } from "../../";
 
 export interface GetEventosUseCase {
     execute(): Promise<Evento[]>;
