@@ -1,6 +1,6 @@
-import { EventoDataSource } from "../../domain/datasources/evento-datasource";
-import { Evento } from "../../domain/entities/evento";
-import { EventoRepository } from "../../domain/repositories/evento-repository";
+import { EventoDataSource } from "../../domain";
+import { Evento } from "../../domain";
+import { EventoRepository } from "../../domain";
 
 export class EventoRepositoryImpl implements EventoRepository {
     
@@ -12,19 +12,19 @@ export class EventoRepositoryImpl implements EventoRepository {
         return this.eventoDataSource.getAll();
     }
 
-    getById( id: string ): Promise<Evento | null> {
-        return this.eventoDataSource.getById( id );
+    getById( id_evento: string ): Promise<Evento | null> {
+        return this.eventoDataSource.getById( id_evento );
     }
 
     create( evento: Evento ): Promise<Evento> {
-        return this.eventoDataSource.create ( evento );
+        return this.eventoDataSource.create( evento );
     }
 
-    updateById( evento: Evento ): Promise<Evento> {
-        return this.eventoDataSource.updateById ( evento );
+    updateById( id_evento: string, evento: Evento ): Promise<Evento> {
+        return this.eventoDataSource.updateById( id_evento, evento );
     }
 
-    delete( id: string ): Promise<boolean> {
-        return this.eventoDataSource.delete( id );
+    deleteById( id_evento: string ): Promise<boolean> {
+        return this.eventoDataSource.deleteById( id_evento );
     }
 }

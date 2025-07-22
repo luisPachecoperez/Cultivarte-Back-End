@@ -1,8 +1,7 @@
-import { Evento } from "../../entities/evento";
-import { EventoRepository } from "../../repositories/evento-repository";
+import {  EventoRepository,Evento } from "../../";
 
 export interface UpdateEventoUseCase {
-    execute( evento: Evento ): Promise<Evento>;
+    execute( id_evento: string, evento: Evento ): Promise<Evento>;
 }
 
 export class UpdateEventoUseCaseImpl implements UpdateEventoUseCase {
@@ -10,7 +9,7 @@ export class UpdateEventoUseCaseImpl implements UpdateEventoUseCase {
         private readonly eventoRepository: EventoRepository
     ) {}
 
-    execute( evento: Evento ): Promise<Evento> {
-        return this.eventoRepository.updateById( evento );
+    execute( id_evento: string, evento: Evento ): Promise<Evento> {
+        return this.eventoRepository.updateById( id_evento, evento );
     }
 }

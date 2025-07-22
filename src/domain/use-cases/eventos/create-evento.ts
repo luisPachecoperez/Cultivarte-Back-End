@@ -1,5 +1,4 @@
-import { Evento } from "../../entities/evento";
-import { EventoRepository } from "../../repositories/evento-repository";
+import { Evento, EventoRepository } from "../../";
 
 export interface CreateEventoUseCase {
     execute( evento: Evento ): Promise<Evento>;
@@ -13,5 +12,4 @@ export class CreateEventoUseCaseImpl implements CreateEventoUseCase {
     execute( evento: Evento ): Promise<Evento> {
         return this.eventoRepository.create( evento );
     }
-    
 }

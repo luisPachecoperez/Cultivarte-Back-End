@@ -1,8 +1,8 @@
-import { Evento } from "../../entities/evento";
-import { EventoRepository } from "../../repositories/evento-repository";
+
+import {  EventoRepository,Evento } from "../../";
 
 export interface GetEventoUseCase {
-    execute( id: string ): Promise<Evento | null>;
+    execute( id_evento: string ): Promise<Evento | null>;
 }
 
 export class GetEventoUseCaseImpl implements GetEventoUseCase {
@@ -10,7 +10,7 @@ export class GetEventoUseCaseImpl implements GetEventoUseCase {
         private readonly eventoRepository: EventoRepository
     ) {}
 
-    execute( id: string ): Promise<Evento | null> {
-        return this.eventoRepository.getById( id );
+    execute( id_evento: string ): Promise<Evento | null> {
+        return this.eventoRepository.getById( id_evento );
     }
 }

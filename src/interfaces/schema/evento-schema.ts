@@ -1,10 +1,10 @@
 
 import { gql } from 'graphql-tag';
 
-export const typeDefs = gql`
+export const eventoTypeDefs = gql`
   scalar Date
   type Evento {
-    id: ID!
+    id_evento: ID!
     institucional: String!
     id_tipo_evento: ID!
     nombre_evento: String!
@@ -14,7 +14,7 @@ export const typeDefs = gql`
     id_sede: ID!
     fecha_evento_desde: Date
     fecha_evento_hasta: Date
-    programacion: ID
+    id_programacion: ID
     estado: String
     creado_por: String
     fecha_creacion: Date
@@ -31,7 +31,7 @@ export const typeDefs = gql`
     id_sede: ID!
     fecha_evento_desde: Date
     fecha_evento_hasta: Date
-    programacion: ID
+    id_programacion: ID
     estado: String
     creado_por: String
   }
