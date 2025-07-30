@@ -65,7 +65,7 @@ export class EventoDataSourceImpl implements EventoDataSource {
     }
     
     async deleteById(id_evento: string): Promise<boolean> {
-       await this.pool.query( 'DELETE FROM eventos WHERE id_evento = $1', [id_evento] );
+       await this.pool.query( 'UPDATE eventos SET estado = $1 WHERE id_evento = $2', ["Inactivo", id_evento] );
        return true;
     }
 }
