@@ -78,6 +78,11 @@ export * from './use-cases/usuarios/get-usuario';
 export * from './use-cases/usuarios/get-usuarios';
 export * from './use-cases/usuarios/update-usuario';
 
+/*Exports Parametria Eventos */
+export * from './entities/parametria-eventos';
+export * from './repositories/parametria-evento-repository';
+export * from './datasources/parametria-eventos';
+export * from './use-cases/queries/get-parametria-eventos';
 
 
 
