@@ -20,8 +20,8 @@ const controller = new SesionController( useCaseCreate, useCaseGetAll, useCaseGe
 
 export const sesionResolvers = {
     Query: {
-        sesion: (_: any, args: { id:string }) => controller.getSesion( args.id ),
-        sesiones: () => controller.getSesiones()
+        getSesion: (_: any, args: { id:string }) => controller.getSesion( args.id ),
+        getSesiones: () => controller.getSesiones()
     },
     Mutation: {
         createSesion: (_: any, args: { data:Sesion }) => controller.createSesion( args.data ),

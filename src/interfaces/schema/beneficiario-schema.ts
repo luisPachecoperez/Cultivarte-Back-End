@@ -42,8 +42,8 @@ export const beneficiarioTypeDefs = gql`
   }
 
   type Query {
-    beneficiarios: [Beneficiario!]!
-    beneficiario(id: ID!): Beneficiario
+    getBeneficiarios: [Beneficiario!]!
+    getBeneficiario(id: ID!): Beneficiario
   }
 
   type Mutation {

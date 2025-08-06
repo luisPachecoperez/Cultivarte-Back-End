@@ -16,23 +16,6 @@ export const parametriaEventosTypeDefs = gql`
   }
 
   type Query {
-    GetParametriaEventos: ParametriaEventos
+    getParametriaEventos: ParametriaEventos
   }
 `;
-/*
-export const parametriaEventosResolvers = {
-  Query: {
-    parametria_eventos: async () => {
-      const data = await getParametriaEventos();
-
-      // Mapeamos nombres con espacios a campos GraphQL válidos
-      return {
-        Roles: data["Roles"] || [],
-        Listado_de_contenidos: data["Listado de contenidos"] || [],
-        actividad_general: data["actividad general"] || [],
-        Frecuencia: data["Frecuencia"] || [],
-        Aliados: data["Aliados"] || []
-      };
-    }
-  }
-};*/

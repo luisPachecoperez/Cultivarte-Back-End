@@ -22,8 +22,8 @@ export const sesionTypeDefs = gql`
   }
 
   type Query {
-    sesiones: [Sesion]
-    sesion(id: ID!): Sesion
+    getSesiones: [Sesion]
+    getSesion(id: ID!): Sesion
   }
 
   type Mutation {

@@ -26,8 +26,8 @@ export const parametroDetalleTypeDefs = gql`
   }
 
   type Query {
-    parametrosDetalle: [ParametroDetalle]
-    parametroDetalle(id: ID!): ParametroDetalle
+    getParametrosDetalle: [ParametroDetalle]
+    getParametroDetalle(id: ID!): ParametroDetalle
   }
 
   type Mutation {

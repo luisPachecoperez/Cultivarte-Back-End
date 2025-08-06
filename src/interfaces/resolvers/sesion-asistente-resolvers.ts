@@ -20,8 +20,8 @@ const controller = new SesionAsistenteController( useCaseCreate, useCaseGetAll, 
 
 export const sesionAsistenteResolvers = {
     Query: {
-        sesionAsistente: (_: any, args: { id:string }) => controller.getSesionAsistente(args.id),
-        sesionAsistentes: () => controller.getSesionesAsistentes()
+        getSesionAsistente: (_: any, args: { id:string }) => controller.getSesionAsistente(args.id),
+        getSesionesAsistentes: () => controller.getSesionesAsistentes()
     },
     Mutation: {
         createSesionAsistente: (_: any, args: { data:SesionAsistente }) => controller.createSesionAsistente(args.data),

@@ -19,8 +19,8 @@ const controller = new ParametrosGeneralesController( useCaseCreate, useCaseGetA
 
 export const parametrosGeneralesResolvers ={
     Query: {
-      parametrosGenerales: () => controller.getParametrosGenerales(),
-      parametroGeneral: (_: any, args: { id:string }) => controller.getParametroGeneral( args.id )  
+      getParametrosGenerales: () => controller.getParametrosGenerales(),
+      getParametroGeneral: (_: any, args: { id:string }) => controller.getParametroGeneral( args.id )  
     },
     Mutation: {
       createParametroGeneral: (_: any, args: { data:ParametrosGenerales }) => controller.createParametroGeneral( args.data ),

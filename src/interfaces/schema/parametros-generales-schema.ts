@@ -21,8 +21,8 @@ export const parametroGeneralTypeDefs = gql`
   }
 
   type Query {
-    parametrosGenerales: [ParametroGeneral]
-    parametroGeneral(id: ID!): ParametroGeneral
+    getParametrosGenerales: [ParametroGeneral]
+    getParametroGeneral(id: ID!): ParametroGeneral
   }
 
   type Mutation {

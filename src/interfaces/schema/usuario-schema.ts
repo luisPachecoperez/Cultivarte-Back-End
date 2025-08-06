@@ -20,8 +20,8 @@ export const usuarioTypeDefs = gql`
   }
 
   type Query {
-    usuarios: [Usuario]
-    usuario(id: ID!): Usuario
+    getUsuarios: [Usuario]
+    getUsuario(id: ID!): Usuario
   }
 
   type Mutation {

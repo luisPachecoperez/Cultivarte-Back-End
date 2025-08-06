@@ -21,8 +21,8 @@ const controller = new UsuarioController( useCaseCreate, useCaseGetAll, useCaseG
 
 export const usuarioResolvers = {
     Query: {
-        usuario: (_: any, args: { id:string }) => controller.getUsuario( args.id ),
-        usuarios: () => controller.getUsuarios()
+        getUsuario: (_: any, args: { id:string }) => controller.getUsuario( args.id ),
+        getUsuarios: () => controller.getUsuarios()
     },
     Mutation: {
         createUsuario: (_: any, args: { data:Usuario }) => controller.createUsuario( args.data ),

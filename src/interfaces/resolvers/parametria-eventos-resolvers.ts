@@ -10,6 +10,6 @@ const controller = new ParametriaEventosController( useCaseGetAll );
 
 export const parametriaEventosResolvers = {
     Query: {
-        GetParametriaEventos: () => controller.getAll()
+        getParametriaEventos: () => controller.getAll()
     }
 }

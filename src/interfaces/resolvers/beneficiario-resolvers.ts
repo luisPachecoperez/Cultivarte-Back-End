@@ -19,8 +19,8 @@ const controller = new BeneficiarioController( useCaseCreate, useCaseGetAll, use
 
 export const beneficiarioResolvers = {
     Query: {
-      beneficiarios: () => controller.getBeneficiarios(),
-      beneficiario: (_: any, args: { id: string }) => controller.getBeneficiario( args.id )
+      getBeneficiarios: () => controller.getBeneficiarios(),
+      getBeneficiario: (_: any, args: { id: string }) => controller.getBeneficiario( args.id )
     },
     Mutation: {
       createBeneficiario: (_: any, args: { data: Beneficiario }) => controller.createBeneficiario( args.data ),
