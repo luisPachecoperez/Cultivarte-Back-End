@@ -19,8 +19,8 @@ const controller = new ParametrosDetalleController( useCaseCreate, useCaseGetAll
 
 export const parametroDetalleResolvers = {
     Query: {
-      parametrosDetalle: () => controller.getParametrosDetalle(),
-      parametroDetalle: (_: any, args: { id:string }) => controller.getParametroDetalle( args.id )
+      getParametrosDetalle: () => controller.getParametrosDetalle(),
+      getParametroDetalle: (_: any, args: { id:string }) => controller.getParametroDetalle( args.id )
     },
     Mutation: {
       createParametroDetalle: (_: any, args: { data:ParametroDetalle }) => controller.createParametroDetalle( args.data ),

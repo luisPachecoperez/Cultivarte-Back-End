@@ -22,8 +22,8 @@ export const sesionAsistenteTypeDefs = gql`
   }
 
   type Query {
-    sesionAsistentes: [SesionAsistente]
-    sesionAsistente(id: ID!): SesionAsistente
+    getSesionesAsistentes: [SesionAsistente]
+    getSesionAsistente(id: ID!): SesionAsistente
   }
 
   type Mutation {

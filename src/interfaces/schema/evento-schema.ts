@@ -36,8 +36,8 @@ export const eventoTypeDefs = gql`
     creado_por: String
   }
   type Query {
-    eventos: [Evento!]!
-    evento(id: ID!): Evento
+    getEventos: [Evento!]!
+    getEvento(id: ID!): Evento
   }
   type Mutation {
     createEvento(data: EventoInput!): Evento!

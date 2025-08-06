@@ -19,8 +19,8 @@ const controller = new EventoController( useCaseCreate, useCaseGetAll, useCaseGe
 
 export const eventosResolvers = {
     Query: {
-        eventos: () => controller.getEventos(),
-        evento: (_: any, args: { id: string }) => controller.getEvento( args.id ),
+        getEventos: () => controller.getEventos(),
+        getEvento: (_: any, args: { id: string }) => controller.getEvento( args.id ),
     },
     Mutation: {
         createEvento: (_: any, args: { data: Evento }) => controller.createEvento( args.data ),
