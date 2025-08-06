@@ -8,6 +8,7 @@ import { sesionResolvers } from '../resolvers/sesion-resolver';
 import { sesionAsistenteResolvers } from '../resolvers/sesion-asistente-resolvers';
 import { usuarioResolvers } from '../resolvers/usuario-resolver';
 import { eventosResolvers } from '../resolvers/eventos-resolver';
+import { parametriaEventosResolvers } from '../resolvers/parametria-eventos-resolvers';
 
 export const resolvers = mergeResolvers([
   beneficiarioResolvers,
@@ -16,5 +17,6 @@ export const resolvers = mergeResolvers([
   sesionResolvers,
   sesionAsistenteResolvers,
   usuarioResolvers,
-  eventosResolvers
+  eventosResolvers,
+  parametriaEventosResolvers
 ]);

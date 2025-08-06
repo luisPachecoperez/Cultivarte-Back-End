@@ -7,6 +7,7 @@ import { sesionTypeDefs } from '../schema/sesion-schema';
 import { sesionAsistenteTypeDefs } from '../schema/sesion-asistente-schema';
 import { usuarioTypeDefs } from '../schema/usuario-schema';
 import { eventoTypeDefs } from '../schema/evento-schema';
+import { parametriaEventosTypeDefs } from '../schema/parametria-eventos-schema';
 
 export const typeDefs = gql`
   ${beneficiarioTypeDefs}
@@ -16,4 +17,5 @@ export const typeDefs = gql`
   ${sesionAsistenteTypeDefs}
   ${usuarioTypeDefs}
   ${eventoTypeDefs}
+  ${parametriaEventosTypeDefs}
 `;
