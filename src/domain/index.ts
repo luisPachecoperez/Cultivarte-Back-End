@@ -84,6 +84,5 @@ export * from './repositories/parametria-evento-repository';
 export * from './datasources/parametria-eventos';
 export * from './use-cases/queries/get-parametria-eventos';
 
-
-
+/** Export Sesion Eventos */
 
