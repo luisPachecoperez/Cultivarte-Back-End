@@ -18,12 +18,14 @@ export class ParametrosGeneralesDataSourceImpl implements ParametrosGeneralesDat
     async create( parametrosGenerales: ParametrosGenerales ): Promise<ParametrosGenerales> {
         const query = `
             INSERT INTO parametros_generales (
-            nombre_parametro, descripcion, estado, creado_por, fecha_creacion
+            nombre_parametro, descripcion, estado
             ) VALUES (
-            $1,$2,$3,$4,$5,$6,$7,NOW()
+            $1,$2,$3
             ) RETURNING *`;
         const values = [
-            parametrosGenerales.nombre_parametro, parametrosGenerales.descripcion, parametrosGenerales.estado, parametrosGenerales.creado_por
+            parametrosGenerales.nombre_parametro, 
+            parametrosGenerales.descripcion, 
+            parametrosGenerales.estado, 
         ];
         const result = await this.pool.query(query, values);
         return result.rows[0];
@@ -31,13 +33,14 @@ export class ParametrosGeneralesDataSourceImpl implements ParametrosGeneralesDat
 
     async updateById( id_parametro_general: string, parametrosGenerales: ParametrosGenerales ): Promise<ParametrosGenerales> {
         const query = `
-            UPDATE parametros_generales SET nombre_parametro = $2, descripcion = $3, estado = $4, modificado_por = $5, fecha_modificacion = NOW() WHERE id_parametro_general = $1 RETURNING *`;
+            UPDATE parametros_generales
+            SET nombre_parametro = $2, descripcion = $3, estado = $4
+            WHERE id_parametro_general = $1 RETURNING *`;
         const values = [
             id_parametro_general,
             parametrosGenerales.nombre_parametro,
             parametrosGenerales.descripcion,
             parametrosGenerales.estado,
-            parametrosGenerales.modificado_por,
         ];
         const result = await this.pool.query(query, values);
         return result.rows[0];

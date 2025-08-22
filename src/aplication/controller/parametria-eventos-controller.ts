@@ -9,5 +9,4 @@ export class ParametriaEventosController {
     async getAll(): Promise<any> {
         return this.getParametriaEventosUseCase.execute();
     }
-
 }

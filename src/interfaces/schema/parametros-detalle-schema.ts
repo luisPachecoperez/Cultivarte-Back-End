@@ -9,9 +9,9 @@ export const parametroDetalleTypeDefs = gql`
     orden: Int
     valores: String
     estado: String
-    creado_por: String
+    id_creado_por: ID
     fecha_creacion: String
-    modificado_por: String
+    id_modificado_por: ID
     fecha_modificacion: String
   }
 
@@ -22,7 +22,10 @@ export const parametroDetalleTypeDefs = gql`
     orden: Int
     valores: String
     estado: String
-    creado_por: String
+    id_creado_por: ID
+    fecha_creacion: String
+    id_modificado_por: ID
+    fecha_modificacion: String
   }
 
   type Query {

@@ -7,9 +7,9 @@ export const parametroGeneralTypeDefs = gql`
     nombre_parametro: String
     descripcion: String
     estado: String
-    creado_por: String
+    id_creado_por: ID
     fecha_creacion: String
-    modificado_por: String
+    id_modificado_por: ID
     fecha_modificacion: String
   }
 
@@ -17,7 +17,10 @@ export const parametroGeneralTypeDefs = gql`
     nombre_parametro: String
     descripcion: String
     estado: String
-    creado_por: String
+    id_creado_por: ID
+    fecha_creacion: String
+    id_modificado_por: ID
+    fecha_modificacion: String
   }
 
   type Query {
