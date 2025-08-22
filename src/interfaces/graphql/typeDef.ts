@@ -3,9 +3,13 @@ import { gql } from 'graphql-tag';
 import { parametroDetalleTypeDefs } from '../schema/parametros-detalle-schema';
 import { parametroGeneralTypeDefs } from '../schema/parametros-generales-schema';
 import { parametriaEventosTypeDefs } from '../schema/parametria-eventos-schema';
+import { calendarioFechaTypeDefs } from '../schema/calendario-fecha-schema';
+import { actividadesTypeDefs } from '../schema/actividades-schema';
 
 export const typeDefs = gql`
   ${parametroDetalleTypeDefs}
   ${parametroGeneralTypeDefs}
   ${parametriaEventosTypeDefs}
+  ${calendarioFechaTypeDefs}
+  ${actividadesTypeDefs}
 `;

@@ -6,8 +6,8 @@ export interface ParametroDetalle {
     orden?:               number;
     valores?:             string;
     estado?:              string;
-    creado_por?:          string;
+    id_creado_por?:       string;
     fecha_creacion?:      string;
-    modificado_por?:      string;
+    id_modificado_por?:   string;
     fecha_modificacion?:  string;
 }
