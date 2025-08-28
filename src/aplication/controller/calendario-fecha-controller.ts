@@ -1,5 +1,5 @@
-import { CalendarioInput } from "../../domain/entities/calendario-fecha";
-import { GetCalendarioFechaUseCase } from "../../domain/use-cases/calendario/get-calendario-fecha";
+
+import { GetCalendarioFechaUseCase, CalendarioInput } from "../../domain";
 
 export class CalendarioFechaController {
 

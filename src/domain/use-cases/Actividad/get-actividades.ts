@@ -6,11 +6,12 @@ export interface GetActividadesUseCase {
 }
 
 export class GetActividadesUseCaseImpl implements GetActividadesUseCase {
+    
     constructor( 
-        private repository: ActividadRepository
+        private actividadRepository: ActividadRepository
     ) {}
 
     execute(): Promise<Actividad[]> {
-        return this.repository.getAll();
+        return this.actividadRepository.getAll();
     }
 }

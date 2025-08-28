@@ -5,6 +5,7 @@ export interface GetParametrosDetalleUseCase {
 }
     
 export class GetParametrosDetalleUseCaseImpl implements GetParametrosDetalleUseCase {
+    
     constructor(
         private readonly parametroDetalleRepository: ParametroDetalleRepository
     ) {}

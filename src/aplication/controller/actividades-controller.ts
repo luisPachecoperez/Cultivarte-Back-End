@@ -1,9 +1,18 @@
-import { Actividad, ActividadRepository, PreCreateActividad, PreCreateActividadUseCase } from "../../domain";
-import { CreateActividadUseCase, GetActividadesUseCase, GetActividadUseCase, UpdateActividadUseCase, DeleteActividadUseCase } from "../../domain";
+import { Actividad, 
+         PreCreateActividad, 
+         PreCreateActividadUseCase,
+         CreateActividadAndSesionesUseCase,
+         GetActividadesUseCase,
+         GetActividadUseCase, 
+         UpdateActividadUseCase,
+         DeleteActividadUseCase,CreateActividadUseCase } from "../../domain";
+
 
 export class ActividadesController {
+    
     constructor(
         private readonly preCreateActividadUseCase: PreCreateActividadUseCase,
+        private readonly createActividadAndSesionesUseCase: CreateActividadAndSesionesUseCase,
         private readonly createActividadUseCase: CreateActividadUseCase,
         private readonly getActividadesUseCase: GetActividadesUseCase,
         private readonly getActividadUseCase: GetActividadUseCase,
@@ -15,6 +24,10 @@ export class ActividadesController {
         return this.preCreateActividadUseCase.execute( id_usuario );
     }
     
+    async createActividadAndSesiones( actividad: Actividad ): Promise<Actividad> {
+        return this.createActividadAndSesionesUseCase.execute( actividad );
+    }
+
     async createActividad( actividad: Actividad ): Promise<Actividad> {
         return this.createActividadUseCase.execute( actividad );
     }

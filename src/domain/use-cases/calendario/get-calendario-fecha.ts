@@ -1,11 +1,12 @@
-import { CalendarioInput, Evento } from "../../entities/calendario-fecha";
-import { CalendarioFechaRepository } from "../../repositories/calendario-fecha-repository";
+import { CalendarioInput, Evento, CalendarioFechaRepository } from "../../";
+
 
 export interface GetCalendarioFechaUseCase {
     execute( calendarioInput: CalendarioInput ): Promise<Evento[]>;
 }
 
 export class GetCalendarioFechaUseCaseImpl implements GetCalendarioFechaUseCase {
+    
     constructor(
         private readonly calendarioFechaRepository: CalendarioFechaRepository
     ) {}

@@ -1,6 +1,7 @@
-import { CalendarioFechaRepository } from "../../domain/repositories/calendario-fecha-repository";
-import { CalendarioInput, Evento } from "../../domain/entities/calendario-fecha";
-import { CalendarioFechaDataSource } from "../../domain/datasources/calendario-fecha-datasource";
+import { CalendarioFechaRepository, 
+         CalendarioInput,
+         Evento,
+         CalendarioFechaDataSource } from "../../domain";
 
 export class CalendarioFechaRepositoryImpl implements CalendarioFechaRepository {
 

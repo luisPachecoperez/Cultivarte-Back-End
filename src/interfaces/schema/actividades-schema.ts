@@ -6,19 +6,44 @@ export const actividadesTypeDefs = gql`
         nombre: String!
     }
 
-    type NombreEvento {
-        id_parametro_detalle: ID!
+    type NombresActividadItem {
+        id_tipo_actividad: ID!
+        nombre: String!
+    }
+
+    type FrecuenciaItem {
+        id_frecuencia: ID!
+        nombre: String!
+    }
+
+    type SedeItem {
+        id_sede: ID!
+        nombre: String!
+    }
+
+    type TipoActividadItem {
+        id_tipo_actividad: ID!
+        nombre: String!
+    }
+
+    type AliadoItem {
+        id_aliado: ID!
+        nombre: String!
+    }
+
+    type ResponsableItem {
+        id_responsable: ID!
         nombre: String!
     }
 
     type PreCreateEvent {
         id_programa: ID!
-        sedes: [Item!]!
-        tiposDeEvento: [Item!]!
-        aliados: [Item!]!
-        responsables: [Item!]!
-        nombreDeEventos: [NombreEvento!]!
-        frecuencias: [Item!]!
+        sedes: [SedeItem!]!
+        tiposDeActividad: [TipoActividadItem!]!
+        aliados: [AliadoItem!]!
+        responsables: [ResponsableItem!]!
+        nombresDeActividad: [NombresActividadItem!]!
+        frecuencias: [FrecuenciaItem!]!
     }
 
     type Actividad {
@@ -32,8 +57,9 @@ export const actividadesTypeDefs = gql`
         institucional: String!
         nombre_actividad: String!
         descripcion: String!
-        fecha_actividad_desde: String
-        fecha_actividad_hasta: String
+        fecha_actividad: String
+        hora_inicio: String
+        hora_fin: String
         plazo_asistencia: String
         estado: String
         id_creado_por: ID
@@ -52,8 +78,9 @@ export const actividadesTypeDefs = gql`
         institucional: String!
         nombre_actividad: String!
         descripcion: String!
-        fecha_actividad_desde: String
-        fecha_actividad_hasta: String
+        fecha_actividad: String
+        hora_inicio: String
+        hora_fin: String
         plazo_asistencia: String
         estado: String
         id_creado_por: ID
@@ -69,6 +96,7 @@ export const actividadesTypeDefs = gql`
     }   
 
     type Mutation {
+        createActividadAndSesiones(data: ActividadInput!): Actividad
         createActividad(data: ActividadInput!): Actividad
         updateActividad(id: ID!, data: ActividadInput!): Actividad
         deleteActividad(id: ID!): Boolean

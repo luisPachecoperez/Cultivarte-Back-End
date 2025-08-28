@@ -5,6 +5,8 @@ import { parametroGeneralTypeDefs } from '../schema/parametros-generales-schema'
 import { parametriaEventosTypeDefs } from '../schema/parametria-eventos-schema';
 import { calendarioFechaTypeDefs } from '../schema/calendario-fecha-schema';
 import { actividadesTypeDefs } from '../schema/actividades-schema';
+import { sesionesTypeDefs } from '../schema/sesiones-schema';
+import { asistenciasTypeDefs } from '../schema/asistencias-schema';
 
 export const typeDefs = gql`
   ${parametroDetalleTypeDefs}
@@ -12,4 +14,6 @@ export const typeDefs = gql`
   ${parametriaEventosTypeDefs}
   ${calendarioFechaTypeDefs}
   ${actividadesTypeDefs}
+  ${sesionesTypeDefs}
+  ${asistenciasTypeDefs}
 `;

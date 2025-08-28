@@ -5,6 +5,7 @@ export interface DeleteParametroGeneralUseCase {
 }
     
 export class DeleteParametroGeneralUseCaseImpl implements DeleteParametroGeneralUseCase {
+    
     constructor(
         private readonly parametroGeneralRepository: ParametrosGeneralesRepository
     ) {}
