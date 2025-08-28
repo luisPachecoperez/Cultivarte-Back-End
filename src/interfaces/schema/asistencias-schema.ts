@@ -1,0 +1,69 @@
+import gql from "graphql-tag";
+
+export const asistenciasTypeDefs = gql` 
+    type Asistencia {
+        id_asistencia: ID!
+        id_actividad: ID!
+        id_sesion: ID!
+        id_persona: ID
+
+        id_creado_por: ID
+        fecha_creacion: String
+        id_modificado_por: ID
+        fecha_modificacion: String
+    }
+
+    input CreateAsistenciaInput {
+        id_actividad: ID!
+        id_sesion: ID!
+        id_persona: ID
+        id_creado_por: ID
+    }
+
+    input UpdateAsistenciaInput {
+        id_asistencia: ID!
+        id_persona: ID
+        id_modificado_por: ID
+    }
+        
+    type PreAsistencia {
+        id_evento: ID!
+        id_sesion: ID!
+        id_sede: ID!
+        numero_asistentes: Int!
+        foto: String
+        imagen: String
+        sedes: [Sede!]!
+        beneficiarios: [Beneficiario!]!
+        asistentes_sesiones: [AsistenteSesion!]!
+    } 
+    
+    type Sede {
+        id_sede: ID!
+        nombre_sede: String!
+    }
+
+    type Beneficiario {
+        id_persona: ID!
+        nombre_completo: String!
+        id_sede: ID!
+    }
+
+    type AsistenteSesion {
+        id_persona: ID!
+    }
+
+    type Query {
+        getAsistencia(id_asistencia: ID!): Asistencia
+        getAsistencias: [Asistencia!]!
+        getPreAsistencia(id_usuario: ID!): PreAsistencia!
+    }
+        
+    type Mutation {
+        createAsistencia(input: CreateAsistenciaInput!): Asistencia!
+        updateAsistencia(id_asistencia: ID!, input: UpdateAsistenciaInput!): Asistencia!
+        updateAsistencias(input: UpdateAsistenciaInput!): Boolean!
+        deleteAsistencia(id_asistencia: ID!): Boolean!
+        
+    }
+`;

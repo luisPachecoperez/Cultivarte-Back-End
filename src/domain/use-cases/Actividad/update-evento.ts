@@ -1,11 +1,12 @@
-import { Actividad } from "../../entities/actividad";
-import { ActividadRepository } from "../../repositories/actividad-repository";
+import { Actividad, ActividadRepository} from "../../";
+
 
 export interface UpdateActividadUseCase {
     execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | null>;
 }
 
 export class UpdateActividadUseCaseImpl implements UpdateActividadUseCase {
+    
     constructor( 
         private actividadRepository: ActividadRepository
     ) {}

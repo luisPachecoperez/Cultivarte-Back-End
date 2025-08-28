@@ -5,6 +5,7 @@ export interface CreateParametroGeneralUseCase {
 }
 
 export class CreateParametroGeneralUseCaseImpl implements CreateParametroGeneralUseCase {
+    
     constructor( private repository: ParametrosGeneralesRepository ) {}
 
     async execute( parametrosGenerales: ParametrosGenerales ): Promise<ParametrosGenerales> {

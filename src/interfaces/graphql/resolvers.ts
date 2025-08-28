@@ -6,11 +6,15 @@ import { parametrosGeneralesResolvers } from '../resolvers/parametros-generales-
 import { parametriaEventosResolvers } from '../resolvers/parametria-eventos-resolvers';
 import { calendarioFechaResolvers } from '../resolvers/calendario-fecha-resolvers';
 import { actividadesResolvers } from '../resolvers/actividades-resolvers';
+import { sesionesResolvers } from '../resolvers/sesiones-resolver';
+import { asistenciasResolvers } from '../resolvers/asistencias-resolvers';
 
 export const resolvers = mergeResolvers([
   parametroDetalleResolvers,
   parametrosGeneralesResolvers,
   parametriaEventosResolvers,
   calendarioFechaResolvers,
-  actividadesResolvers
+  actividadesResolvers,
+  sesionesResolvers,
+  asistenciasResolvers
 ]);

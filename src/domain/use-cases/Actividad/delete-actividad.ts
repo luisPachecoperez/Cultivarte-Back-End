@@ -1,15 +1,16 @@
-import { ActividadRepository } from "../../repositories/actividad-repository";
+import { ActividadRepository } from "../../";
 
 export interface DeleteActividadUseCase {
     execute( id_actividad: string ): Promise<boolean>;
 }
 
 export class DeleteActividadUseCaseImpl implements DeleteActividadUseCase {
+    
     constructor( 
-        private repository: ActividadRepository
+        private actividadRepository: ActividadRepository
     ) {}
 
     execute( id_actividad: string ): Promise<boolean> {
-        return this.repository.deleteById( id_actividad );
+        return this.actividadRepository.deleteById( id_actividad );
     }
 }

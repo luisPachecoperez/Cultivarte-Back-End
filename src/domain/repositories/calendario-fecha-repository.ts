@@ -1,5 +1,5 @@
-import { CalendarioInput, Evento } from "../entities/calendario-fecha";
+import { CalendarioInput, Evento } from "../";
 
 export interface CalendarioFechaRepository {
-    getByDate(calendarioInput: CalendarioInput): Promise<Evento[]>;
+    getByDate( calendarioInput: CalendarioInput ): Promise<Evento[]>;
 }

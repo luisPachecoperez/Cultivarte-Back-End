@@ -1,6 +1,6 @@
-import { ParametroDetalle } from "../../domain";
-import { ParametroDetalleDataSource } from "../../domain";
-import { ParametroDetalleRepository } from "../../domain";
+import { ParametroDetalle, 
+         ParametroDetalleDataSource, 
+         ParametroDetalleRepository } from "../../domain";
 
 export class ParametroDetalleRepositoryImpl implements ParametroDetalleRepository {
     

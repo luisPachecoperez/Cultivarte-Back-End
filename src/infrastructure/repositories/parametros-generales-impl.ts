@@ -1,6 +1,6 @@
-import { ParametrosGenerales, } from "../../domain";
-import {  ParametrosGeneralesRepository } from "../../domain";
-import { ParametrosGeneralesDataSource } from "../../domain";
+import { ParametrosGenerales, 
+         ParametrosGeneralesRepository, 
+         ParametrosGeneralesDataSource } from "../../domain";
 
 export class ParametrosGeneralesRepositoryImpl implements ParametrosGeneralesRepository {
     

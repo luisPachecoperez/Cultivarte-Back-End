@@ -1,4 +1,4 @@
-import { ParametriaEventos,ParametriaEventosRepository } from "../..";
+import { ParametriaEventos,ParametriaEventosRepository } from "../../";
 
 
 export interface GetParametriaEventosUseCase {

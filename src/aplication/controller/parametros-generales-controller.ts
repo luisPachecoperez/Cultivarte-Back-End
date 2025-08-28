@@ -5,8 +5,8 @@ import { ParametrosGenerales,
          GetParametrosGeneralesUseCase,
          UpdateParametroGeneralUseCase } from "../../domain";
 
-
 export class ParametrosGeneralesController {
+    
     constructor(
         private createParametroGeneralUseCase: CreateParametroGeneralUseCase,
         private getParametrosGeneralesUseCase: GetParametrosGeneralesUseCase,

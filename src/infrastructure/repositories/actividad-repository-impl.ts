@@ -1,4 +1,7 @@
-import { Actividad, ActividadDataSource, ActividadRepository, PreCreateActividad } from "../../domain";
+import { Actividad,
+         ActividadDataSource, 
+         ActividadRepository, 
+         PreCreateActividad } from "../../domain";
 
 export class ActividadRepositoryImpl implements ActividadRepository {
     
@@ -18,8 +21,12 @@ export class ActividadRepositoryImpl implements ActividadRepository {
         return this.actividadDataSource.getById(id);
     }
 
-    async create(actividad: Actividad): Promise<Actividad> {
-        return this.actividadDataSource.create(actividad);
+    async createActividadAndSesiones(actividad: Actividad): Promise<Actividad> {
+        return this.actividadDataSource.createActividadAndSesiones(actividad);
+    }
+
+    async createActividad(actividad: Actividad): Promise<Actividad> {
+        return this.actividadDataSource.createActividad(actividad);
     }
 
     async updateById(id_actividad: string, actividad: Actividad): Promise<Actividad> {

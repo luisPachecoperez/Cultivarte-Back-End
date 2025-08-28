@@ -6,6 +6,7 @@ import { ParametroDetalle,
          UpdateParametroDetalleUseCase } from "../../domain";
 
 export class ParametrosDetalleController {
+    
     constructor(
         private createParametroDetalleUseCase: CreateParametroDetalleUseCase,
         private getParametrosDetalleUseCase: GetParametrosDetalleUseCase,

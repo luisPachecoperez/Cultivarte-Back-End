@@ -1,5 +1,7 @@
-import { ParametriaEventos, ParametriaEventosRepository, ParametroItem } from "../../domain";
-import { ParametriaEventosDataSource } from "../../domain";
+import { ParametriaEventos, 
+         ParametriaEventosRepository, 
+         ParametroItem,
+         ParametriaEventosDataSource } from "../../domain";
 
 export class ParametriaEventosRepositoryImpl implements ParametriaEventosRepository {
 
