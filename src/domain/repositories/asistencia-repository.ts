@@ -1,5 +1,7 @@
-import { Asistencia, AsistenciaSesiones, PreAsistencia, RespuestaGrap } from "../";
-
+import { Asistencia, 
+         AsistenciaSesiones, 
+         PreAsistencia, 
+         RespuestaGrap } from "../";
 
 export interface AsistenciaRepository {
     getAll(): Promise<Asistencia[]>;

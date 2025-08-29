@@ -1,4 +1,4 @@
-import { SesionesDataSource } from "../../domain";
+import { RespuestaGrap, SesionesDataSource } from "../../domain";
 import { pgPool } from "../db/pg-pool";
 import { sesionesQueries } from "../db/sesiones-queries";
 import { Sesion } from "../../domain/entities/sesion";
@@ -37,7 +37,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
         const result = await this.pool.query(sesionesQueries.create, values);
         return result.rows[0];
     }
-    async updateById(id_sesion: string, sesion: Sesion): Promise<Sesion> {
+    async updateById(id_sesion: string, sesion: Sesion): Promise<RespuestaGrap> {
         const values = [
             id_sesion,
             sesion.id_actividad,
@@ -60,52 +60,70 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
         return result.rows[0];
     }
     
-    async updateSesiones(editarSesiones: EditarSesiones): Promise<boolean> {
+    async updateSesiones(editarSesiones: EditarSesiones): Promise<RespuestaGrap> {
         const client = await this.pool.connect();
         try {
             await client.query('BEGIN');
             
+            // Normalizar payload: soporta { sesiones: { ... } } y forma plana { nuevos, modificados, eliminados }
+            const payload: any = (editarSesiones as any).sesiones ?? editarSesiones;
+
             // nuevas sesiones
-            if (editarSesiones.sesiones.nuevos?.length) {
-                for (const nuevaSesion of editarSesiones.sesiones.nuevos) {
+            if (payload?.nuevos?.length) {
+                console.log(payload.nuevos);
+                for (const nuevaSesion of payload.nuevos) {
                     const id_sesion = nuevaSesion.id_sesion || randomUUID();
-                    await client.query(sesionesQueries.insertSesion, [
+                    console.log(id_sesion);
+                    await client.query(sesionesQueries.create, [
                         id_sesion,
-                        nuevaSesion.id_evento,
-                        nuevaSesion.fecha_sesion,
+                        nuevaSesion.id_actividad,
+                        nuevaSesion.fecha_actividad,
                         nuevaSesion.hora_inicio,
-                        nuevaSesion.hora_fin
+                        nuevaSesion.hora_fin,
+                        nuevaSesion.imagen ?? '',
+                        nuevaSesion.nro_asistentes ?? 0,
+                        nuevaSesion.id_creado_por ?? null,
+                        new Date(),
+                        nuevaSesion.id_creado_por ?? null,
+                        new Date()
                     ]);
                 }
-            }
-            
-            // modificadas sesiones
-            if (editarSesiones.sesiones.modificados?.length) {
-                for (const sesionModificada of editarSesiones.sesiones.modificados) {
+            } 
+             
+             // modificadas sesiones
+            if (payload?.modificados?.length) {
+                for (const sesionModificada of payload.modificados) {
                     await client.query(sesionesQueries.updateSesionesById, [
-                        sesionModificada.fecha_sesion,
+                        sesionModificada.id_sesion,
+                        sesionModificada.id_actividad,
+                        sesionModificada.fecha_actividad,
                         sesionModificada.hora_inicio,
                         sesionModificada.hora_fin,
-                        sesionModificada.id_sesion
+                        sesionModificada.imagen ?? '',
+                        sesionModificada.nro_asistentes ?? 0,
+                        sesionModificada.id_creado_por ?? null,
+                        new Date(),
+                        sesionModificada.id_modificado_por ?? null,
+                        new Date(),
                     ]);
                 }
             }
-            
-            // eliminadas sesiones
-            if (editarSesiones.sesiones.eliminados?.length) {
-                for (const sesionEliminada of editarSesiones.sesiones.eliminados) {
-                    await client.query(sesionesQueries.deleteById, [
-                        sesionEliminada.id_sesion
-                    ]);
+             
+             // eliminadas sesiones
+            if (payload?.eliminados?.length) {
+                for (const item of payload.eliminados) {
+                    const id_sesion = typeof item === 'string' ? item : item?.id_sesion;
+                    if (!id_sesion) continue;
+                    await client.query(sesionesQueries.deleteById, [ id_sesion ]);
                 }
             }
-            
-            await client.query('COMMIT');
-            return true;
+             
+             await client.query('COMMIT');
+             return {exitoso: "S", mensaje: 'Sesiones actualizadas correctamente'};
         } catch (error) {
             await client.query('ROLLBACK');
             console.error('Error updating sessions:', error);
-            return false;
+            return {exitoso: "N", mensaje: 'Error al actualizar sesiones'};
         } finally {
             client.release();
         }

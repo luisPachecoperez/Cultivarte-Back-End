@@ -17,6 +17,7 @@ export const sesionesTypeDefs = gql`
     }
 
     input CreateSesionInput {
+        id_sesion: ID!
         id_actividad: ID!
         fecha_actividad: String
         hora_inicio: String!
@@ -24,6 +25,9 @@ export const sesionesTypeDefs = gql`
         imagen: String
         nro_asistentes: Int
         id_creado_por: ID
+        fecha_creacion: String
+        id_modificado_por: ID
+        fecha_modificacion: String
     }
 
     input UpdateSesionInput {
@@ -34,13 +38,25 @@ export const sesionesTypeDefs = gql`
         hora_fin: String
         imagen: String
         nro_asistentes: Int
+        id_creado_por: ID
+        fecha_creacion: String
         id_modificado_por: ID
+        fecha_modificacion: String
+    }
+    
+    type RespuestaGrap {
+        exitoso: String!
+        mensaje: String!
+    }
+
+    input SesionEliminadaInput {
+        id_sesion: ID!
     }
 
     input EditarSesiones {
         nuevos: [CreateSesionInput!]!
         modificados: [UpdateSesionInput!]!
-        eliminados: [ID!]!
+        eliminados: [SesionEliminadaInput!]!
     }
 
     type Query {
@@ -50,8 +66,8 @@ export const sesionesTypeDefs = gql`
 
     type Mutation {
         createSesion(input: CreateSesionInput!): Sesion!
-        updateSesion(input: UpdateSesionInput!): Sesion!
-        updateSesiones(input: EditarSesiones!): Boolean!
+        updateSesion(input: UpdateSesionInput!): RespuestaGrap!
+        updateSesiones(input: EditarSesiones!): RespuestaGrap!
         deleteSesion(id_sesion: ID!): Boolean!
     }
 `;

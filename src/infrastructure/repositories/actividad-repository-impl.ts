@@ -1,7 +1,9 @@
 import { Actividad,
          ActividadDataSource, 
          ActividadRepository, 
-         PreCreateActividad } from "../../domain";
+         PreCreateActividad, 
+         RespuestaGrap,
+         PreEditActividad } from "../../domain";
 
 export class ActividadRepositoryImpl implements ActividadRepository {
     
@@ -9,8 +11,12 @@ export class ActividadRepositoryImpl implements ActividadRepository {
         private actividadDataSource: ActividadDataSource
     ) {}
 
-    async getPreCreateActividadData( id_usuario: string ): Promise<PreCreateActividad> {
-        return this.actividadDataSource.getPreCreateActividadData(id_usuario);
+    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad> {
+        return this.actividadDataSource.getPreCreateActividad(id_usuario);
+    }
+    
+    async getPreEditActividad(id_actividad: string, id_usuario: string): Promise<PreEditActividad> {
+        return this.actividadDataSource.getPreEditActividad(id_actividad, id_usuario);
     }
     
     async getAll(): Promise<Actividad[]> {
@@ -25,7 +31,7 @@ export class ActividadRepositoryImpl implements ActividadRepository {
         return this.actividadDataSource.createActividadAndSesiones(actividad);
     }
 
-    async createActividad(actividad: Actividad): Promise<Actividad> {
+    async createActividad(actividad: Actividad): Promise<RespuestaGrap> {
         return this.actividadDataSource.createActividad(actividad);
     }
 

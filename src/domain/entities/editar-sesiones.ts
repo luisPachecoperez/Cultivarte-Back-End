@@ -1,7 +1,9 @@
+import { Sesion } from "./sesion";
+
 export interface EditarSesiones {
     sesiones: {
-        nuevos:      NuevaSesion[];
-        modificados: SesionModificada[];
+        nuevos:      Sesion[];
+        modificados: Sesion[];
         eliminados:  SesionEliminada[];
     };
 }

@@ -1,4 +1,6 @@
-import { SesionRepository,EditarSesiones} from "../../";
+import { SesionRepository,
+         EditarSesiones, 
+         RespuestaGrap } from "../../";
 
 export class UpdateSesiones {
 
@@ -6,7 +8,7 @@ export class UpdateSesiones {
         private readonly sesionRepository: SesionRepository,
     ) {}
 
-    async execute( editarSesiones: EditarSesiones ): Promise<boolean> {
+    async execute( editarSesiones: EditarSesiones ): Promise<RespuestaGrap> {
         return this.sesionRepository.updateSesiones( editarSesiones );
     }
 }

@@ -11,6 +11,6 @@ export class PreCreateActividadUseCaseImpl implements PreCreateActividadUseCase 
     ) {}
 
     execute( id_usuario: string ): Promise<PreCreateActividad> {
-        return this.actividadRepository.getPreCreateActividadData( id_usuario );
+        return this.actividadRepository.getPreCreateActividad( id_usuario );
     }
 }

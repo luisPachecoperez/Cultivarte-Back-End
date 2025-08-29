@@ -1,5 +1,4 @@
-import { PreAsistencia } from "../../entities/pre-asistencia";
-import { AsistenciaRepository } from "../../repositories/asistencia-repository";
+import { PreAsistencia, AsistenciaRepository } from "../../";
 
 export interface GetPreAsistenciaUseCase {
     execute(id_sesion: string, id_evento: string): Promise<PreAsistencia>;

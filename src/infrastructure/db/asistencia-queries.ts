@@ -19,7 +19,7 @@ export const asistenciasQueries = {
                         fecha_modificacion = $6 
                         WHERE id_asistencia = $1 RETURNING *`,
     deleteAsistencia: `DELETE FROM asistencias WHERE id_asistencia = $1 RETURNING *`,
-    getSedes: `SELECT id_sede, nombre_sede FROM sedes`,
+    getSedes: `SELECT id_sede, nombre FROM sedes`,
         
     getAsistentesSesiones: `SELECT DISTINCT a.id_persona
                             FROM asistencias a

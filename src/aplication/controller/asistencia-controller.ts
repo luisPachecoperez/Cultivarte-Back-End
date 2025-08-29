@@ -3,9 +3,11 @@ import { Asistencia,
          GetAsistenciasUseCase,
          CreateAsistenciaUseCase,
          UpdateAsistenciaUseCase,
-         DeleteAsistenciaUseCase } from "../../domain";
-import { PreAsistencia } from "../../domain/entities/pre-asistencia";
-import { GetPreAsistenciaUseCase } from "../../domain/use-cases/asistencias/get-pre-asistencia";
+         DeleteAsistenciaUseCase, 
+         PreAsistencia,
+         GetPreAsistenciaUseCase } from "../../domain";
+
+
 
 export class AsistenciasController {
     constructor(
@@ -14,7 +16,7 @@ export class AsistenciasController {
         private readonly createAsistenciaUseCase: CreateAsistenciaUseCase,
         private readonly updateAsistenciaUseCase: UpdateAsistenciaUseCase,
         private readonly deleteAsistenciaUseCase: DeleteAsistenciaUseCase,
-        private readonly getPreAsistenciaUseCase: GetPreAsistenciaUseCase
+        private readonly getPreAsistenciaUseCase: GetPreAsistenciaUseCase,
     ) {}
 
     async getAsistencias(): Promise<Asistencia[] | null> {

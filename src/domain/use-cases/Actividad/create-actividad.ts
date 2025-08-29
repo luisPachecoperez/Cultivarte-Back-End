@@ -1,7 +1,9 @@
-import { Actividad, ActividadRepository } from "../../";
+import { Actividad,
+         ActividadRepository,
+         RespuestaGrap } from "../../";
 
 export interface CreateActividadUseCase {
-    execute( actividad: Actividad ): Promise<Actividad>;
+    execute( actividad: Actividad ): Promise<RespuestaGrap>;
 }
 
 export class CreateActividadUseCaseImpl implements CreateActividadUseCase {
@@ -10,7 +12,7 @@ export class CreateActividadUseCaseImpl implements CreateActividadUseCase {
         private actividadRepository: ActividadRepository
     ) {}
 
-    async execute( actividad: Actividad ): Promise<Actividad> {
+    async execute( actividad: Actividad ): Promise<RespuestaGrap> {
         return this.actividadRepository.createActividad( actividad );
     }
 }
