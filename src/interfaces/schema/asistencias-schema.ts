@@ -56,7 +56,7 @@ export const asistenciasTypeDefs = gql`
     type Query {
         getAsistencia(id_asistencia: ID!): Asistencia
         getAsistencias: [Asistencia!]!
-        getPreAsistencia(id_actividad: ID!, id_sesion: ID!): PreAsistencia!
+        getPreAsistencia(id_sesion: ID!): PreAsistencia!
     }
         
     type Mutation {

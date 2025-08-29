@@ -85,7 +85,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         return true;
     }      
     
-    async getPreAsistencia(id_sesion: string, id_actividad: string): Promise<PreAsistencia> {
+    async getPreAsistencia(id_sesion: string): Promise<PreAsistencia> {
         const sesionResult = await this.pool.query(sesionesQueries.getById, [id_sesion]);
         const sesion = sesionResult.rows[0];
         if (!sesion) {
@@ -110,7 +110,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
             id_sesion: sesion.id_sesion,
             // Si el esquema de sesiones no tiene id_sede, devolvemos vacío hasta ajustar la query de origen
             id_sede: (sesion as any).id_sede ?? '',
-            numero_asistentes: Number(cantidad),
+            numero_asistentes: sesion.nro_asistentes,
             // Usar imagen como fallback para foto si no existe la columna foto
             foto: (sesion as any).foto ?? sesion.imagen ?? '',
             imagen: sesion.imagen ?? '',

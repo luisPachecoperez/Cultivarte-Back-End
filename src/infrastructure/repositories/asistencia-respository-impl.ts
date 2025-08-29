@@ -35,7 +35,7 @@ export class AsistenciaRepositoryImpl implements AsistenciaRepository {
         return this.asistenciaDataSource.deleteById(id_asistencia);
     }
     
-    getPreAsistencia(id_sesion: string, id_evento: string): Promise<PreAsistencia> {
-        return this.asistenciaDataSource.getPreAsistencia(id_sesion, id_evento);
+    getPreAsistencia(id_sesion: string): Promise<PreAsistencia> {
+        return this.asistenciaDataSource.getPreAsistencia(id_sesion);
     }
 }

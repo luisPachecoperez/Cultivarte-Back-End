@@ -23,7 +23,7 @@ export const asistenciasResolvers = {
     Query: {
         getAsistencias: () => controller.getAsistencias(),
         getAsistencia: (_: any, args: { id:string }) => controller.getAsistencia(args.id),
-        getPreAsistencia: (_: any, args: { id_actividad:string, id_sesion:string }) => controller.getPreAsistencia(args.id_actividad, args.id_sesion),
+        getPreAsistencia: (_: any, args: { id_actividad:string, id_sesion:string }) => controller.getPreAsistencia( args.id_sesion),
     },
     Mutation: {
         createAsistencia: (_: any, args: { data:Asistencia }) => controller.createAsistencia(args.data),
