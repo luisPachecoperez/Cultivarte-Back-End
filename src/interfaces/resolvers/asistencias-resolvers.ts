@@ -1,9 +1,11 @@
 import {Asistencia, 
+        AsistenciaSesiones,
         GetAsistenciasUseCaseImpl,
         GetAsistenciaUseCaseImpl,
         CreateAsistenciaUseCaseImpl,
         UpdateAsistenciaUseCaseImpl,
         DeleteAsistenciaUseCaseImpl,
+        UpdateAsistenciasUseCaseImpl,
         GetPreAsistenciaUseCaseImpl } from "../../domain";
 import { AsistenciasController } from './../../aplication/controller/asistencia-controller';
 import { AsistenciaDataSourceImpl } from "../../infrastructure/datasource/asistencias-datasource-impl";
@@ -15,9 +17,16 @@ const useCaseGetAll = new GetAsistenciasUseCaseImpl( repository );
 const useCaseGetById = new GetAsistenciaUseCaseImpl( repository );
 const useCaseCreate = new CreateAsistenciaUseCaseImpl( repository );
 const useCaseUpdate = new UpdateAsistenciaUseCaseImpl( repository );
+const useCaseUpdateAsistencias = new UpdateAsistenciasUseCaseImpl( repository );
 const useCaseDelete = new DeleteAsistenciaUseCaseImpl ( repository );
 const useCaseGetPreAsistencia = new GetPreAsistenciaUseCaseImpl( repository );
-const controller = new AsistenciasController( useCaseGetAll, useCaseGetById, useCaseCreate, useCaseUpdate, useCaseDelete, useCaseGetPreAsistencia );
+const controller = new AsistenciasController( useCaseGetAll, 
+                                              useCaseGetById, 
+                                              useCaseCreate, 
+                                              useCaseUpdate,  
+                                              useCaseDelete, 
+                                              useCaseUpdateAsistencias, 
+                                              useCaseGetPreAsistencia );
 
 export const asistenciasResolvers = {
     Query: {
@@ -29,5 +38,6 @@ export const asistenciasResolvers = {
         createAsistencia: (_: any, args: { data:Asistencia }) => controller.createAsistencia(args.data),
         updateAsistencia: (_: any, args: { id:string, data:Asistencia }) => controller.updateAsistencia(args.id, args.data),
         deleteAsistencia: (_: any, args: { id:string }) => controller.deleteAsistencia(args.id),
+        updateAsistencias: (_: any, args: { input:AsistenciaSesiones }) => controller.updateAsistencias(args.input),
     },
 }
