@@ -11,6 +11,6 @@ export class CreateAsistenciaUseCaseImpl implements CreateAsistenciaUseCase {
     ) {}
 
     execute( asistencia: Asistencia ): Promise<Asistencia> {
-        return this.asistenciaRepository.create( asistencia );
+        return this.asistenciaRepository.createAsistencia( asistencia );
     }
 }

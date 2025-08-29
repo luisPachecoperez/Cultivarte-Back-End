@@ -19,8 +19,8 @@ export class AsistenciaRepositoryImpl implements AsistenciaRepository {
         return this.asistenciaDataSource.getById(id_asistencia);
     }
     
-    create(asistencia: Asistencia): Promise<Asistencia> {
-        return this.asistenciaDataSource.create(asistencia);
+    createAsistencia(asistencia: Asistencia): Promise<Asistencia> {
+        return this.asistenciaDataSource.createAsistencia(asistencia);
     }
     
     updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap> {

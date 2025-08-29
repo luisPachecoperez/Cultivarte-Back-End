@@ -7,7 +7,7 @@ import { Asistencia,
 export interface AsistenciaDataSource {
     getAll(): Promise<Asistencia[]>;
     getById(id: string): Promise<Asistencia | null>;
-    create(asistencia: Asistencia): Promise<Asistencia>;
+    createAsistencia(asistencia: Asistencia): Promise<Asistencia>;
     updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap>;
     updateById(id: string, asistencia: Asistencia): Promise<Asistencia | null>;
     deleteById(id: string): Promise<boolean>;

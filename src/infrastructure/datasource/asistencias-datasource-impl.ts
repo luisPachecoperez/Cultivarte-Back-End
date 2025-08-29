@@ -18,7 +18,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         return result.rows[0] || null;
     }       
     
-    async create(asistencia: Asistencia): Promise<Asistencia> {
+    async createAsistencia(asistencia: Asistencia): Promise<Asistencia> {
         const result = await this.pool.query( asistenciasQueries.insertAsistencia, [
                                              asistencia.id_asistencia, 
                                              asistencia.id_actividad, 
@@ -33,6 +33,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
 
     async updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap> {
 
+        console.log(asistenciaSesiones);
         if (asistenciaSesiones.nuevos === null || asistenciaSesiones.nuevos.length === 0) {
 
             await this.pool.query(asistenciasQueries.updateSesiones, [
@@ -51,9 +52,12 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
             
             for(let i = 0; i < asistenciaSesiones.nuevos.length; i++){
                 await this.pool.query(asistenciasQueries.updateAsistencia, [
+                    asistenciaSesiones.id_asistencia,
                     asistenciaSesiones.id_actividad,
                     asistenciaSesiones.id_sesion,
-                    asistenciaSesiones.nuevos[i].id_persona
+                    asistenciaSesiones.nuevos[i].id_persona,
+                    asistenciaSesiones.id_modificado_por,
+                    asistenciaSesiones.fecha_modificacion
                 ]);
             }
             return {

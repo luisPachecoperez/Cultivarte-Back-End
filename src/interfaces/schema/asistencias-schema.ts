@@ -22,8 +22,17 @@ export const asistenciasTypeDefs = gql`
 
     input UpdateAsistenciaInput {
         id_asistencia: ID!
+        id_actividad: ID!
+        id_sesion: ID!
         id_persona: ID
-        id_modificado_por: ID
+        imagen: String
+        numero_asistentes: Int
+        descripcion: String
+        nuevos: [Nuevo]
+    }
+    
+    input Nuevo {
+        id_persona: ID!
     }
         
     type PreAsistencia {
@@ -62,7 +71,7 @@ export const asistenciasTypeDefs = gql`
     type Mutation {
         createAsistencia(input: CreateAsistenciaInput!): Asistencia!
         updateAsistencia(id_asistencia: ID!, input: UpdateAsistenciaInput!): Asistencia!
-        updateAsistencias(input: UpdateAsistenciaInput!): Boolean!
+        updateAsistencias(input: UpdateAsistenciaInput!): RespuestaGrap!
         deleteAsistencia(id_asistencia: ID!): Boolean!
         
     }

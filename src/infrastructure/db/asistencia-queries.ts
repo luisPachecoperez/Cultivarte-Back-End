@@ -51,9 +51,10 @@ export const asistenciasQueries = {
                         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
                         
     updateSesiones: `UPDATE sesiones SET 
+                        id_sesion = $1,
                         id_actividad = $2, 
                         imagen = $3, 
-                        nro_asistentes = $4 
-                        descripcion = $5,
-                        WHERE id_sesion = $1 RETURNING *`,
+                        nro_asistentes = $4,
+                        descripcion = $5
+                    WHERE id_sesion = $1 RETURNING *`,
 }

@@ -72,9 +72,11 @@ export * from './use-cases/asistencias/create-asistencia';
 export * from './use-cases/asistencias/update-asistencia';
 export * from './use-cases/asistencias/delete-asistencia';
 export * from './use-cases/asistencias/get-pre-asistencia';
+export * from './use-cases/asistencias/update-asistencias';
 export * from './entities/pre-asistencia';
 export * from './entities/asistencia-sesiones';
 export * from './entities/respuesta';
+
 
 
 

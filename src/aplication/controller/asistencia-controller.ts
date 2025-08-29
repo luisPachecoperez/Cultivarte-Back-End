@@ -3,9 +3,12 @@ import { Asistencia,
          GetAsistenciasUseCase,
          CreateAsistenciaUseCase,
          UpdateAsistenciaUseCase,
-         DeleteAsistenciaUseCase, 
+         DeleteAsistenciaUseCase,
+         UpdateAsistenciasUseCase,
          PreAsistencia,
-         GetPreAsistenciaUseCase } from "../../domain";
+         GetPreAsistenciaUseCase, 
+         AsistenciaSesiones,
+         RespuestaGrap} from "../../domain";
 
 
 
@@ -16,6 +19,7 @@ export class AsistenciasController {
         private readonly createAsistenciaUseCase: CreateAsistenciaUseCase,
         private readonly updateAsistenciaUseCase: UpdateAsistenciaUseCase,
         private readonly deleteAsistenciaUseCase: DeleteAsistenciaUseCase,
+        private readonly updateAsistenciasUseCase: UpdateAsistenciasUseCase,
         private readonly getPreAsistenciaUseCase: GetPreAsistenciaUseCase,
     ) {}
 
@@ -35,6 +39,10 @@ export class AsistenciasController {
         return this.updateAsistenciaUseCase.execute( id_asistencia, asistencia );
     }
 
+    async updateAsistencias( asistenciaSesiones: AsistenciaSesiones ): Promise<RespuestaGrap> {
+        return this.updateAsistenciasUseCase.execute( asistenciaSesiones );
+    }
+    
     async deleteAsistencia( id_asistencia: string ): Promise<boolean> {
         return this.deleteAsistenciaUseCase.execute( id_asistencia );
     }
