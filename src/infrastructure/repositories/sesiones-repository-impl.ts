@@ -1,7 +1,8 @@
 import { SesionRepository, 
          SesionesDataSource, 
          Sesion, 
-         EditarSesiones} from "../../domain";
+         EditarSesiones,
+         RespuestaGrap } from "../../domain";
 
 export class SesionesRepositoryImpl implements SesionRepository {
     
@@ -21,7 +22,7 @@ export class SesionesRepositoryImpl implements SesionRepository {
         return this.sesionesDataSource.createSesion(sesion);
     }
 
-    async updateById(id_sesion: string, sesion: Sesion): Promise<Sesion | null> {
+    async updateById(id_sesion: string, sesion: Sesion): Promise<RespuestaGrap> {
         return this.sesionesDataSource.updateById(id_sesion, sesion);
     }
 
@@ -29,7 +30,7 @@ export class SesionesRepositoryImpl implements SesionRepository {
         return this.sesionesDataSource.deleteById(id_sesion);
     }
 
-    async updateSesiones(editarSesiones: EditarSesiones): Promise<boolean> {
+    async updateSesiones(editarSesiones: EditarSesiones): Promise<RespuestaGrap> {
         return this.sesionesDataSource.updateSesiones(editarSesiones);
     }
 }

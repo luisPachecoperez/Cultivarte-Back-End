@@ -41,6 +41,7 @@ export * from './use-cases/Actividad/delete-actividad';
 export * from './entities/actividad';
 export * from './entities/pre-edit-actividad';
 export * from './use-cases/Actividad/create-actividad';
+export * from './use-cases/Actividad/pre-edit-actividad';
 
 /**Exports Calendario Fecha */
 export * from './entities/calendario-fecha';

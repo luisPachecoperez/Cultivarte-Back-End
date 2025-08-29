@@ -1,4 +1,6 @@
-import { Actividad,ActividadRepository,ParametroDetalleRepository } from "../..";
+import { Actividad,
+         ActividadRepository,
+         ParametroDetalleRepository } from "../../";
 
 export interface CreateActividadAndSesionesUseCase {
     execute( actividad: Actividad ): Promise<Actividad>;

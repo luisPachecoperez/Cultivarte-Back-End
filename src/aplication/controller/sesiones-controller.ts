@@ -1,4 +1,5 @@
-import { Sesion,
+import { RespuestaGrap,
+         Sesion,
          GetSesionUseCase,
          GetSesionesUseCase,
          CreateSesionUseCase,
@@ -30,7 +31,7 @@ export class SesionesController {
         return this.createSesionUseCase.execute( sesion );
     }
 
-    async updateSesion( id_sesion: string, sesion: Sesion ): Promise<Sesion | null> {
+    async updateSesion( id_sesion: string, sesion: Sesion ): Promise<RespuestaGrap> {
         return this.updateSesionUseCase.execute( id_sesion, sesion );
     }
 
@@ -38,7 +39,7 @@ export class SesionesController {
         return this.deleteSesionUseCase.execute( id_sesion );
     }
 
-    async updateSesiones( data: EditarSesiones ): Promise<boolean> {
+    async updateSesiones( data: EditarSesiones ): Promise<RespuestaGrap> {
         return this.updateSesionesUseCase.execute(data);
     }
 }

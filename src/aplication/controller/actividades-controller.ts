@@ -1,17 +1,23 @@
 import { Actividad, 
          PreCreateActividad, 
          PreCreateActividadUseCase,
+         PreEditActividad,
+         PreEditActividadUseCase,
          CreateActividadAndSesionesUseCase,
          GetActividadesUseCase,
          GetActividadUseCase, 
          UpdateActividadUseCase,
-         DeleteActividadUseCase,CreateActividadUseCase } from "../../domain";
+         DeleteActividadUseCase,
+         CreateActividadUseCase,
+         RespuestaGrap } from "../../domain";
+
 
 
 export class ActividadesController {
     
     constructor(
         private readonly preCreateActividadUseCase: PreCreateActividadUseCase,
+        private readonly preEditActividadUseCase: PreEditActividadUseCase,
         private readonly createActividadAndSesionesUseCase: CreateActividadAndSesionesUseCase,
         private readonly createActividadUseCase: CreateActividadUseCase,
         private readonly getActividadesUseCase: GetActividadesUseCase,
@@ -24,11 +30,15 @@ export class ActividadesController {
         return this.preCreateActividadUseCase.execute( id_usuario );
     }
     
+    async preEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
+        return this.preEditActividadUseCase.execute( id_actividad, id_usuario );
+    }
+
     async createActividadAndSesiones( actividad: Actividad ): Promise<Actividad> {
         return this.createActividadAndSesionesUseCase.execute( actividad );
     }
 
-    async createActividad( actividad: Actividad ): Promise<Actividad> {
+    async createActividad( actividad: Actividad ): Promise<RespuestaGrap> {
         return this.createActividadUseCase.execute( actividad );
     }
 

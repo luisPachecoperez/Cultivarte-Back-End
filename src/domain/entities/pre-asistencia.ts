@@ -1,5 +1,5 @@
 export interface PreAsistencia {
-  id_actividad:             string;
+  id_actividad:          string;
   id_sesion:             string;
   id_sede:               string;
   numero_asistentes:     number;
@@ -12,7 +12,7 @@ export interface PreAsistencia {
   
 export interface Sede {
   id_sede:               string;
-  nombre_sede:           string;
+  nombre:           string;
 }
 
 export interface Beneficiario {

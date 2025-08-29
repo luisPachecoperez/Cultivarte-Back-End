@@ -1,4 +1,4 @@
-import { Item, PreCreateActividad, ActividadDataSource } from "../../domain";
+import { Item, PreCreateActividad, ActividadDataSource, RespuestaGrap, Sesion } from "../../domain";
 import { SedeItem, FrecuenciaItem, NombresActividad, TipoActividadItem, AliadoItem, ResponsableItem } from "../../domain/entities/pre-create-actividad";
 import { pgPool } from "../db/pg-pool";
 import { Actividad } from "../../domain/entities/actividad";
@@ -10,7 +10,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     private pool = pgPool;
 
-    async getPreCreateActividadData( id_usuario: string ): Promise<PreCreateActividad> {
+    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad> {
       try {
         // Ejecutar consultas independientes en paralelo
         const [
@@ -114,7 +114,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             const actividadId = actividad.id_actividad || randomUUID();
             // 1. Insertar la actividad
             const result = await client.query(actividadQueries.insertActividad, [
-                actividad.id_actividad, 
+                actividadId, 
                 actividad.id_programa, 
                 actividad.id_tipo_actividad, 
                 actividad.id_responsable, 
@@ -175,31 +175,37 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         }
     }
     
-    async createActividad(actividad: Actividad): Promise<Actividad> {
-        const result = await this.pool.query( actividadQueries.insertActividad, [
-            actividad.id_actividad, 
-            actividad.id_programa, 
-            actividad.id_tipo_actividad, 
-            actividad.id_responsable, 
-            actividad.id_aliado, 
-            actividad.id_sede, 
-            actividad.id_frecuencia, 
-            actividad.institucional, 
-            actividad.nombre_actividad, 
-            actividad.descripcion, 
-            actividad.fecha_actividad, 
-            actividad.hora_inicio,
-            actividad.hora_fin,
-            actividad.plazo_asistencia, 
-            actividad.estado, 
-            actividad.id_creado_por, 
-            actividad.fecha_creacion, 
-            actividad.id_modificado_por, 
-            actividad.fecha_modificacion
-        ]);
-        return result.rows[0];
+    async createActividad(actividad: Actividad): Promise<RespuestaGrap> {
+        console.log(actividad);
+        try {
+            const actividadId = actividad.id_actividad || randomUUID();
+            await this.pool.query( actividadQueries.insertActividad, [
+                actividadId, 
+                actividad.id_programa, 
+                actividad.id_tipo_actividad, 
+                actividad.id_responsable, 
+                actividad.id_aliado, 
+                actividad.id_sede, 
+                actividad.id_frecuencia, 
+                actividad.institucional, 
+                actividad.nombre_actividad, 
+                actividad.descripcion, 
+                actividad.fecha_actividad, 
+                actividad.hora_inicio,
+                actividad.hora_fin,
+                actividad.plazo_asistencia, 
+                actividad.estado, 
+                actividad.id_creado_por, 
+                actividad.fecha_creacion, 
+                actividad.id_modificado_por, 
+                actividad.fecha_modificacion
+            ]);
+       
+            return { exitoso: 'S', mensaje: 'Actividad creada exitosamente' };
+        } catch (error) {
+            return { exitoso: 'N', mensaje: 'Error al crear actividad: ' + error };
+        }
     }
-    
     async updateById(id_actividad: string, actividad: Actividad): Promise<Actividad> {
         const result = await this.pool.query( actividadQueries.updateActividad, [   
                                                 id_actividad,
@@ -300,19 +306,106 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         return sesiones;
     }
     
-    async getPreEditActividadData( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
-        const preEditEventData: PreEditActividad = {
-            id_programa: '',
-            sedes: [],
-            tiposDeActividad: [],
-            aliados: [],
-            responsables: [],
-            nombresDeActividad: [],
-            frecuencias: [],
-            actividad: { id_actividad: '', id_programa: '', id_tipo_actividad: '', id_responsable: '', id_aliado: '', id_sede: '', id_frecuencia: '', institucional: 'S', nombre_actividad: '', descripcion: '', fecha_actividad: new Date(), hora_inicio: '', hora_fin: '', plazo_asistencia: new Date(), estado: 'A', id_creado_por: '', fecha_creacion: new Date(), id_modificado_por: '', fecha_modificacion: new Date() } // Assuming we want the first activity if there are multiple
-        };
-        
-        return preEditEventData;
+    async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
+        console.log(id_actividad);
+        try {
+            // Ejecutar consultas independientes en paralelo
+            const [
+              programaRes,
+              sedesRes,
+              tiposDeActividadRes,
+              aliadosRes,
+              responsablesRes,
+              nombreDeActividadRes,
+              frecuenciasRes,
+              actividadRes,
+              sesionesRes
+            ] = await Promise.all([
+              this.pool.query(actividadQueries.programaRes, [id_usuario]),
+              this.pool.query(actividadQueries.sedesResult, [id_usuario]),
+              this.pool.query(actividadQueries.tiposDeActividadResult),
+              this.pool.query(actividadQueries.aliadosResult),
+              this.pool.query(actividadQueries.responsablesResult),
+              this.pool.query(actividadQueries.nombreDeActividadResult),
+              this.pool.query(actividadQueries.frecuenciasResult),
+              this.pool.query(actividadQueries.actividadResult, [id_actividad]),
+              this.pool.query(actividadQueries.sesionesResult, [id_actividad])
+            ]);
+            console.log(programaRes.rows);
+            console.log(sedesRes.rows);
+            console.log(tiposDeActividadRes.rows);
+            console.log(aliadosRes.rows);
+            console.log(responsablesRes.rows);
+            console.log(nombreDeActividadRes.rows);
+            console.log(frecuenciasRes.rows);
+            console.log(actividadRes.rows);
+            // id_programa seguro
+            const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
+    
+            // Sedes con fallback a todas las sedes si no tiene asignadas
+            let sedes: SedeItem[] = sedesRes.rows ?? [];
+            if (sedes.length === 0) {
+              const allSedesResult = await this.pool.query(actividadQueries.allSedesResult);
+              sedes = allSedesResult.rows ?? [];
+            }
+    
+            const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
+            const aliados: AliadoItem[] = aliadosRes.rows ?? [];
+            const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
+            const actividad: Actividad = actividadRes.rows[0] ?? null;
+            const sesiones: Sesion[] = sesionesRes.rows ?? [];
+
+            // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
+            const nombreEventosRows = nombreDeActividadRes.rows ?? [];
+            const nombresDeActividad: NombresActividad[] = [];
+    
+            for (const row of nombreEventosRows) {
+                // Asegurar un id válido; si no existe, saltar la fila
+                const id_tipo_actividad = row?.id_tipo_actividad;
+                const nombreBase = row?.nombre;
+    
+                if (!id_tipo_actividad || !nombreBase) continue;
+    
+                // Si hay valores con nombres separados por comas, expandirlos
+                let valores: string[] = [];
+                
+                try {
+                    if (row?.valores) {
+                        
+                        console.log(row.valores);
+                        const valores = row.valores.split(',').map((v: string) => v.trim());
+                        for (const nombre of valores) {
+                            if (!nombre) continue;
+                            nombresDeActividad.push({ id_tipo_actividad, nombre });
+                        }
+                      
+                    }
+                } catch { /* ignore malformed JSON */
+                    nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
+                }
+    
+    
+            }
+    
+            const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
+    
+            const preEditEventData: PreEditActividad = {
+              id_programa,
+              sedes,
+              tiposDeActividad,
+              aliados,
+              responsables,
+              nombresDeActividad,
+              frecuencias,
+              actividad,
+              sesiones
+            };
+    
+            return preEditEventData;
+          } catch (error) {
+            // Dejar que la capa superior maneje el error con su propio logger
+            throw error;
+          }
     }
     
 

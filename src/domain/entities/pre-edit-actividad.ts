@@ -1,15 +1,21 @@
 import { Actividad } from "./actividad";
-import { Item, NombresActividad, ResponsableItem } from "./pre-create-actividad";
-
+import { AliadoItem, 
+        FrecuenciaItem, 
+        NombresActividad, 
+        ResponsableItem, 
+        SedeItem, 
+        TipoActividadItem } from "./pre-create-actividad";
+import { Sesion } from "./sesion";
 
 
 export interface PreEditActividad {
-    id_programa: string;
-    sedes: Item[];
-    tiposDeActividad: Item[];
-    aliados: Item[];
-    responsables: ResponsableItem[];
+    id_programa:        string;
+    sedes:              SedeItem[];
+    tiposDeActividad:   TipoActividadItem[];
+    aliados:            AliadoItem[];
+    responsables:       ResponsableItem[];
     nombresDeActividad: NombresActividad[];
-    frecuencias: Item[];
-    actividad: Actividad;
+    frecuencias:        FrecuenciaItem[];
+    actividad:          Actividad;
+    sesiones:           Sesion[];
 }

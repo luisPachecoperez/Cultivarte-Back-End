@@ -1,4 +1,7 @@
-import { Asistencia, AsistenciaSesiones, PreAsistencia, RespuestaGrap } from "../../domain";
+import { Asistencia,
+         AsistenciaSesiones,
+         PreAsistencia,
+         RespuestaGrap } from "../";
 
 
 export interface AsistenciaDataSource {

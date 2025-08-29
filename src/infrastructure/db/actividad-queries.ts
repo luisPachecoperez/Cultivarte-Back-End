@@ -37,16 +37,15 @@ export const actividadQueries = {
                             ON pd.id_parametro_general = pg.id_parametro_general
                             WHERE pg.nombre_parametro = 'RESPONSABLE_CULTIVARTE';`,
 
-    nombreDeActividadResult: `
-                    SELECT 
-        pd.id_parametro_detalle as id_tipo_actividad,
-        pd.nombre,
-        pd.valores
-    FROM parametros_detalle pd 
-    INNER JOIN parametros_generales pg 
-    ON pd.id_parametro_general = pg.id_parametro_general
-    WHERE pg.nombre_parametro = 'TIPO_ACTIVIDAD_CULTIVARTE'
-    and pd.nombre in ('Contenido del ciclo','Actividad General');`,
+    nombreDeActividadResult: `SELECT 
+                                pd.id_parametro_detalle as id_tipo_actividad,
+                                pd.nombre,
+                                pd.valores
+                            FROM parametros_detalle pd 
+                            INNER JOIN parametros_generales pg 
+                            ON pd.id_parametro_general = pg.id_parametro_general
+                            WHERE pg.nombre_parametro = 'TIPO_ACTIVIDAD_CULTIVARTE'
+                            and pd.nombre in ('Contenido del ciclo','Actividad General');`,
     
     frecuenciasResult: `SELECT pd.id_parametro_detalle AS id_frecuencia,
                          pd.nombre
@@ -59,7 +58,10 @@ export const actividadQueries = {
 
     actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 
-    insertActividad: `INSERT INTO actividades (id_actividad, 
+    sesionesResult: `SELECT * FROM sesiones WHERE id_actividad = $1;`,
+
+    insertActividad: `INSERT INTO actividades (
+                            id_actividad, 
                             id_programa, 
                             id_tipo_actividad, 
                             id_responsable, 
@@ -77,7 +79,7 @@ export const actividadQueries = {
                             id_creado_por, 
                             fecha_creacion, 
                             id_modificado_por, 
-                            fecha_modificacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+                            fecha_modificacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING *`,
 
     updateActividad: `UPDATE actividades SET id_programa = $2, 
                              id_tipo_actividad = $3, 
@@ -104,6 +106,6 @@ export const actividadQueries = {
                             id_sesion, id_actividad, fecha_actividad, 
                             hora_inicio, hora_fin, id_creado_por, 
                             fecha_creacion, id_modificado_por, fecha_modificacion
-                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`
     
 }
