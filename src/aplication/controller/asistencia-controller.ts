@@ -39,7 +39,7 @@ export class AsistenciasController {
         return this.deleteAsistenciaUseCase.execute( id_asistencia );
     }
 
-    async getPreAsistencia( id_sesion: string, id_evento: string ): Promise<PreAsistencia> {
-        return this.getPreAsistenciaUseCase.execute( id_sesion, id_evento );
+    async getPreAsistencia( id_sesion: string ): Promise<PreAsistencia> {
+        return this.getPreAsistenciaUseCase.execute( id_sesion );
     }
 }

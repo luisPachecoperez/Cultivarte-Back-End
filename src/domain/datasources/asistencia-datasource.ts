@@ -11,5 +11,5 @@ export interface AsistenciaDataSource {
     updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap>;
     updateById(id: string, asistencia: Asistencia): Promise<Asistencia | null>;
     deleteById(id: string): Promise<boolean>;
-    getPreAsistencia(id_sesion: string, id_evento: string): Promise<PreAsistencia>;
+    getPreAsistencia(id_sesion: string): Promise<PreAsistencia>;
 }
