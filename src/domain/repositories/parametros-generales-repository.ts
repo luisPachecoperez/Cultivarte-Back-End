@@ -1,9 +1,9 @@
-import { ParametrosGenerales } from "../";
+import { ParametrosGenerales,RespuestaGrap } from "../";
 
 export interface ParametrosGeneralesRepository {
-    getAll(): Promise<ParametrosGenerales[]>;
-    getById( id_parametro_general: string ): Promise<ParametrosGenerales | null>;
-    create( parametrosGenerales: ParametrosGenerales ): Promise<ParametrosGenerales>;
-    updateById( id_parametro_general: string, parametrosGenerales: ParametrosGenerales ): Promise<ParametrosGenerales>;
-    deleteById( id_parametro_general: string ): Promise<boolean>;
+    getAll(): Promise<ParametrosGenerales[] | RespuestaGrap>;
+    getById( id_parametro_general: string ): Promise<ParametrosGenerales | RespuestaGrap>;
+    create( parametrosGenerales: ParametrosGenerales ): Promise<RespuestaGrap>;
+    updateById( id_parametro_general: string, parametrosGenerales: ParametrosGenerales ): Promise<RespuestaGrap>;
+    deleteById( id_parametro_general: string ): Promise<RespuestaGrap>;
 }

@@ -3,7 +3,8 @@ import { ParametrosGenerales,
          DeleteParametroGeneralUseCase,
          GetParametroGeneralUseCase,
          GetParametrosGeneralesUseCase,
-         UpdateParametroGeneralUseCase } from "../../domain";
+         UpdateParametroGeneralUseCase, 
+         RespuestaGrap} from "../../domain";
 
 export class ParametrosGeneralesController {
     
@@ -15,23 +16,23 @@ export class ParametrosGeneralesController {
         private deleteParametroGeneralUseCase: DeleteParametroGeneralUseCase
     ) {}
 
-    async createParametroGeneral( parametroGeneral: ParametrosGenerales ): Promise<ParametrosGenerales> {
+    async createParametroGeneral( parametroGeneral: ParametrosGenerales ): Promise<ParametrosGenerales | RespuestaGrap> {
         return this.createParametroGeneralUseCase.execute( parametroGeneral );
     }
 
-    async getParametrosGenerales(): Promise<ParametrosGenerales[] | null> {
+    async getParametrosGenerales(): Promise<ParametrosGenerales[] | RespuestaGrap> {
         return this.getParametrosGeneralesUseCase.execute();
     }
 
-    async getParametroGeneral( id_parametro_general: string ): Promise<ParametrosGenerales | null> {
+    async getParametroGeneral( id_parametro_general: string ): Promise<ParametrosGenerales | RespuestaGrap> {
         return this.getParametroGeneralUseCase.execute( id_parametro_general );
     }
 
-    async updateParametroGeneral( id_parametro_general: string, parametroGeneral: ParametrosGenerales ): Promise<ParametrosGenerales> {
+    async updateParametroGeneral( id_parametro_general: string, parametroGeneral: ParametrosGenerales ): Promise<RespuestaGrap> {
         return this.updateParametroGeneralUseCase.execute( id_parametro_general, parametroGeneral );
     }
 
-    async deleteParametroGeneral( id_parametro_general: string ): Promise<boolean> {
+    async deleteParametroGeneral( id_parametro_general: string ): Promise<RespuestaGrap> {
         return this.deleteParametroGeneralUseCase.execute( id_parametro_general );
     }
 }

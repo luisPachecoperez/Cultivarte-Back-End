@@ -1,7 +1,9 @@
-import { ParametroDetalle, ParametroDetalleRepository } from "../../";
+import { ParametroDetalle,
+         ParametroDetalleRepository,
+         RespuestaGrap } from "../../";
 
 export interface GetParametroDetalleUseCase {
-    execute( id_parametro_detalle: string ): Promise<ParametroDetalle | null>;
+    execute( id_parametro_detalle: string ): Promise<ParametroDetalle | RespuestaGrap>;
 }
     
 export class GetParametroDetalleUseCaseImpl implements GetParametroDetalleUseCase {
@@ -10,7 +12,7 @@ export class GetParametroDetalleUseCaseImpl implements GetParametroDetalleUseCas
         private readonly parametroDetalleRepository: ParametroDetalleRepository
     ) {}
 
-    execute( id_parametro_detalle: string ): Promise<ParametroDetalle | null> {
+    execute( id_parametro_detalle: string ): Promise<ParametroDetalle | RespuestaGrap> {
         return this.parametroDetalleRepository.getById( id_parametro_detalle );
     }
 }

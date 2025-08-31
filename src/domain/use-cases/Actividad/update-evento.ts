@@ -1,8 +1,8 @@
-import { Actividad, ActividadRepository} from "../../";
+import { Actividad, ActividadRepository, RespuestaGrap } from "../../";
 
 
 export interface UpdateActividadUseCase {
-    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | null>;
+    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | RespuestaGrap>;
 }
 
 export class UpdateActividadUseCaseImpl implements UpdateActividadUseCase {
@@ -11,7 +11,7 @@ export class UpdateActividadUseCaseImpl implements UpdateActividadUseCase {
         private actividadRepository: ActividadRepository
     ) {}
 
-    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | null> {
+    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
         return this.actividadRepository.updateById( id_actividad, actividad );
     }
 }   

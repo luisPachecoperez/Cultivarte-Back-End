@@ -2,9 +2,10 @@ import { Sesion,
          GetSesionUseCaseImpl,
          CreateSesionUseCaseImpl,
          UpdateSesionUseCaseImpl,
-         DeleteSesionUseCaseImpl,
-         UpdateSesiones,  
-         EditarSesiones} from "../../domain";
+         DeleteSesionUseCaseImpl,  
+         EditarSesiones,
+         GetSesionesSedesUseCaseImpl,
+         UpdateSesionesUseCaseImpl} from "../../domain";
 import { SesionesDataSourceImpl } from "../../infrastructure/datasource/sesiones-datasource-impl";
 import { SesionesRepositoryImpl } from "../../infrastructure/repositories/sesiones-repository-impl";
 import { GetSesionesUseCaseImpl } from "../../domain/use-cases/sesiones/get-sesiones";
@@ -19,14 +20,22 @@ const useCaseCreate = new CreateSesionUseCaseImpl( repository );
 const useCaseUpdate = new UpdateSesionUseCaseImpl( repository );
 const useCaseDelete = new DeleteSesionUseCaseImpl ( repository );
 const useCaseGetAll = new GetSesionesUseCaseImpl( repository );
-const useCaseUpdateSesiones = new UpdateSesiones( repository );
-const controller = new SesionesController( useCaseGetAll, useCaseGetById, useCaseCreate, useCaseUpdate, useCaseDelete, useCaseUpdateSesiones );
+const useCaseGetSesionoesSede = new GetSesionesSedesUseCaseImpl( repository );
+const useCaseUpdateSesiones = new UpdateSesionesUseCaseImpl( repository );
+const controller = new SesionesController( useCaseGetAll,
+                                           useCaseGetById,
+                                           useCaseGetSesionoesSede,
+                                           useCaseCreate,
+                                           useCaseUpdate,
+                                           useCaseDelete,
+                                           useCaseUpdateSesiones );
 
 
 export const sesionesResolvers = {
     Query: {
         getSesiones: () => controller.getSesiones(),
-        getSesion: (_: any, args: { id_sesion:string }) => controller.getSesion( args.id_sesion )
+        getSesion: (_: any, args: { id_sesion:string }) => controller.getSesion( args.id_sesion ),
+        getSesionesSedes: (_: any, args: { id_usuario:string, fecha_inicio:string, fecha_fin:string }) => controller.getSesionesSedes( args.id_usuario, args.fecha_inicio, args.fecha_fin )
     },
     Mutation: {
         createSesion: (_: any, args: { input:Sesion }) => controller.createSesion( args.input ),

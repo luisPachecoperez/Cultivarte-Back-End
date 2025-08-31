@@ -2,7 +2,11 @@ import { SesionRepository,
          EditarSesiones, 
          RespuestaGrap } from "../../";
 
-export class UpdateSesiones {
+export interface UpdateSesionesUseCase {
+    execute( editarSesiones: EditarSesiones ): Promise<RespuestaGrap>;
+}
+
+export class UpdateSesionesUseCaseImpl implements UpdateSesionesUseCase {
 
     constructor(
         private readonly sesionRepository: SesionRepository,

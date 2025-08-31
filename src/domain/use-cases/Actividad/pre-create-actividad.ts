@@ -1,16 +1,16 @@
-import { PreCreateActividad, ActividadRepository } from '../../';
+import { PreCreateActividad, ActividadRepository, RespuestaGrap } from '../../';
 
-export interface PreCreateActividadUseCase {
-    execute( id_usuario: string ): Promise<PreCreateActividad>;
+export interface GetPreCreateActividadUseCase {
+    execute( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap>;
 }
 
-export class PreCreateActividadUseCaseImpl implements PreCreateActividadUseCase {
+export class GetPreCreateActividadUseCaseImpl implements GetPreCreateActividadUseCase {
     
     constructor( 
         private actividadRepository: ActividadRepository
     ) {}
 
-    execute( id_usuario: string ): Promise<PreCreateActividad> {
+    execute( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap> {
         return this.actividadRepository.getPreCreateActividad( id_usuario );
     }
 }

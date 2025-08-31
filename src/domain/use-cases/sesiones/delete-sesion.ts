@@ -1,7 +1,7 @@
-import { SesionRepository } from "../../";
+import { RespuestaGrap, SesionRepository } from "../../";
 
 export interface DeleteSesionUseCase {
-    execute( id_sesion: string ): Promise<boolean>;
+    execute( id_sesion: string ): Promise<RespuestaGrap>;
 }
 
 export class DeleteSesionUseCaseImpl implements DeleteSesionUseCase {
@@ -10,7 +10,7 @@ export class DeleteSesionUseCaseImpl implements DeleteSesionUseCase {
         private sesionRepository: SesionRepository
     ) {}
 
-    execute( id_sesion: string ): Promise<boolean> {
+    execute( id_sesion: string ): Promise<RespuestaGrap> {
         return this.sesionRepository.deleteById( id_sesion );
     }
 }   

@@ -1,7 +1,7 @@
-import { Sesion, SesionRepository } from "../../";
+import { Sesion, SesionRepository, RespuestaGrap } from "../../";
 
 export interface GetSesionUseCase {
-    execute( id_sesion: string ): Promise<Sesion | null>;
+    execute( id_sesion: string ): Promise<Sesion | RespuestaGrap>;
 }
 
 export class GetSesionUseCaseImpl implements GetSesionUseCase {
@@ -10,7 +10,7 @@ export class GetSesionUseCaseImpl implements GetSesionUseCase {
         private sesionRepository: SesionRepository
     ) {}
 
-    execute( id_sesion: string ): Promise<Sesion | null> {
+    execute( id_sesion: string ): Promise<Sesion | RespuestaGrap> {
         return this.sesionRepository.getById( id_sesion );
     }
 }

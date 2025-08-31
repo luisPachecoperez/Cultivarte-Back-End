@@ -57,4 +57,28 @@ export const asistenciasQueries = {
                         nro_asistentes = $4,
                         descripcion = $5
                     WHERE id_sesion = $1 RETURNING *`,
+    
+    actividadSedesResult: `SELECT asi.*
+                            FROM asistencias asi
+                            JOIN sesiones s
+                            ON asi.id_sesion = s.id_sesion
+                            JOIN actividades a
+                            ON s.id_actividad = a.id_actividad
+                            WHERE s.fecha_actividad BETWEEN :fecha_inicio AND :fecha_fin
+                            AND (
+                                -- Caso 1: usuario tiene sedes → solo asistencias de esas sedes
+                                EXISTS (
+                                    SELECT 1
+                                    FROM personas_sedes ps
+                                    WHERE ps.id_persona = :idPersona
+                                    AND ps.id_sede = a.id_sede
+                                )
+                                OR
+                                -- Caso 2: usuario no tiene sedes → traer todas las asistencias
+                                NOT EXISTS (
+                                    SELECT 1
+                                    FROM personas_sedes ps
+                                    WHERE ps.id_persona = :idPersona
+                                )
+                            );`,
 }

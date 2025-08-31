@@ -1,6 +1,7 @@
 import gql from "graphql-tag";
 
 export const sesionesTypeDefs = gql`
+
     type Sesion {
         id_sesion: ID!
         id_actividad: ID!
@@ -62,6 +63,7 @@ export const sesionesTypeDefs = gql`
     type Query {
         getSesion(id_sesion: ID!): Sesion
         getSesiones: [Sesion!]!
+        getSesionesSedes(id_usuario: ID!, fecha_inicio: String!, fecha_fin: String!): [Sesion!]!
     }
 
     type Mutation {
