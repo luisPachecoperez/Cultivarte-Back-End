@@ -1,9 +1,9 @@
-import { ParametroDetalle } from "../";
+import { ParametroDetalle, RespuestaGrap } from "../";
 
 export interface ParametroDetalleRepository {
-    getAll(): Promise<ParametroDetalle[]>
-    getById( id_parametro_detalle: string ): Promise<ParametroDetalle | null>
-    create( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle>
-    updateById( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle>
-    deleteById( id_parametro_detalle: string ): Promise<boolean>
+    getAll(): Promise<ParametroDetalle[] | RespuestaGrap>
+    getById( id_parametro_detalle: string ): Promise<ParametroDetalle | RespuestaGrap>
+    create( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap>
+    updateById( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap>
+    deleteById( id_parametro_detalle: string ): Promise<RespuestaGrap>
 }

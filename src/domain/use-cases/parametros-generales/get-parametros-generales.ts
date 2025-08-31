@@ -1,7 +1,9 @@
-import { ParametrosGenerales, ParametrosGeneralesRepository } from "../../";
+import { ParametrosGenerales, 
+         ParametrosGeneralesRepository, 
+         RespuestaGrap } from "../../";
 
 export interface GetParametrosGeneralesUseCase {
-    execute(): Promise<ParametrosGenerales[] | null>;
+    execute(): Promise<ParametrosGenerales[] | RespuestaGrap>;
 }
     
 export class GetParametrosGeneralesUseCaseImpl implements GetParametrosGeneralesUseCase {
@@ -10,7 +12,7 @@ export class GetParametrosGeneralesUseCaseImpl implements GetParametrosGenerales
         private readonly parametroGeneralRepository: ParametrosGeneralesRepository
     ) {}
 
-    execute(): Promise<ParametrosGenerales[] | null> {
+    execute(): Promise<ParametrosGenerales[] | RespuestaGrap> {
         return this.parametroGeneralRepository.getAll();
     }
 }

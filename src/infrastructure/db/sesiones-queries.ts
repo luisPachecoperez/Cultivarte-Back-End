@@ -61,4 +61,26 @@ export const sesionesQueries = {
                 fecha_modificacion = $11
                 WHERE id_sesion = $1 RETURNING *`,
 
+    getSessionesSede: `SELECT s.*
+                        FROM sesiones s
+                        JOIN actividades a
+                        ON s.id_actividad = a.id_actividad
+                        WHERE s.fecha_actividad BETWEEN $2 AND $3
+                        AND (
+                            -- Caso 1: usuario tiene sedes → sesiones de esas sedes
+                            EXISTS (
+                                SELECT 1
+                                FROM personas_sedes ps
+                                WHERE ps.id_persona = $1
+                                AND ps.id_sede = a.id_sede
+                            )
+                            OR
+                            -- Caso 2: usuario no tiene sedes → todas las sedes
+                            NOT EXISTS (
+                                SELECT 1
+                                FROM personas_sedes ps
+                                WHERE ps.id_persona = $1
+                            )
+                        );`,
+
 };

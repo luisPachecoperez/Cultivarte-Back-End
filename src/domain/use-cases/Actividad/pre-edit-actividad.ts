@@ -1,17 +1,17 @@
-import { PreEditActividad, ActividadRepository } from "../../";
+import { PreEditActividad, ActividadRepository, RespuestaGrap } from "../../";
 
 
-export interface PreEditActividadUseCase {
-    execute( id_actividad: string, id_usuario: string ): Promise<PreEditActividad>;
+export interface GetPreEditActividadUseCase {
+    execute( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap>;
 }
 
-export class PreEditActividadUseCaseImpl implements PreEditActividadUseCase {
+export class GetPreEditActividadUseCaseImpl implements GetPreEditActividadUseCase {
     
     constructor(
         private actividadRepository: ActividadRepository
     ) {}
 
-    execute( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
+    execute( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap> {
         return this.actividadRepository.getPreEditActividad( id_actividad, id_usuario );
     }
 }

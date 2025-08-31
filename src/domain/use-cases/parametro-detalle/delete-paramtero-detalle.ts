@@ -1,7 +1,7 @@
-import { ParametroDetalleRepository } from "../../";
+import { ParametroDetalleRepository, RespuestaGrap } from "../../";
 
 export interface DeleteParametroDetalleUseCase {
-    execute( id_parametro_detalle: string ): Promise<boolean>;
+    execute( id_parametro_detalle: string ): Promise<RespuestaGrap>;
 }
     
 export class DeleteParametroDetalleUseCaseImpl implements DeleteParametroDetalleUseCase {
@@ -10,7 +10,7 @@ export class DeleteParametroDetalleUseCaseImpl implements DeleteParametroDetalle
         private readonly parametroDetalleRepository: ParametroDetalleRepository
     ) {}
 
-    execute( id_parametro_detalle: string ): Promise<boolean> {
+    execute( id_parametro_detalle: string ): Promise<RespuestaGrap> {
         return this.parametroDetalleRepository.deleteById( id_parametro_detalle );
     }
 }   

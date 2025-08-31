@@ -10,7 +10,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     private pool = pgPool;
 
-    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad> {
+    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap> {
       try {
         // Ejecutar consultas independientes en paralelo
         const [
@@ -61,8 +61,6 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             
             try {
                 if (row?.valores) {
-                    
-                    console.log(row.valores);
                     const valores = row.valores.split(',').map((v: string) => v.trim());
                     for (const nombre of valores) {
                         if (!nombre) continue;
@@ -92,21 +90,148 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         return preCreateEventData;
       } catch (error) {
         // Dejar que la capa superior maneje el error con su propio logger
-        throw error;
+        return {
+            exitoso: "N",
+            mensaje: 'No se pudo obtener pre-create actividad: ' + error
+        };
       }
     }
 
-    async getAll(): Promise<Actividad[]> {
-        const result = await this.pool.query( actividadQueries.actividadesResult );
-        return result.rows;
-    }   
+    async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap> {
+        try {
+            // Ejecutar consultas independientes en paralelo
+            const [
+                programaRes,
+                sedesRes,
+                tiposDeActividadRes,
+                aliadosRes,
+                responsablesRes,
+                nombreDeActividadRes,
+                frecuenciasRes,
+                actividadRes,
+                sesionesRes
+            ] = await Promise.all([
+                this.pool.query(actividadQueries.programaRes, [id_usuario]),
+                this.pool.query(actividadQueries.sedesResult, [id_usuario]),
+                this.pool.query(actividadQueries.tiposDeActividadResult),
+                this.pool.query(actividadQueries.aliadosResult),
+                this.pool.query(actividadQueries.responsablesResult),
+                this.pool.query(actividadQueries.nombreDeActividadResult),
+                this.pool.query(actividadQueries.frecuenciasResult),
+                this.pool.query(actividadQueries.actividadResult, [id_actividad]),
+                this.pool.query(actividadQueries.sesionesResult, [id_actividad])
+            ]);
+        
+            // id_programa seguro
+            const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
 
-    async getById(id_actividad: string): Promise<Actividad | null> {
-        const result = await this.pool.query( actividadQueries.actividadResult, [id_actividad] );
-        return result.rows[0] || null;
+            // Sedes con fallback a todas las sedes si no tiene asignadas
+            let sedes: SedeItem[] = sedesRes.rows ?? [];
+            if (sedes.length === 0) {
+                const allSedesResult = await this.pool.query(actividadQueries.allSedesResult);
+                sedes = allSedesResult.rows ?? [];
+            }
+
+            const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
+            const aliados: AliadoItem[] = aliadosRes.rows ?? [];
+            const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
+            const actividad: Actividad = actividadRes.rows[0] ?? null;
+            const sesiones: Sesion[] = sesionesRes.rows ?? [];
+
+            // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
+            const nombreEventosRows = nombreDeActividadRes.rows ?? [];
+            const nombresDeActividad: NombresActividad[] = [];
+
+            for (const row of nombreEventosRows) {
+                // Asegurar un id válido; si no existe, saltar la fila
+                const id_tipo_actividad = row?.id_tipo_actividad;
+                const nombreBase = row?.nombre;
+
+                if (!id_tipo_actividad || !nombreBase) continue;
+
+                // Si hay valores con nombres separados por comas, expandirlos
+                let valores: string[] = [];
+                
+                try {
+                    if (row?.valores) {
+                        const valores = row.valores.split(',').map((v: string) => v.trim());
+                        for (const nombre of valores) {
+                            if (!nombre) continue;
+                            nombresDeActividad.push({ id_tipo_actividad, nombre });
+                        }
+                        
+                    }
+                } catch { /* ignore malformed JSON */
+                    nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
+                }
+            }
+
+            const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
+
+            const preEditEventData: PreEditActividad = {
+                id_programa,
+                sedes,
+                tiposDeActividad,
+                aliados,
+                responsables,
+                nombresDeActividad,
+                frecuencias,
+                actividad,
+                sesiones
+            };
+
+            return preEditEventData;
+        } catch (error) {
+        // Dejar que la capa superior maneje el error con su propio logger
+            return {
+                exitoso: "N",
+                mensaje: 'No se pudo obtener actividades por sedes: ' + error
+            };
+        }
     }
 
-    async createActividadAndSesiones(actividad: Actividad): Promise<Actividad> {
+    async getAll(): Promise<Actividad[] | RespuestaGrap> {
+        try {
+            const result = await this.pool.query( actividadQueries.actividadesResult );
+            return result.rows;
+        } catch (error) {
+            return {
+                exitoso: "N",
+                mensaje: 'No se pudo obtener actividades: ' + error
+            };
+        }
+    }   
+
+    async getById(id_actividad: string): Promise<Actividad | RespuestaGrap> {
+        try {
+            const result = await this.pool.query( actividadQueries.actividadResult, [id_actividad] );
+            return result.rows[0] || null;
+        } catch (error) {
+            return {
+                exitoso: "N",
+                mensaje: 'No se pudo obtener actividad: ' + error
+            };
+        }
+    }
+
+    async getActividadSedes( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Actividad[] | RespuestaGrap> {
+       try {
+
+        const result = await this.pool.query( actividadQueries.actividadSedesResult, [id_usuario, 
+                                                                                      fecha_inicio, 
+                                                                                      fecha_fin] );
+        return result.rows;
+        
+       } catch (error) {
+
+        return {
+            exitoso: "N",
+            mensaje: 'No se pudo obtener actividades por sedes: ' + error
+        };
+       }
+    }
+    
+    async createActividadAndSesiones(actividad: Actividad): Promise<Actividad | RespuestaGrap> {
         const client = await this.pool.connect();
         try {
             await client.query('BEGIN');
@@ -169,17 +294,20 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             return result.rows[0];
         } catch (error) {
             await client.query('ROLLBACK');
-            throw error;
+            return {
+                exitoso: "N",
+                mensaje: 'No se pudo crear actividad: ' + error
+            };
         } finally {
             client.release();
         }
     }
     
     async createActividad(actividad: Actividad): Promise<RespuestaGrap> {
-        console.log(actividad);
+      
         try {
             const actividadId = actividad.id_actividad || randomUUID();
-            await this.pool.query( actividadQueries.insertActividad, [
+            const result = await this.pool.query( actividadQueries.insertActividad, [
                 actividadId, 
                 actividad.id_programa, 
                 actividad.id_tipo_actividad, 
@@ -206,35 +334,45 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             return { exitoso: 'N', mensaje: 'Error al crear actividad: ' + error };
         }
     }
-    async updateById(id_actividad: string, actividad: Actividad): Promise<Actividad> {
-        const result = await this.pool.query( actividadQueries.updateActividad, [   
-                                                id_actividad,
-                                                actividad.id_programa,
-                                                actividad.id_tipo_actividad,
-                                                actividad.id_responsable,
-                                                actividad.id_aliado,
-                                                actividad.id_sede,
-                                                actividad.id_frecuencia,
-                                                actividad.institucional,
-                                                actividad.nombre_actividad,
-                                                actividad.descripcion,
-                                                actividad.fecha_actividad,
-                                                actividad.hora_inicio,
-                                                actividad.hora_fin,
-                                                actividad.plazo_asistencia,
-                                                actividad.estado,
-                                                actividad.id_creado_por,
-                                                actividad.fecha_creacion,
-                                                actividad.id_modificado_por,
-                                                actividad.fecha_modificacion ] );
-        return result.rows[0];
+
+    async updateById(id_actividad: string, actividad: Actividad): Promise<RespuestaGrap> {
+        try {
+            const result = await this.pool.query( actividadQueries.updateActividad, [   
+                                                    id_actividad,
+                                                    actividad.id_programa,
+                                                    actividad.id_tipo_actividad,
+                                                    actividad.id_responsable,
+                                                    actividad.id_aliado,
+                                                    actividad.id_sede,
+                                                    actividad.id_frecuencia,
+                                                    actividad.institucional,
+                                                    actividad.nombre_actividad,
+                                                    actividad.descripcion,
+                                                    actividad.fecha_actividad,
+                                                    actividad.hora_inicio,
+                                                    actividad.hora_fin,
+                                                    actividad.plazo_asistencia,
+                                                    actividad.estado,
+                                                    actividad.id_creado_por,
+                                                    actividad.fecha_creacion,
+                                                    actividad.id_modificado_por,
+                                                    actividad.fecha_modificacion ] );
+            return { exitoso: 'S', mensaje: 'Actividad actualizada exitosamente' };
+        } catch (error) {
+            return { exitoso: 'N', mensaje: 'Error al actualizar actividad: ' + error };
+        }
     }
 
-    async deleteById(id_actividad: string): Promise<boolean> {
-        const result = await this.pool.query( actividadQueries.deleteActividad, [id_actividad] );
-        return true;
+    async deleteById(id_actividad: string): Promise<RespuestaGrap> {
+        try {
+            const result = await this.pool.query( actividadQueries.deleteActividad, [id_actividad] );
+            return { exitoso: 'S', mensaje: 'Actividad eliminada exitosamente' };
+        } catch (error) {
+            return { exitoso: 'N', mensaje: 'Error al eliminar actividad: ' + error };
+        }
     }   
     
+    /**Metodos propios de la clase auxiliares para los de contrato */
     private generarSesiones(
         idActividad: string,
         fechaActividad: Date,
@@ -302,113 +440,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                 break; // Frecuencia no reconocida
             }   
         }
-    
+        
         return sesiones;
     }
-    
-    async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
-        console.log(id_actividad);
-        try {
-            // Ejecutar consultas independientes en paralelo
-            const [
-              programaRes,
-              sedesRes,
-              tiposDeActividadRes,
-              aliadosRes,
-              responsablesRes,
-              nombreDeActividadRes,
-              frecuenciasRes,
-              actividadRes,
-              sesionesRes
-            ] = await Promise.all([
-              this.pool.query(actividadQueries.programaRes, [id_usuario]),
-              this.pool.query(actividadQueries.sedesResult, [id_usuario]),
-              this.pool.query(actividadQueries.tiposDeActividadResult),
-              this.pool.query(actividadQueries.aliadosResult),
-              this.pool.query(actividadQueries.responsablesResult),
-              this.pool.query(actividadQueries.nombreDeActividadResult),
-              this.pool.query(actividadQueries.frecuenciasResult),
-              this.pool.query(actividadQueries.actividadResult, [id_actividad]),
-              this.pool.query(actividadQueries.sesionesResult, [id_actividad])
-            ]);
-            console.log(programaRes.rows);
-            console.log(sedesRes.rows);
-            console.log(tiposDeActividadRes.rows);
-            console.log(aliadosRes.rows);
-            console.log(responsablesRes.rows);
-            console.log(nombreDeActividadRes.rows);
-            console.log(frecuenciasRes.rows);
-            console.log(actividadRes.rows);
-            // id_programa seguro
-            const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
-    
-            // Sedes con fallback a todas las sedes si no tiene asignadas
-            let sedes: SedeItem[] = sedesRes.rows ?? [];
-            if (sedes.length === 0) {
-              const allSedesResult = await this.pool.query(actividadQueries.allSedesResult);
-              sedes = allSedesResult.rows ?? [];
-            }
-    
-            const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
-            const aliados: AliadoItem[] = aliadosRes.rows ?? [];
-            const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
-            const actividad: Actividad = actividadRes.rows[0] ?? null;
-            const sesiones: Sesion[] = sesionesRes.rows ?? [];
-
-            // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
-            const nombreEventosRows = nombreDeActividadRes.rows ?? [];
-            const nombresDeActividad: NombresActividad[] = [];
-    
-            for (const row of nombreEventosRows) {
-                // Asegurar un id válido; si no existe, saltar la fila
-                const id_tipo_actividad = row?.id_tipo_actividad;
-                const nombreBase = row?.nombre;
-    
-                if (!id_tipo_actividad || !nombreBase) continue;
-    
-                // Si hay valores con nombres separados por comas, expandirlos
-                let valores: string[] = [];
-                
-                try {
-                    if (row?.valores) {
-                        
-                        console.log(row.valores);
-                        const valores = row.valores.split(',').map((v: string) => v.trim());
-                        for (const nombre of valores) {
-                            if (!nombre) continue;
-                            nombresDeActividad.push({ id_tipo_actividad, nombre });
-                        }
-                      
-                    }
-                } catch { /* ignore malformed JSON */
-                    nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
-                }
-    
-    
-            }
-    
-            const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
-    
-            const preEditEventData: PreEditActividad = {
-              id_programa,
-              sedes,
-              tiposDeActividad,
-              aliados,
-              responsables,
-              nombresDeActividad,
-              frecuencias,
-              actividad,
-              sesiones
-            };
-    
-            return preEditEventData;
-          } catch (error) {
-            // Dejar que la capa superior maneje el error con su propio logger
-            throw error;
-          }
-    }
-    
-
-    
- 
 }

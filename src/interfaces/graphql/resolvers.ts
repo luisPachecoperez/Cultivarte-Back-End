@@ -8,6 +8,7 @@ import { calendarioFechaResolvers } from '../resolvers/calendario-fecha-resolver
 import { actividadesResolvers } from '../resolvers/actividades-resolvers';
 import { sesionesResolvers } from '../resolvers/sesiones-resolver';
 import { asistenciasResolvers } from '../resolvers/asistencias-resolvers';
+import { personasResolvers } from '../resolvers/personas-resolvers';
 
 export const resolvers = mergeResolvers([
   parametroDetalleResolvers,
@@ -16,5 +17,6 @@ export const resolvers = mergeResolvers([
   calendarioFechaResolvers,
   actividadesResolvers,
   sesionesResolvers,
-  asistenciasResolvers
+  asistenciasResolvers,
+  personasResolvers
 ]);

@@ -1,8 +1,8 @@
-import { CalendarioInput, Evento, CalendarioFechaRepository } from "../../";
+import { CalendarioInput, Evento, CalendarioFechaRepository, RespuestaGrap } from "../../";
 
 
 export interface GetCalendarioFechaUseCase {
-    execute( calendarioInput: CalendarioInput ): Promise<Evento[]>;
+    execute( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap>;
 }
 
 export class GetCalendarioFechaUseCaseImpl implements GetCalendarioFechaUseCase {
@@ -11,7 +11,7 @@ export class GetCalendarioFechaUseCaseImpl implements GetCalendarioFechaUseCase 
         private readonly calendarioFechaRepository: CalendarioFechaRepository
     ) {}
 
-    execute( calendarioInput: CalendarioInput ): Promise<Evento[]> {
+    execute( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap> {
         return this.calendarioFechaRepository.getByDate( calendarioInput );
     }
 }

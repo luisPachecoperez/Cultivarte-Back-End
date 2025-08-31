@@ -1,5 +1,5 @@
-import { CalendarioInput, Evento } from "../";
+import { CalendarioInput, Evento, RespuestaGrap } from "../";
 
 export interface CalendarioFechaDataSource {
-    getByDate(calendarioInput: CalendarioInput): Promise<Evento[]>;
+    getByDate( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap>;
 }

@@ -66,6 +66,7 @@ export const asistenciasTypeDefs = gql`
         getAsistencia(id_asistencia: ID!): Asistencia
         getAsistencias: [Asistencia!]!
         getPreAsistencia(id_sesion: ID!): PreAsistencia!
+        getAsistenciasSede(id_usuario: String, fecha_inicio: String, fecha_fin: String): [Asistencia!]!
     }
         
     type Mutation {

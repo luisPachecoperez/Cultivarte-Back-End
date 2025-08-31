@@ -106,6 +106,30 @@ export const actividadQueries = {
                             id_sesion, id_actividad, fecha_actividad, 
                             hora_inicio, hora_fin, id_creado_por, 
                             fecha_creacion, id_modificado_por, fecha_modificacion
-                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`
+                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+    
+    
+    
+    actividadSedesResult: `SELECT a.*
+                                FROM actividades a
+                                WHERE a.fecha_actividad BETWEEN $1 AND $2
+                                AND (
+                                    -- Caso 1: el usuario tiene sedes y la actividad está en una de esas sedes
+                                    EXISTS (
+                                        SELECT 1
+                                        FROM personas_sedes ps
+                                        WHERE ps.id_persona = $3
+                                        AND ps.id_sede = a.id_sede
+                                    )
+                                    OR
+                                    -- Caso 2: el usuario NO tiene sedes → traer todas las actividades
+                                    NOT EXISTS (
+                                        SELECT 1
+                                        FROM personas_sedes ps
+                                        WHERE ps.id_persona = $3
+                                    )
+                                );`,
+    
+    
     
 }

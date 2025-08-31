@@ -11,31 +11,35 @@ export class AsistenciaRepositoryImpl implements AsistenciaRepository {
         private asistenciaDataSource: AsistenciaDataSource
     ) {}
     
-    getAll(): Promise<Asistencia[]> {
+    getAll(): Promise<Asistencia[] | RespuestaGrap> {
         return this.asistenciaDataSource.getAll();
     }
     
-    getById(id_asistencia: string): Promise<Asistencia | null> {
-        return this.asistenciaDataSource.getById(id_asistencia);
+    getById( id_asistencia: string ): Promise<Asistencia | RespuestaGrap> {
+        return this.asistenciaDataSource.getById( id_asistencia );
     }
     
-    createAsistencia(asistencia: Asistencia): Promise<Asistencia> {
-        return this.asistenciaDataSource.createAsistencia(asistencia);
+    getAsistenciasSede(id_usuario:string, fecha_inicio:string, fecha_fin:string): Promise<Asistencia[] | RespuestaGrap> {
+        return this.asistenciaDataSource.getAsistenciasSede(id_usuario, fecha_inicio, fecha_fin);
     }
     
-    updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap> {
-        return this.asistenciaDataSource.updateAsistencias(asistenciaSesiones);
+    createAsistencia( asistencia: Asistencia ): Promise<RespuestaGrap> {
+        return this.asistenciaDataSource.createAsistencia( asistencia );
     }
     
-    updateById(id_asistencia: string, asistencia: Asistencia): Promise<Asistencia | null>  {
-        return this.asistenciaDataSource.updateById(id_asistencia, asistencia); 
+    updateAsistencias( asistenciaSesiones: AsistenciaSesiones ): Promise<RespuestaGrap> {
+        return this.asistenciaDataSource.updateAsistencias( asistenciaSesiones );
     }
     
-    deleteById(id_asistencia: string): Promise<boolean> {
-        return this.asistenciaDataSource.deleteById(id_asistencia);
+    updateById( id_asistencia: string, asistencia: Asistencia ): Promise<RespuestaGrap>  {
+        return this.asistenciaDataSource.updateById( id_asistencia, asistencia ); 
     }
     
-    getPreAsistencia(id_sesion: string): Promise<PreAsistencia> {
-        return this.asistenciaDataSource.getPreAsistencia(id_sesion);
+    deleteById( id_asistencia: string ): Promise<RespuestaGrap> {
+        return this.asistenciaDataSource.deleteById( id_asistencia );
+    }
+    
+    getPreAsistencia( id_sesion: string ): Promise<PreAsistencia | RespuestaGrap> {
+        return this.asistenciaDataSource.getPreAsistencia( id_sesion );
     }
 }

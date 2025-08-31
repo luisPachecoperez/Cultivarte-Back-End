@@ -1,7 +1,7 @@
-import { ActividadRepository } from "../../";
+import { ActividadRepository, RespuestaGrap } from "../../";
 
 export interface DeleteActividadUseCase {
-    execute( id_actividad: string ): Promise<boolean>;
+    execute( id_actividad: string ): Promise<RespuestaGrap>;
 }
 
 export class DeleteActividadUseCaseImpl implements DeleteActividadUseCase {
@@ -10,7 +10,7 @@ export class DeleteActividadUseCaseImpl implements DeleteActividadUseCase {
         private actividadRepository: ActividadRepository
     ) {}
 
-    execute( id_actividad: string ): Promise<boolean> {
+    execute( id_actividad: string ): Promise<RespuestaGrap> {
         return this.actividadRepository.deleteById( id_actividad );
     }
 }

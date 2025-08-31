@@ -1,7 +1,7 @@
-import { AsistenciaRepository } from "../../";
+import { AsistenciaRepository, RespuestaGrap } from "../../";
 
 export interface DeleteAsistenciaUseCase {
-    execute( id_asistencia:string ): Promise<boolean>;
+    execute( id_asistencia:string ): Promise<RespuestaGrap>;
 }   
 
 export class DeleteAsistenciaUseCaseImpl implements DeleteAsistenciaUseCase {
@@ -10,7 +10,7 @@ export class DeleteAsistenciaUseCaseImpl implements DeleteAsistenciaUseCase {
         private asistenciaRepository: AsistenciaRepository
     ) {}
 
-    execute( id_asistencia:string ): Promise<boolean> {
+    execute( id_asistencia:string ): Promise<RespuestaGrap> {
         return this.asistenciaRepository.deleteById( id_asistencia );
     }
 }

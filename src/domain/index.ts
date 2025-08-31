@@ -38,6 +38,7 @@ export * from './use-cases/Actividad/get-actividad';
 export * from './use-cases/Actividad/get-actividades';
 export * from './use-cases/Actividad/update-evento';
 export * from './use-cases/Actividad/delete-actividad';
+export * from './use-cases/Actividad/get-actividad-sedes';
 export * from './entities/actividad';
 export * from './entities/pre-edit-actividad';
 export * from './use-cases/Actividad/create-actividad';
@@ -59,7 +60,10 @@ export * from './use-cases/sesiones/get-sesion';
 export * from './use-cases/sesiones/create-sesion';
 export * from './use-cases/sesiones/update-sesion';
 export * from './use-cases/sesiones/delete-sesion';
+export * from './use-cases/sesiones/get-sesiones-sedes';
+export * from './use-cases/sesiones/get-sesiones-sedes';
 export * from './entities/editar-sesiones';
+export * from './use-cases/sesiones/update-sesiones';
 export * from './use-cases/sesiones/update-sesiones';
 
 /**Exports Asistencias */
@@ -73,12 +77,23 @@ export * from './use-cases/asistencias/update-asistencia';
 export * from './use-cases/asistencias/delete-asistencia';
 export * from './use-cases/asistencias/get-pre-asistencia';
 export * from './use-cases/asistencias/update-asistencias';
+export * from './use-cases/asistencias/get-asistencia-sede';
 export * from './entities/pre-asistencia';
 export * from './entities/asistencia-sesiones';
 export * from './entities/respuesta';
 
-
-
+/**Exports Personas */
+export * from './entities/persona';
+export * from './repositories/personas-repository';
+export * from './datasources/personas-datasource';
+export * from './use-cases/persona/create-persona';
+export * from './use-cases/persona/update-persona';
+export * from './use-cases/persona/delete-persona';
+export * from './use-cases/persona/get-persona';
+export * from './use-cases/persona/get-personas';
+export * from './use-cases/persona/get-aliados-sede';
+export * from './use-cases/persona/get-beneficiarios-sede';
+export * from './entities/persona-sede';
 
 
 
