@@ -1,9 +1,16 @@
 export const actividadQueries = {
 
     programaRes: `SELECT pp.id_programa
-                    FROM personas_programas pp
-                    WHERE pp.id_persona = $1
-                    LIMIT 1`,
+                    FROM 
+                        personas_programas pp,
+                        parametros_generales pg,
+                        parametros_detalle pd
+                    WHERE 
+                        pg.id_parametro_general=pd.id_parametro_general
+                        and pd.id_parametro_detalle=pp.id_programa
+                        and upper(pg.nombre_parametro)  like 'PROGRAMA'
+                        and upper(pd.nombre) ='CULTIVARTE'
+                        and pp.id_persona =  $1`,
                     
     sedesResult: `SELECT s.id_sede as id_sede, 
                          s.nombre
