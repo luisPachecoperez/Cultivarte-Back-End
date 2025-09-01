@@ -48,13 +48,13 @@ export const actividadesTypeDefs = gql`
     }
 
     type PreCreateEvent {
-        id_programa: ID!
-        sedes: [SedeItem!]!
-        tiposDeActividad: [TipoActividadItem!]!
-        aliados: [AliadoItem!]!
-        responsables: [ResponsableItem!]!
-        nombresDeActividad: [NombresActividadItem!]!
-        frecuencias: [FrecuenciaItem!]!
+        id_programa: ID
+        sedes: [SedeItem]
+        tiposDeActividad: [TipoActividadItem]
+        aliados: [AliadoItem]
+        responsables: [ResponsableItem]
+        nombresDeActividad: [NombresActividadItem]
+        frecuencias: [FrecuenciaItem]
     }
 
     type PreEditActividad {
@@ -120,10 +120,10 @@ export const actividadesTypeDefs = gql`
         
     type Query {
         getActividades: [Actividad!]!
-        getPreCreateActividad(id_usuario: ID!): PreCreateEvent!
+        getPreCreateActividad(id_usuario: ID!): PreCreateEvent
         getPreEditActividad(id_actividad: ID!, id_usuario: ID!): PreEditActividad!
         getActividad(id: ID!): Actividad!
-        getActividadSedes(id_usuario: ID!, fecha_inicio: String!, fecha_fin: String!): [Actividad!]!
+        getActividadSedes(id_usuario: ID!, fecha_inicio: String!, fecha_fin: String!): [Actividad]
     }   
 
     type Mutation {

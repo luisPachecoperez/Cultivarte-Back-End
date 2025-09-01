@@ -28,11 +28,21 @@ const controller = new PoblacionesController(
 export const poblacionesResolvers = {
     Query: {
         getPoblaciones: () => controller.getPoblaciones(),
-        getPoblacion: (_: any, args: { id:string }) => controller.getPoblacion( args.id ), 
+        getPoblacion: async (_: any, { id_poblacion }: { id_poblacion: string }) => {
+            const result = await controller.getPoblacion(id_poblacion);
+            if (result && 'exitoso' in result && result.exitoso === 'N') {
+                throw new Error(result.mensaje);
+            }
+            if (!result) {
+                throw new Error('No se encontró la población solicitada');
+            }
+            return result;
+        }
     },
     Mutation: {
-        createPoblacion: (_: any, args: { data:Poblacion }) => controller.createPoblacion( args.data ),
-        updatePoblacion: (_: any, args: { id:string, data:Poblacion }) => controller.updatePoblacion( args.id, args.data ),
-        deletePoblacion: (_: any, args: { id:string }) => controller.deletePoblacion( args.id )
+        createPoblacion: (_: any, args: { input: Poblacion }) => controller.createPoblacion(args.input),
+        updatePoblacion: (_: any, args: { id: string, input: Poblacion }) => 
+            controller.updatePoblacion(args.id, args.input),
+        deletePoblacion: (_: any, args: { id: string }) => controller.deletePoblacion(args.id)
     }
 }

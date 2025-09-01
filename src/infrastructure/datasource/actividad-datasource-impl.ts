@@ -88,13 +88,14 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         };
 
         return preCreateEventData;
-      } catch (error) {
-        // Dejar que la capa superior maneje el error con su propio logger
-        return {
-            exitoso: "N",
-            mensaje: 'No se pudo obtener pre-create actividad: ' + error
-        };
-      }
+
+        } catch (error) {
+            console.error('Error en getPreCreateActividad:', error);
+            return {
+                exitoso: "N",
+                mensaje: 'Error al obtener datos para crear actividad: ' + error
+            };
+        }
     }
 
     async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap> {
@@ -135,6 +136,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
             const aliados: AliadoItem[] = aliadosRes.rows ?? [];
             const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
+
             const actividad: Actividad = actividadRes.rows[0] ?? null;
             const sesiones: Sesion[] = sesionesRes.rows ?? [];
 
@@ -216,14 +218,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     async getActividadSedes( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Actividad[] | RespuestaGrap> {
        try {
-
-        const result = await this.pool.query( actividadQueries.actividadSedesResult, [id_usuario, 
-                                                                                      fecha_inicio, 
-                                                                                      fecha_fin] );
+        const result = await this.pool.query( 
+            actividadQueries.actividadSedesResult, 
+            [fecha_inicio, fecha_fin, id_usuario] 
+        );
         return result.rows;
         
        } catch (error) {
-
         return {
             exitoso: "N",
             mensaje: 'No se pudo obtener actividades por sedes: ' + error
