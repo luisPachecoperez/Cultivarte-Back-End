@@ -1,7 +1,7 @@
 export const calendarioQueries = {
     getByDate: `
         SELECT 
-            a.id_actividad     AS id_evento,
+            a.id_actividad     AS id_actividad,
             s.id_sesion        AS id_sesion,
             a.nombre_actividad AS nombre_actividad,
             TO_CHAR(s.fecha_actividad + s.hora_inicio, 'YYYY-MM-DD HH24:MI:SS') AS desde,
