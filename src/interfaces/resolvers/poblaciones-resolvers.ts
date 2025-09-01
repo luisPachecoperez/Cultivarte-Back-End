@@ -41,8 +41,7 @@ export const poblacionesResolvers = {
     },
     Mutation: {
         createPoblacion: (_: any, args: { input: Poblacion }) => controller.createPoblacion(args.input),
-        updatePoblacion: (_: any, args: { id: string, input: Poblacion }) => 
-            controller.updatePoblacion(args.id, args.input),
+        updatePoblacion: (_: any, args: { id: string, input: Poblacion }) =>  controller.updatePoblacion(args.id, args.input),
         deletePoblacion: (_: any, args: { id: string }) => controller.deletePoblacion(args.id)
     }
 }

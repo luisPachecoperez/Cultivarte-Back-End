@@ -10,91 +10,88 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     private pool = pgPool;
 
-    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap> {
-      try {
-        // Ejecutar consultas independientes en paralelo
-        const [
-          programaRes,
-          sedesRes,
-          tiposDeActividadRes,
-          aliadosRes,
-          responsablesRes,
-          nombreDeActividadRes,
-          frecuenciasRes,
-        ] = await Promise.all([
-          this.pool.query(actividadQueries.programaRes, [id_usuario]),
-          this.pool.query(actividadQueries.sedesResult, [id_usuario]),
-          this.pool.query(actividadQueries.tiposDeActividadResult),
-          this.pool.query(actividadQueries.aliadosResult),
-          this.pool.query(actividadQueries.responsablesResult),
-          this.pool.query(actividadQueries.nombreDeActividadResult),
-          this.pool.query(actividadQueries.frecuenciasResult),
-        ]);
+    async getPreCreateActividad(id_usuario: string): Promise<PreCreateActividad | RespuestaGrap> {
+        const client = await this.pool.connect();
+        try {
+            // Execute parallel queries using the same client for better connection management
+            const [
+                programaRes,
+                sedesRes,
+                tiposDeActividadRes,
+                aliadosRes,
+                responsablesRes,
+                nombreDeActividadRes,
+                frecuenciasRes,
+            ] = await Promise.all([
+                client.query(actividadQueries.programaRes, [id_usuario]),
+                client.query(actividadQueries.sedesResult, [id_usuario]),
+                client.query(actividadQueries.tiposDeActividadResult),
+                client.query(actividadQueries.aliadosResult),
+                client.query(actividadQueries.responsablesResult),
+                client.query(actividadQueries.nombreDeActividadResult),
+                client.query(actividadQueries.frecuenciasResult),
+            ]);
 
-        // id_programa seguro
-        const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
+            // id_programa seguro
+            const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
 
-        // Sedes con fallback a todas las sedes si no tiene asignadas
-        let sedes: SedeItem[] = sedesRes.rows ?? [];
-        if (sedes.length === 0) {
-          const allSedesResult = await this.pool.query(actividadQueries.allSedesResult);
-          sedes = allSedesResult.rows ?? [];
-        }
-
-        const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
-        const aliados: AliadoItem[] = aliadosRes.rows ?? [];
-        const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
-
-        // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
-        const nombreEventosRows = nombreDeActividadRes.rows ?? [];
-        const nombresDeActividad: NombresActividad[] = [];
-
-        for (const row of nombreEventosRows) {
-            // Asegurar un id válido; si no existe, saltar la fila
-            const id_tipo_actividad = row?.id_tipo_actividad;
-            const nombreBase = row?.nombre;
-
-            if (!id_tipo_actividad || !nombreBase) continue;
-
-            // Si hay valores con nombres separados por comas, expandirlos
-            let valores: string[] = [];
-            
-            try {
-                if (row?.valores) {
-                    const valores = row.valores.split(',').map((v: string) => v.trim());
-                    for (const nombre of valores) {
-                        if (!nombre) continue;
-                        nombresDeActividad.push({ id_tipo_actividad, nombre });
-                    }
-                  
-                }
-            } catch { /* ignore malformed JSON */
-                    nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
+            // Sedes con fallback a todas las sedes si no tiene asignadas
+            let sedes: SedeItem[] = sedesRes.rows ?? [];
+            if (sedes.length === 0) {
+                const allSedesResult = await client.query(actividadQueries.allSedesResult);
+                sedes = allSedesResult.rows ?? [];
             }
 
+            const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
+            const aliados: AliadoItem[] = aliadosRes.rows ?? [];
+            const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
 
-        }
+            // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
+            const nombreEventosRows = nombreDeActividadRes.rows ?? [];
+            const nombresDeActividad: NombresActividad[] = [];
 
-        const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
+            for (const row of nombreEventosRows) {
+                // Asegurar un id válido; si no existe, saltar la fila
+                const id_tipo_actividad = row?.id_tipo_actividad;
+                const nombreBase = row?.nombre;
 
-        const preCreateEventData: PreCreateActividad = {
-          id_programa,
-          sedes,
-          tiposDeActividad,
-          aliados,
-          responsables,
-          nombresDeActividad,
-          frecuencias,
-        };
+                if (!id_tipo_actividad || !nombreBase) continue;
 
-        return preCreateEventData;
+                // Si hay valores con nombres separados por comas, expandirlos
+                let valores: string[] = [];
+                
+                try {
+                    if (row?.valores) {
+                        const valores = row.valores.split(',').map((v: string) => v.trim());
+                        for (const nombre of valores) {
+                            if (!nombre) continue;
+                            nombresDeActividad.push({ id_tipo_actividad, nombre });
+                        }
+                        
+                    }
+                } catch { /* ignore malformed JSON */
+                    nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
+                }
+            }
 
-        } catch (error) {
-            console.error('Error en getPreCreateActividad:', error);
-            return {
-                exitoso: "N",
-                mensaje: 'Error al obtener datos para crear actividad: ' + error
+            const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
+
+            const preCreateEventData: PreCreateActividad = {
+                id_programa,
+                sedes,
+                tiposDeActividad,
+                aliados,
+                responsables,
+                nombresDeActividad,
+                frecuencias,
             };
+
+            return preCreateEventData;
+        } catch (error) {
+            console.error('Error in getPreCreateActividad:', error);
+            throw error;
+        } finally {
+            client.release();
         }
     }
 
