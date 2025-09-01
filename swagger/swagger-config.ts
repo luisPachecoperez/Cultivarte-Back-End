@@ -1089,7 +1089,11 @@ const options: swaggerJsdoc.Options = {
       }
     }
   },
-  apis: ['./src/**/*.ts'],
+  apis: [
+    './src/interfaces/routes/*.ts',
+    './src/domain/entities/*.ts',
+    './src/domain/use-cases/**/*.ts'
+  ],
 };
 
 export const specs = swaggerJsdoc(options);

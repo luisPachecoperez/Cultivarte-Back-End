@@ -2,7 +2,7 @@ import { gql } from "graphql-tag";
 
 export const calendarioFechaTypeDefs = gql`
   type Evento {
-    id_evento: ID!
+    id_actividad: ID!
     id_sesion: ID!
     nombre_actividad: String!
     desde: String!

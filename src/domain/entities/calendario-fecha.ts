@@ -1,5 +1,5 @@
 export interface Evento {
-    id_evento:          string;
+    id_actividad:       string;
     id_sesion:          string;
     nombre_actividad:   string;
     desde:              string;

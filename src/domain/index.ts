@@ -95,5 +95,12 @@ export * from './use-cases/persona/get-aliados-sede';
 export * from './use-cases/persona/get-beneficiarios-sede';
 export * from './entities/persona-sede';
 
-
-
+/*Exports Poblaciones */
+export * from './entities/poblacion';
+export * from './repositories/poblacion-repository';
+export * from './datasources/poblacion-datasource';
+export * from './use-cases/poblaciones/create-poblacion';
+export * from './use-cases/poblaciones/update-poblacion';
+export * from './use-cases/poblaciones/delete-poblacion';
+export * from './use-cases/poblaciones/get-poblacion';
+export * from './use-cases/poblaciones/get-poblaciones';
