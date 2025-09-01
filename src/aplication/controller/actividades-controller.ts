@@ -1,60 +1,65 @@
 import { Actividad, 
          PreCreateActividad, 
-         PreCreateActividadUseCase,
          PreEditActividad,
-         PreEditActividadUseCase,
          CreateActividadAndSesionesUseCase,
          GetActividadesUseCase,
          GetActividadUseCase, 
+         GetActividadSedesUseCase,
          UpdateActividadUseCase,
          DeleteActividadUseCase,
          CreateActividadUseCase,
-         RespuestaGrap } from "../../domain";
+         RespuestaGrap, 
+         GetPreCreateActividadUseCase,
+         GetPreEditActividadUseCase} from "../../domain";
 
 
 
 export class ActividadesController {
     
     constructor(
-        private readonly preCreateActividadUseCase: PreCreateActividadUseCase,
-        private readonly preEditActividadUseCase: PreEditActividadUseCase,
-        private readonly createActividadAndSesionesUseCase: CreateActividadAndSesionesUseCase,
-        private readonly createActividadUseCase: CreateActividadUseCase,
+        private readonly getPreCreateActividadUseCase: GetPreCreateActividadUseCase,
+        private readonly getPreEditActividadUseCase: GetPreEditActividadUseCase,
         private readonly getActividadesUseCase: GetActividadesUseCase,
         private readonly getActividadUseCase: GetActividadUseCase,
+        private readonly getActividadSedesUseCase: GetActividadSedesUseCase,
+        private readonly createActividadAndSesionesUseCase: CreateActividadAndSesionesUseCase,
+        private readonly createActividadUseCase: CreateActividadUseCase,
         private readonly updateActividadUseCase: UpdateActividadUseCase,
         private readonly deleteActividadUseCase: DeleteActividadUseCase
     ) {}
 
-    async preCreateActividad( id_usuario: string ): Promise<PreCreateActividad> {
-        return this.preCreateActividadUseCase.execute( id_usuario );
+    async getPreCreateActividad( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap> {
+        return this.getPreCreateActividadUseCase.execute( id_usuario );
     }
     
-    async preEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad> {
-        return this.preEditActividadUseCase.execute( id_actividad, id_usuario );
+    async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap> {
+        return this.getPreEditActividadUseCase.execute( id_actividad, id_usuario );
     }
 
-    async createActividadAndSesiones( actividad: Actividad ): Promise<Actividad> {
-        return this.createActividadAndSesionesUseCase.execute( actividad );
-    }
-
-    async createActividad( actividad: Actividad ): Promise<RespuestaGrap> {
-        return this.createActividadUseCase.execute( actividad );
-    }
-
-    async getActividades(): Promise<Actividad[] | null> {
+    async getActividades(): Promise<Actividad[] | RespuestaGrap> {
         return this.getActividadesUseCase.execute();
     }
 
-    async getActividad( id_actividad: string ): Promise<Actividad | null> {
+    async getActividad( id_actividad: string ): Promise<Actividad | RespuestaGrap> {
         return this.getActividadUseCase.execute( id_actividad );
     }
 
-    async updateActividad( id_actividad: string, actividad: Actividad ): Promise<Actividad | null> {
+    async getActividadSedes( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Actividad[] | RespuestaGrap> {
+        return this.getActividadSedesUseCase.execute( id_usuario, fecha_inicio, fecha_fin );
+    }
+
+    async createActividadAndSesiones( actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
+        return this.createActividadAndSesionesUseCase.execute( actividad );
+    }
+
+    async createActividad( actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
+        return this.createActividadUseCase.execute( actividad );
+    }
+    async updateActividad( id_actividad: string, actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
         return this.updateActividadUseCase.execute( id_actividad, actividad );
     }
 
-    async deleteActividad( id_actividad: string ): Promise<boolean> {
+    async deleteActividad( id_actividad: string ): Promise<RespuestaGrap> {
         return this.deleteActividadUseCase.execute( id_actividad );
     }
 }

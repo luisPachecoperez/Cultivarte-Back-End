@@ -1,5 +1,8 @@
 
-import { GetCalendarioFechaUseCase, CalendarioInput } from "../../domain";
+import { GetCalendarioFechaUseCase,
+         CalendarioInput,
+         Evento,
+         RespuestaGrap } from "../../domain";
 
 export class CalendarioFechaController {
 
@@ -7,7 +10,7 @@ export class CalendarioFechaController {
         private readonly calendarioFechaUseCase: GetCalendarioFechaUseCase
     ) {}
 
-    async getByDate( calendarioInput: CalendarioInput ): Promise<any> {
+    async getByDate( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap> {
         return this.calendarioFechaUseCase.execute( calendarioInput );
     }
 }

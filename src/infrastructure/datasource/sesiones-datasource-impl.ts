@@ -9,36 +9,37 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
     
     private pool = pgPool;
 
-    async getAll(): Promise<Sesion[]> {
-        const getAllRes = await this.pool.query(sesionesQueries.getAll);
-        return getAllRes.rows;
+    async getAll(): Promise<Sesion[] | RespuestaGrap> {
+        try {
+            const getAllRes = await this.pool.query(sesionesQueries.getAll);
+            return getAllRes.rows;
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al obtener sesiones: " + error };
+        }
     }
 
-    async getById(id_sesion: string): Promise<Sesion | null> {
-        const getByIdRes = await this.pool.query( sesionesQueries.getById, [id_sesion] );
-        return getByIdRes.rows[0] || null;
+    async getById(id_sesion: string): Promise<Sesion | RespuestaGrap> {
+        try {
+            const getByIdRes = await this.pool.query( sesionesQueries.getById, [id_sesion] );
+            return getByIdRes.rows[0] || null;
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al obtener sesiones: " + error };
+        }
     }
 
-    async createSesion(sesion: Sesion): Promise<Sesion> {
-        const id_sesion = sesion.id_sesion || randomUUID();
-        const values = [
-         id_sesion,
-         sesion.id_actividad,
-         sesion.fecha_actividad,
-         sesion.hora_inicio,
-         sesion.hora_fin,
-         sesion.imagen,
-         sesion.nro_asistentes,
-         sesion.id_creado_por,
-         sesion.fecha_creacion,
-         sesion.id_modificado_por,
-         sesion.fecha_modificacion,
-        ];
-        const result = await this.pool.query(sesionesQueries.create, values);
-        return result.rows[0];
+    async getSesionoesSede(id_usuario:string, fecha_inicio:string, fecha_fin:string)  : Promise<Sesion[] | RespuestaGrap> {
+       try {
+            const getSessionesSedeRes = await this.pool.query( sesionesQueries.getSessionesSede, [id_usuario, fecha_inicio, fecha_fin] );
+            return getSessionesSedeRes.rows;
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al obtener sesiones: " + error };
+        }
     }
-    async updateById(id_sesion: string, sesion: Sesion): Promise<RespuestaGrap> {
-        const values = [
+    
+    async createSesion(sesion: Sesion): Promise<RespuestaGrap> {
+        try {
+            const id_sesion = sesion.id_sesion || randomUUID();
+            const values = [
             id_sesion,
             sesion.id_actividad,
             sesion.fecha_actividad,
@@ -50,17 +51,46 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             sesion.fecha_creacion,
             sesion.id_modificado_por,
             sesion.fecha_modificacion,
-        ];
-        const result = await this.pool.query(sesionesQueries.updateById, values);
-        return result.rows[0];
+            ];
+            await this.pool.query(sesionesQueries.create, values);
+            return { exitoso: "S", mensaje: "Sesion creada correctamente" };
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al crear sesiones: " + error };
+        }
+    }
+    async updateById(id_sesion: string, sesion: Sesion): Promise<RespuestaGrap> {
+        try {
+            const values = [
+            id_sesion,
+            sesion.id_actividad,
+            sesion.fecha_actividad,
+            sesion.hora_inicio,
+            sesion.hora_fin,
+            sesion.imagen,
+            sesion.nro_asistentes,
+            sesion.id_creado_por,
+            sesion.fecha_creacion,
+            sesion.id_modificado_por,
+            sesion.fecha_modificacion,
+            ];
+            await this.pool.query(sesionesQueries.updateById, values);
+            return { exitoso: "S", mensaje: "Sesion actualizada correctamente" };
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al actualizar sesiones: " + error };
+        }   
     }
     
-    async deleteById(id_sesion: string): Promise<boolean> {
-        const result = await this.pool.query(sesionesQueries.deleteById, [id_sesion]);
-        return result.rows[0];
+    async deleteById(id_sesion: string): Promise<RespuestaGrap> {
+        try {
+            await this.pool.query(sesionesQueries.deleteById, [id_sesion]);
+            return { exitoso: "S", mensaje: "Sesion eliminada correctamente" };
+        } catch (error) {
+            return { exitoso: "N", mensaje: "Error al eliminar sesiones: " + error };
+        }
     }
     
     async updateSesiones(editarSesiones: EditarSesiones): Promise<RespuestaGrap> {
+       
         const client = await this.pool.connect();
         try {
             await client.query('BEGIN');
@@ -119,11 +149,11 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             }
              
              await client.query('COMMIT');
-             return {exitoso: "S", mensaje: 'Sesiones actualizadas correctamente'};
+             return { exitoso: "S", mensaje: 'Sesiones actualizadas correctamente'};
         } catch (error) {
             await client.query('ROLLBACK');
             console.error('Error updating sessions:', error);
-            return {exitoso: "N", mensaje: 'Error al actualizar sesiones'};
+            return { exitoso: "N", mensaje: 'Error al actualizar sesiones'};
         } finally {
             client.release();
         }

@@ -3,7 +3,8 @@ import { ParametroDetalle,
          DeleteParametroDetalleUseCase,
          GetParametroDetalleUseCase,
          GetParametrosDetalleUseCase,
-         UpdateParametroDetalleUseCase } from "../../domain";
+         UpdateParametroDetalleUseCase,
+         RespuestaGrap } from "../../domain";
 
 export class ParametrosDetalleController {
     
@@ -15,23 +16,23 @@ export class ParametrosDetalleController {
         private deleteParametroDetalleUseCase: DeleteParametroDetalleUseCase
     ) {}
 
-    async createParametroDetalle( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle> {
+    async createParametroDetalle( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap> {
         return this.createParametroDetalleUseCase.execute( parametroDetalle );
     }
 
-    async getParametrosDetalle(): Promise<ParametroDetalle[]> {
+    async getParametrosDetalle(): Promise<ParametroDetalle[] | RespuestaGrap> {
         return this.getParametrosDetalleUseCase.execute();
     }
 
-    async getParametroDetalle( id_parametro_detalle: string ): Promise<ParametroDetalle | null> {
+    async getParametroDetalle( id_parametro_detalle: string ): Promise<ParametroDetalle | RespuestaGrap> {
         return this.getParametroDetalleUseCase.execute( id_parametro_detalle );
     }
 
-    async updateParametroDetalle( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle> {
+    async updateParametroDetalle( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap> {
         return this.updateParametroDetalleUseCase.execute( id_parametro_detalle, parametroDetalle );
     }
 
-    async deleteParametroDetalle( id_parametro_detalle: string ): Promise<boolean> {
+    async deleteParametroDetalle( id_parametro_detalle: string ): Promise<RespuestaGrap> {
         return this.deleteParametroDetalleUseCase.execute( id_parametro_detalle );
     }
 }

@@ -1,9 +1,10 @@
 import { Actividad,
          ActividadRepository,
-         ParametroDetalleRepository } from "../../";
+         ParametroDetalleRepository,
+         RespuestaGrap } from "../../";
 
 export interface CreateActividadAndSesionesUseCase {
-    execute( actividad: Actividad ): Promise<Actividad>;
+    execute( actividad: Actividad ): Promise<Actividad | RespuestaGrap>;
 }
 
 export class CreateActividadAndSesionesUseCaseImpl implements CreateActividadAndSesionesUseCase {
@@ -13,10 +14,22 @@ export class CreateActividadAndSesionesUseCaseImpl implements CreateActividadAnd
         private readonly parametroDetalleRepository: ParametroDetalleRepository
     ) {}
 
-    async execute( actividad: Actividad ): Promise<Actividad> {
-        const frecuencia = await this.parametroDetalleRepository.getById( actividad.id_frecuencia );
-        actividad.frecuencia = frecuencia?.nombre || '';
-        
-        return this.actividadRepository.createActividadAndSesiones( actividad );
+    async execute( actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
+        try {
+            
+            const frecuencia = await this.parametroDetalleRepository.getById( actividad.id_frecuencia );
+            if (!frecuencia) {
+                return { exitoso: 'N', mensaje: 'Frecuencia no encontrada' };
+            }
+            if ('nombre' in frecuencia) {
+                actividad.frecuencia = frecuencia.nombre;
+            } else {
+                return { exitoso: 'N', mensaje: 'Frecuencia no encontrada' };
+            }
+            return this.actividadRepository.createActividadAndSesiones( actividad );
+            
+        } catch ( error: any ) {
+            return { exitoso: 'N', mensaje: error };
+        }
     }
 }

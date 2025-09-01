@@ -3,10 +3,11 @@ import { EditarSesiones,
          RespuestaGrap } from "../";
 
 export interface SesionRepository {
-    getAll(): Promise<Sesion[]>;
-    getById( id_sesion: string ): Promise<Sesion | null>;
-    createSesion( sesion: Sesion ): Promise<Sesion>;
+    getAll(): Promise<Sesion[] | RespuestaGrap>;
+    getById( id_sesion: string ): Promise<Sesion | RespuestaGrap>;
+    getSesionoesSede( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Sesion[] | RespuestaGrap>;
+    createSesion( sesion: Sesion ): Promise<RespuestaGrap>;
     updateById( id_sesion: string, sesion: Sesion ): Promise<RespuestaGrap>;
     updateSesiones( editarSesiones: EditarSesiones ): Promise<RespuestaGrap>;
-    deleteById( id_sesion: string ): Promise<boolean>;
+    deleteById( id_sesion: string ): Promise<RespuestaGrap>;
 }

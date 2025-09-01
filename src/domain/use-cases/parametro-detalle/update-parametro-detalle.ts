@@ -1,7 +1,7 @@
-import { ParametroDetalle, ParametroDetalleRepository } from "../../";
+import { ParametroDetalle, ParametroDetalleRepository, RespuestaGrap } from "../../";
 
 export interface UpdateParametroDetalleUseCase {
-    execute( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle>;
+    execute( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap>;
 }
     
 export class UpdateParametroDetalleUseCaseImpl implements UpdateParametroDetalleUseCase {
@@ -10,7 +10,7 @@ export class UpdateParametroDetalleUseCaseImpl implements UpdateParametroDetalle
         private readonly parametroDetalleRepository: ParametroDetalleRepository
     ) {}
 
-    execute( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle> {
+    execute( id_parametro_detalle: string, parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap> {
         return this.parametroDetalleRepository.updateById( id_parametro_detalle, parametroDetalle );
     }
 }

@@ -123,6 +123,7 @@ export const actividadesTypeDefs = gql`
         getPreCreateActividad(id_usuario: ID!): PreCreateEvent!
         getPreEditActividad(id_actividad: ID!, id_usuario: ID!): PreEditActividad!
         getActividad(id: ID!): Actividad!
+        getActividadSedes(id_usuario: ID!, fecha_inicio: String!, fecha_fin: String!): [Actividad!]!
     }   
 
     type Mutation {

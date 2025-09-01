@@ -1,7 +1,7 @@
-import { Actividad, ActividadRepository } from "../../";
+import { Actividad, ActividadRepository, RespuestaGrap } from "../../";
 
 export interface GetActividadesUseCase {
-    execute(): Promise<Actividad[]>;
+    execute(): Promise<Actividad[] | RespuestaGrap>;
 }
 
 export class GetActividadesUseCaseImpl implements GetActividadesUseCase {
@@ -10,7 +10,7 @@ export class GetActividadesUseCaseImpl implements GetActividadesUseCase {
         private actividadRepository: ActividadRepository
     ) {}
 
-    execute(): Promise<Actividad[]> {
+    execute(): Promise<Actividad[] | RespuestaGrap> {
         return this.actividadRepository.getAll();
     }
 }

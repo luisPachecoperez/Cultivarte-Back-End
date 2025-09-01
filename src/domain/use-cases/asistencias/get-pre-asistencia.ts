@@ -1,7 +1,9 @@
-import { PreAsistencia, AsistenciaRepository } from "../../";
+import { PreAsistencia, 
+         AsistenciaRepository, 
+         RespuestaGrap } from "../../";
 
 export interface GetPreAsistenciaUseCase {
-    execute(id_sesion: string): Promise<PreAsistencia>;
+    execute( id_sesion: string ): Promise<PreAsistencia | RespuestaGrap >;
 }
 
 export class GetPreAsistenciaUseCaseImpl implements GetPreAsistenciaUseCase {
@@ -10,7 +12,7 @@ export class GetPreAsistenciaUseCaseImpl implements GetPreAsistenciaUseCase {
         private asistenciaRepository: AsistenciaRepository
     ) {}
 
-    execute(id_sesion: string): Promise<PreAsistencia> {
+    execute( id_sesion: string ): Promise<PreAsistencia | RespuestaGrap> {
         return this.asistenciaRepository.getPreAsistencia( id_sesion );
     }
 }

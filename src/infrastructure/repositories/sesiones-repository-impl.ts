@@ -10,27 +10,30 @@ export class SesionesRepositoryImpl implements SesionRepository {
         private sesionesDataSource: SesionesDataSource
     ) {}
 
-    async getAll(): Promise<Sesion[]> {
+    async getAll(): Promise<Sesion[] | RespuestaGrap> {
         return this.sesionesDataSource.getAll();
     }
 
-    async getById(id_sesion: string): Promise<Sesion | null> {
-        return this.sesionesDataSource.getById(id_sesion);
+    async getById( id_sesion: string ): Promise<Sesion | RespuestaGrap> {
+        return this.sesionesDataSource.getById( id_sesion );
     }
 
-    async createSesion(sesion: Sesion): Promise<Sesion> {
-        return this.sesionesDataSource.createSesion(sesion);
+    async getSesionoesSede( id_usuario:string, fecha_inicio:string, fecha_fin:string )  : Promise<Sesion[] | RespuestaGrap> {
+        return this.sesionesDataSource.getSesionoesSede( id_usuario, fecha_inicio, fecha_fin );
+    }
+    async createSesion( sesion: Sesion ): Promise<RespuestaGrap> {
+        return this.sesionesDataSource.createSesion( sesion );
     }
 
-    async updateById(id_sesion: string, sesion: Sesion): Promise<RespuestaGrap> {
-        return this.sesionesDataSource.updateById(id_sesion, sesion);
+    async updateById( id_sesion: string, sesion: Sesion ): Promise<RespuestaGrap> {
+        return this.sesionesDataSource.updateById( id_sesion, sesion );
     }
 
-    async deleteById(id_sesion: string): Promise<boolean> {
-        return this.sesionesDataSource.deleteById(id_sesion);
+    async deleteById( id_sesion: string ): Promise<RespuestaGrap> {
+        return this.sesionesDataSource.deleteById( id_sesion );
     }
 
-    async updateSesiones(editarSesiones: EditarSesiones): Promise<RespuestaGrap> {
-        return this.sesionesDataSource.updateSesiones(editarSesiones);
+    async updateSesiones( editarSesiones: EditarSesiones ): Promise<RespuestaGrap> {
+        return this.sesionesDataSource.updateSesiones( editarSesiones );
     }
 }

@@ -1,7 +1,8 @@
 import { CalendarioFechaRepository, 
          CalendarioInput,
          Evento,
-         CalendarioFechaDataSource } from "../../domain";
+         CalendarioFechaDataSource,
+         RespuestaGrap } from "../../domain";
 
 export class CalendarioFechaRepositoryImpl implements CalendarioFechaRepository {
 
@@ -9,7 +10,7 @@ export class CalendarioFechaRepositoryImpl implements CalendarioFechaRepository 
         private readonly calendarioFechaDataSource: CalendarioFechaDataSource
     ) {}
 
-    getByDate( calendarioInput: CalendarioInput ): Promise<Evento[]> {
+    getByDate( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap> {
         return this.calendarioFechaDataSource.getByDate( calendarioInput );
     }
 }   

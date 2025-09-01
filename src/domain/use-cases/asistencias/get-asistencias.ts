@@ -1,7 +1,7 @@
-import { Asistencia, AsistenciaRepository } from "../../";
+import { Asistencia, AsistenciaRepository, RespuestaGrap } from "../../";
 
 export interface GetAsistenciasUseCase {
-    execute(): Promise<Asistencia[]>;
+    execute(): Promise<Asistencia[] | RespuestaGrap>;
 }
 
 export class GetAsistenciasUseCaseImpl implements GetAsistenciasUseCase {
@@ -10,7 +10,7 @@ export class GetAsistenciasUseCaseImpl implements GetAsistenciasUseCase {
         private asistenciaRepository: AsistenciaRepository
     ) {}
 
-    execute(): Promise<Asistencia[]> {
+    execute(): Promise<Asistencia[] | RespuestaGrap> {
         return this.asistenciaRepository.getAll();
     }
 }
