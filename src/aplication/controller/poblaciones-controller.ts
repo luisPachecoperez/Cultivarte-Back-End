@@ -1,4 +1,3 @@
-
 import { Poblacion,
          CreatePoblacionUseCase, 
          UpdatePoblacionUseCase, 
@@ -22,7 +21,11 @@ export class PoblacionesController {
     }
 
     async getPoblacion(id_poblacion: string): Promise<Poblacion | RespuestaGrap> {
-        return this.getPoblacionUseCase.execute(id_poblacion);
+        const result = await this.getPoblacionUseCase.execute(id_poblacion);
+        if ('exitoso' in result && result.exitoso === 'N') {
+            return result; // Return the error response
+        }
+        return result as Poblacion;
     }
 
     async createPoblacion(poblacion: Poblacion): Promise<Poblacion | RespuestaGrap> {

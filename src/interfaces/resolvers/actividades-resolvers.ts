@@ -1,4 +1,3 @@
-
 import { GetActividadesUseCaseImpl,
          GetPreCreateActividadUseCaseImpl,
          DeleteActividadUseCaseImpl,
@@ -45,7 +44,13 @@ export const actividadesResolvers = {
     getActividad: (_: any, args: { id:string }) => controller.getActividad( args.id ), 
     getPreCreateActividad: (_: any, args: { id_usuario:string }) => controller.getPreCreateActividad( args.id_usuario ),
     getPreEditActividad: (_: any, args: { id_actividad:string, id_usuario:string }) => controller.getPreEditActividad( args.id_actividad, args.id_usuario ),
-    getActividadSedes: (_: any, args: { id_usuario:string, fecha_inicio:string, fecha_fin:string }) => controller.getActividadSedes( args.id_usuario, args.fecha_inicio, args.fecha_fin )
+    getActividadSedes: async (_: any, args: { id_usuario:string, fecha_inicio:string, fecha_fin:string }) => {
+      const result = await controller.getActividadSedes(args.id_usuario, args.fecha_inicio, args.fecha_fin);
+      if (result && 'exitoso' in result && result.exitoso === 'N') {
+        throw new Error(result.mensaje);
+      }
+      return result;
+    }
   },
   Mutation: {
     createActividadAndSesiones: (_: any, args: { data:Actividad }) => controller.createActividadAndSesiones( args.data ),

@@ -3,14 +3,15 @@ import { gql } from "graphql-tag";
 export const poblacionTypeDefs = gql`
     type Poblacion {
         id_poblacion: ID!
+        id_padre: ID
         nombre: String!
-        id_sede: ID!
     }
 
     input PoblacionInput {
         id_poblacion: ID!
+        id_padre: ID
         nombre: String!
-        id_sede: ID!
+     
     }
     
     type Query {
@@ -19,7 +20,7 @@ export const poblacionTypeDefs = gql`
     }
 
     type Mutation {
-        createPoblacion(input: PoblacionInput!): Poblacion
+        createPoblacion(input: PoblacionInput!): RespuestaGrap
         updatePoblacion(id_poblacion: ID!, input: PoblacionInput!): Poblacion
         deletePoblacion(id_poblacion: ID!): Poblacion
     }
