@@ -1,6 +1,6 @@
 import { Actividad,
          ActividadRepository,
-         RespuestaGrap } from "../../";
+         RespuestaGrap } from "../..";
 
 export interface CreateActividadUseCase {
     execute( actividad: Actividad ): Promise<RespuestaGrap>;

@@ -1,4 +1,4 @@
-import { ActividadRepository, RespuestaGrap } from "../../";
+import { ActividadRepository, RespuestaGrap } from "../..";
 
 export interface DeleteActividadUseCase {
     execute( id_actividad: string ): Promise<RespuestaGrap>;

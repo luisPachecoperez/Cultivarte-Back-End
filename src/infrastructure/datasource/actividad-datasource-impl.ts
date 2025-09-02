@@ -120,8 +120,15 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                 this.pool.query(actividadQueries.sesionesResult, [id_actividad])
             ]);
         
-            // id_programa seguro
+            // id_programa validation
             const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
+            console.log( 'id_programa', id_programa);
+            if (!id_programa) {
+                return {
+                    exitoso: "N",
+                    mensaje: 'No se pudo determinar el programa para el usuario.'
+                };
+            }
 
             // Sedes con fallback a todas las sedes si no tiene asignadas
             let sedes: SedeItem[] = sedesRes.rows ?? [];
@@ -134,9 +141,18 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             const aliados: AliadoItem[] = aliadosRes.rows ?? [];
             const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
 
-            const actividad: Actividad = actividadRes.rows[0] ?? null;
+            // Get actividad and validate it exists
+            const actividad: Actividad | undefined = actividadRes.rows?.[0];
+            
+            if (!actividad) {
+                console.error('No se encontró la actividad con ID:', id_actividad);
+                return {
+                    exitoso: "N",
+                    mensaje: 'No se encontró la actividad con el ID proporcionado.'
+                };
+            }
+            
             const sesiones: Sesion[] = sesionesRes.rows ?? [];
-
             // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
             const nombreEventosRows = nombreDeActividadRes.rows ?? [];
             const nombresDeActividad: NombresActividad[] = [];
@@ -164,9 +180,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                     nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
                 }
             }
-
             const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
-
             const preEditEventData: PreEditActividad = {
                 id_programa,
                 sedes,

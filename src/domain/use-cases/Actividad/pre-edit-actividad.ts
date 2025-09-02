@@ -1,4 +1,4 @@
-import { PreEditActividad, ActividadRepository, RespuestaGrap } from "../../";
+import { PreEditActividad, ActividadRepository, RespuestaGrap } from "../..";
 
 
 export interface GetPreEditActividadUseCase {
