@@ -31,18 +31,18 @@ export * from './use-cases/queries/get-parametria-eventos';
 export * from './entities/pre-create-actividad';
 export * from './repositories/actividad-repository';
 export * from './datasources/actividad-datasource';
-export * from './use-cases/Actividad/pre-create-actividad';
-export * from './use-cases/Actividad/create-actividad-sesiones';
-export * from './use-cases/Actividad/delete-actividad';
-export * from './use-cases/Actividad/get-actividad';
-export * from './use-cases/Actividad/get-actividades';
-export * from './use-cases/Actividad/update-evento';
-export * from './use-cases/Actividad/delete-actividad';
-export * from './use-cases/Actividad/get-actividad-sedes';
+export * from './use-cases/actividad/pre-create-actividad';
+export * from './use-cases/actividad/create-actividad-sesiones';
+export * from './use-cases/actividad/delete-actividad';
+export * from './use-cases/actividad/get-actividad';
+export * from './use-cases/actividad/get-actividades';
+export * from './use-cases/actividad/update-evento';
+export * from './use-cases/actividad/delete-actividad';
+export * from './use-cases/actividad/get-actividad-sedes';
 export * from './entities/actividad';
 export * from './entities/pre-edit-actividad';
-export * from './use-cases/Actividad/create-actividad';
-export * from './use-cases/Actividad/pre-edit-actividad';
+export * from './use-cases/actividad/create-actividad';
+export * from './use-cases/actividad/pre-edit-actividad';
 
 /**Exports Calendario Fecha */
 export * from './entities/calendario-fecha';
@@ -104,3 +104,33 @@ export * from './use-cases/poblaciones/update-poblacion';
 export * from './use-cases/poblaciones/delete-poblacion';
 export * from './use-cases/poblaciones/get-poblacion';
 export * from './use-cases/poblaciones/get-poblaciones';
+
+/**Exports Sedes */
+export * from './entities/sede';
+export * from './repositories/sede-repository';
+export * from './datasources/sede-datasource';
+export * from './use-cases/sedes/delete-sede';
+export * from './use-cases/sedes/get-sede';
+export * from './use-cases/sedes/get-sedes';
+export * from './use-cases/sedes/create-sede';
+export * from './use-cases/sedes/update-sede';
+
+/*Exports Personas Sede */
+export * from './entities/persona-sede';
+export * from './repositories/personas-sedes-repository';
+export * from './datasources/personas-sedes-datasource';
+export * from './use-cases/personas-sedes/create-persona-sede';
+export * from './use-cases/personas-sedes/update-persona-sede';
+export * from './use-cases/personas-sedes/delete-persona-sede';
+export * from './use-cases/personas-sedes/get-persona-sede';
+export * from './use-cases/personas-sedes/get-personas-sedes';
+
+/*Exports Personas Grupos Interes */
+export * from './entities/personas-grupos-interes';
+export * from './repositories/personas-grupos-interes-respository';
+export * from './datasources/personas-grupos-interes-datasource';
+export * from './use-cases/personas-grupo-interes/create-persona-grupo-interes';
+export * from './use-cases/personas-grupo-interes/update-persona-grupo-interes';
+export * from './use-cases/personas-grupo-interes/delete-persona-grupo-interes';
+export * from './use-cases/personas-grupo-interes/get-persona-grupo-interes';
+export * from './use-cases/personas-grupo-interes/get-persona-grupo-interes';

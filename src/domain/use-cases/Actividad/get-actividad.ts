@@ -1,4 +1,4 @@
-import { Actividad, ActividadRepository, RespuestaGrap } from "../../";
+import { Actividad, ActividadRepository, RespuestaGrap } from "../..";
 
 
 export interface GetActividadUseCase {

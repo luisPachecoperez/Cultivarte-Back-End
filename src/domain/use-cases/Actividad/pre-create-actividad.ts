@@ -1,4 +1,4 @@
-import { PreCreateActividad, ActividadRepository, RespuestaGrap } from '../../';
+import { PreCreateActividad, ActividadRepository, RespuestaGrap } from '../..';
 
 export interface GetPreCreateActividadUseCase {
     execute( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap>;

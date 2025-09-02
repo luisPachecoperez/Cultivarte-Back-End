@@ -1,4 +1,4 @@
-import { Actividad, ActividadRepository, RespuestaGrap} from "../../";
+import { Actividad, ActividadRepository, RespuestaGrap} from "../..";
 
 export interface GetActividadSedesUseCase {
     execute( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Actividad[] | RespuestaGrap>;

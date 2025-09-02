@@ -9,6 +9,8 @@ import { sesionesTypeDefs } from '../schema/sesiones-schema';
 import { asistenciasTypeDefs } from '../schema/asistencias-schema';
 import { personaTypeDefs } from '../schema/personas-schema';
 import { poblacionTypeDefs } from '../schema/poblaciones-schema';
+import { sedeTypeDefs } from '../schema/sede-schema';
+import { personaSedeTypeDefs } from '../schema/persona-sede-schema';
 
 export const typeDefs = gql`
   ${parametroDetalleTypeDefs}
@@ -20,4 +22,6 @@ export const typeDefs = gql`
   ${asistenciasTypeDefs}
   ${personaTypeDefs}
   ${poblacionTypeDefs}
+  ${sedeTypeDefs}
+  ${personaSedeTypeDefs}
 `;
