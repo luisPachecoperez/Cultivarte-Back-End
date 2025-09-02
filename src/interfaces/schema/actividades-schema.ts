@@ -58,13 +58,13 @@ export const actividadesTypeDefs = gql`
     }
 
     type PreEditActividad {
-        id_programa: ID
-        sedes: [SedeItem!]
-        tiposDeActividad: [TipoActividadItem!]
-        aliados: [AliadoItem!]
-        responsables: [ResponsableItem!]
-        nombresDeActividad: [NombresActividadItem!]
-        frecuencias: [FrecuenciaItem!]
+        id_programa: ID!
+        sedes: [SedeItem!]!
+        tiposDeActividad: [TipoActividadItem!]!
+        aliados: [AliadoItem!]!
+        responsables: [ResponsableItem!]!
+        nombresDeActividad: [NombresActividadItem!]!
+        frecuencias: [FrecuenciaItem!]!
         actividad: Actividad
         sesiones: [Sesion!]
     }

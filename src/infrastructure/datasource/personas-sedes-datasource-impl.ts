@@ -1,6 +1,7 @@
 import { PersonasSedesDataSource,
-         PersonaSede,
-         RespuestaGrap } from "../../domain";
+         PersonasSede,
+         RespuestaGrap, 
+         PersonaSede} from "../../domain";
 import { pgPool } from "../db/pg-pool";
 import { personasSedesQueries } from "../db/personas-sedes-queries";
 
@@ -8,7 +9,7 @@ export class PersonasSedesDataSourceImpl implements PersonasSedesDataSource {
  
     private pool = pgPool;
 
-    async getAll(): Promise<PersonaSede[] | RespuestaGrap> {
+    async getAll(): Promise<PersonasSede[] | RespuestaGrap> {
         try {
             const getAllRes = await this.pool.query( personasSedesQueries.getAll );
             return getAllRes.rows;
@@ -17,7 +18,7 @@ export class PersonasSedesDataSourceImpl implements PersonasSedesDataSource {
         }
     }           
 
-    async getById( id_sede: string ): Promise<PersonaSede | RespuestaGrap> {
+    async getById( id_sede: string ): Promise<PersonasSede | RespuestaGrap> {
         try {
             const getByIdRes = await this.pool.query(personasSedesQueries.getById, [id_sede]);
            
@@ -27,12 +28,12 @@ export class PersonasSedesDataSourceImpl implements PersonasSedesDataSource {
         }
     }
 
-    async create( personaSede: PersonaSede ): Promise<RespuestaGrap> {
+    async create( personaSede: PersonasSede ): Promise<RespuestaGrap> {
         try {
             const values = [
+                personaSede.id_personas_sede,
                 personaSede.id_persona,
-                personaSede.id_sede,
-                personaSede.id_tipo_persona,
+                personaSede.id_sede
             ];
             await this.pool.query(personasSedesQueries.create, values);
             return { exitoso: 'S', mensaje: 'Persona sede creada correctamente' };
@@ -41,13 +42,13 @@ export class PersonasSedesDataSourceImpl implements PersonasSedesDataSource {
         }
     }
 
-    async updateById( id_sede: string, personaSede: PersonaSede ): Promise<RespuestaGrap> {
+    async updateById( id_personas_sede: string, personaSede: PersonasSede ): Promise<RespuestaGrap> {
         try {
             const values = [
+                personaSede.id_personas_sede,
                 personaSede.id_persona,
                 personaSede.id_sede,
-                personaSede.id_tipo_persona,
-                id_sede,
+                id_personas_sede,
             ];
             await this.pool.query(personasSedesQueries.updateById, values);
             return { exitoso: 'S', mensaje: 'Persona sede actualizada correctamente' };
@@ -56,9 +57,9 @@ export class PersonasSedesDataSourceImpl implements PersonasSedesDataSource {
         }
     }
 
-    async deleteById( id_sede: string ): Promise<RespuestaGrap> {
+    async deleteById( id_personas_sede: string ): Promise<RespuestaGrap> {
         try {
-            await this.pool.query(personasSedesQueries.deleteById, [id_sede]);
+            await this.pool.query(personasSedesQueries.deleteById, [id_personas_sede]);
             return { exitoso: 'S', mensaje: 'Persona sede eliminada correctamente' };
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al eliminar persona sede: ' + error };

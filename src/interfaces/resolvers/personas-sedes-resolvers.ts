@@ -9,7 +9,7 @@ import { GetPersonaSedeUseCaseImpl,
 import { PersonasSedesDataSourceImpl } from '../../infrastructure/datasource/personas-sedes-datasource-impl';
 import { PersonasSedesRepositoryImpl } from '../../infrastructure/repositories/personas-sedes-repository-impl';
 import { PersonasSedesController } from '../../aplication/controller/personas-sedes-controller';
-import { PersonaSede } from '../../domain/entities/persona-sede';
+import { PersonasSede } from '../../domain/entities/personas-sede';
 
 const personasSedesDataSource = new PersonasSedesDataSourceImpl();
 const personasSedesRepository = new PersonasSedesRepositoryImpl(personasSedesDataSource);
@@ -30,12 +30,12 @@ const controller = new PersonasSedesController(
 
 export const personasSedesResolvers = {
     Query: {
-        getPersonaSede: (parent: any, args: { id_sede: string }) => controller.getById(args.id_sede),
+        getPersonaSede: (_: any, args: { id_sede: string }) => controller.getById(args.id_sede),
         getPersonasSedes: () => controller.getAll(),
     },
     Mutation: {
-        createPersonaSede: (parent: any, args: { personaSede: PersonaSede }) => controller.create(args.personaSede),
-        updatePersonaSede: (parent: any, args: { id_sede: string, personaSede: PersonaSede }) => controller.update(args.id_sede, args.personaSede),
-        deletePersonaSede: (parent: any, args: { id_sede: string }) => controller.delete(args.id_sede),
+        createPersonaSede: (_: any, args: { personasSede: PersonasSede }) => controller.create(args.personasSede),
+        updatePersonaSede: (_: any, args: { id_sede: string, personasSede: PersonasSede }) => controller.update(args.id_sede, args.personasSede),
+        deletePersonaSede: (_: any, args: { id_sede: string }) => controller.delete(args.id_sede),
     },
 };

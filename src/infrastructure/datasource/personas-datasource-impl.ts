@@ -51,13 +51,13 @@ import { personaQueries } from "../db/personas-queries";
         }
     }
     
-    async getAliadosSede(id_usuario: string): Promise<Persona[]> {
+    async getAliadosSede(id_usuario: string): Promise<Persona[] | RespuestaGrap> {
         try {
             const res = await this.pool.query(personaQueries.getAliadosSede, [id_usuario]);
             return res.rows || [];
         } catch (error) {
             console.error('Error en getAliadosSede:', error);
-            return []; // Always return an array, even on error
+            return { exitoso: "N", mensaje: 'No se pudo obtener aliados: ' + error };
         }
     }
     

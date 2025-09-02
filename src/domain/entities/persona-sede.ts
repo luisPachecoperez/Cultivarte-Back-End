@@ -34,6 +34,6 @@ export interface PersonaSede {
         fecha_creacion?          : Date | null;
         id_modificado_por?       : string | null;
         fecha_modificacion?      : Date | null;
-        id_sede: string;
+        id_sede                  : string;
 }
       

@@ -11,6 +11,7 @@ import { personaTypeDefs } from '../schema/personas-schema';
 import { poblacionTypeDefs } from '../schema/poblaciones-schema';
 import { sedeTypeDefs } from '../schema/sede-schema';
 import { personaSedeTypeDefs } from '../schema/persona-sede-schema';
+import { personasGrupoInteresTypeDefs } from '../schema/personas-grupo-interes-schema';
 
 export const typeDefs = gql`
   ${parametroDetalleTypeDefs}
@@ -24,4 +25,5 @@ export const typeDefs = gql`
   ${poblacionTypeDefs}
   ${sedeTypeDefs}
   ${personaSedeTypeDefs}
+  ${personasGrupoInteresTypeDefs}
 `;
