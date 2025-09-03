@@ -34,14 +34,5 @@ export const personaQueries = {
                             ON pgi.id_grupo_interes = pd.id_parametro_detalle
                             LEFT JOIN personas_sedes ps
                             ON p.id_persona = ps.id_persona
-                            WHERE UPPER(pd.nombre) = 'BENEFICIARIOS_CULTIVARTE';`,
-
-    getBeneficiarios: `SELECT 
-                        pd.id_parametro_detalle AS id_persona,
-                        pd.nombre AS nombre_completo,
-                        ''::text AS id_sede
-                        FROM parametros_detalle pd
-                        INNER JOIN parametros_generales pg
-                        ON pd.id_parametro_general = pg.id_parametro_general
-                        WHERE pg.nombre_parametro = 'BENEFICIARIOS_CULTIVARTE';`
+                            WHERE UPPER(pd.nombre) = 'BENEFICIARIOS_CULTIVARTE';`
 };
