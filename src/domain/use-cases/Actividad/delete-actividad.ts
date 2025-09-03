@@ -11,6 +11,7 @@ export class DeleteActividadUseCaseImpl implements DeleteActividadUseCase {
     ) {}
 
     execute( id_actividad: string ): Promise<RespuestaGrap> {
+        console.log(id_actividad);
         return this.actividadRepository.deleteById( id_actividad );
     }
 }

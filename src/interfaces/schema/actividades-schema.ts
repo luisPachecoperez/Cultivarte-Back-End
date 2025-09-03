@@ -129,7 +129,7 @@ export const actividadesTypeDefs = gql`
     type Mutation {
         createActividadAndSesiones(data: ActividadInput!): Actividad
         createActividad(data: ActividadInput!): RespuestaGrap
-        updateActividad(id: ID!, data: ActividadInput!): Actividad
-        deleteActividad(id: ID!): Boolean
+        updateActividad(id_actividad: ID!, data: ActividadInput!): Actividad
+        deleteActividad(id_actividad: ID!): RespuestaGrap
     }
 `;

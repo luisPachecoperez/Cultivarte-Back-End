@@ -122,7 +122,6 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         
             // id_programa validation
             const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
-            console.log( 'id_programa', id_programa);
             if (!id_programa) {
                 return {
                     exitoso: "N",
@@ -405,7 +404,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     async deleteById(id_actividad: string): Promise<RespuestaGrap> {
         try {
-            const result = await this.pool.query( actividadQueries.deleteActividad, [id_actividad] );
+            await this.pool.query( actividadQueries.deleteActividad, [id_actividad] );
             return { exitoso: 'S', mensaje: 'Actividad eliminada exitosamente' };
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al eliminar actividad: ' + error };

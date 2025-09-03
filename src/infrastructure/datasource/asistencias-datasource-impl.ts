@@ -70,7 +70,6 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
 
     async updateAsistencias(asistenciaSesiones: AsistenciaSesiones): Promise<RespuestaGrap> {
 
-        console.log(asistenciaSesiones);
         if (asistenciaSesiones.nuevos === null || asistenciaSesiones.nuevos.length === 0) {
 
             await this.pool.query(asistenciasQueries.updateSesiones, [
