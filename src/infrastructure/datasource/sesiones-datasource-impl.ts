@@ -97,11 +97,9 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             const payload: any = (editarSesiones as any).sesiones ?? editarSesiones;
 
             // nuevas sesiones
-            if (payload?.nuevos?.length) {
-                console.log(payload.nuevos);
+            if (payload?.nuevos?.length) {    
                 for (const nuevaSesion of payload.nuevos) {
                     const id_sesion = nuevaSesion.id_sesion || randomUUID();
-                    console.log(id_sesion);
                     await client.query(sesionesQueries.create, [
                         id_sesion,
                         nuevaSesion.id_actividad,

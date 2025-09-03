@@ -55,7 +55,7 @@ export const actividadesResolvers = {
   Mutation: {
     createActividadAndSesiones: (_: any, args: { data:Actividad }) => controller.createActividadAndSesiones( args.data ),
     createActividad: (_: any, args: { data:Actividad }) => controller.createActividad( args.data ),
-    updateActividad: (_: any, args: { id:string, data:Actividad }) => controller.updateActividad( args.id, args.data ),
-    deleteActividad: (_: any, args: { id:string }) => controller.deleteActividad( args.id )
+    updateActividad: (_: any, args: { id_actividad:string, data:Actividad }) => controller.updateActividad( args.id_actividad, args.data ),
+    deleteActividad: (_: any, args: { id_actividad:string }) => controller.deleteActividad( args.id_actividad )
   }
 }

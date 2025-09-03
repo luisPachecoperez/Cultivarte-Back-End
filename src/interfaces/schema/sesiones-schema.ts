@@ -67,7 +67,7 @@ export const sesionesTypeDefs = gql`
     }
 
     type Mutation {
-        createSesion(input: CreateSesionInput!): Sesion!
+        createSesion(input: CreateSesionInput!): RespuestaGrap!
         updateSesion(input: UpdateSesionInput!): RespuestaGrap!
         updateSesiones(input: EditarSesiones!): RespuestaGrap!
         deleteSesion(id_sesion: ID!): Boolean!
