@@ -4,19 +4,11 @@ import path from 'path';
 
 // Create a new pool with optimized settings
 export const pgPool = new Pool({
-  host: 'fbd-orlandojvasquez74-6861.g.aivencloud.com',
-  port: 17873,
-  user: 'avnadmin',
-  password: 'AVNS_I8LEBN1f5ENDdq_-a3P',
-  database: 'defaultdb',
-  ssl: {
-    rejectUnauthorized: false,
-    ca: fs.readFileSync(path.join(__dirname, '../../../certs/ca.pem')).toString()
-  },
-  max: 20, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection could not be established
-  maxUses: 7500, // Close and replace a connection after it has been used this many times
+  host: 'localhost',
+  port: 5432,
+  user: 'postgres',
+  password: 'Ambiente2a',
+  database: 'Cultivarte',
 });
 
 // Handle pool errors
