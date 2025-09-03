@@ -41,10 +41,10 @@ export const actividadesTypeDefs = gql`
         hora_inicio: String!
         hora_fin: String!
         nro_asistentes: Int!
-        id_creado_por: ID!
-        fecha_creacion: String!
-        id_modificado_por: ID!
-        fecha_modificacion: String!
+        id_creado_por: ID
+        fecha_creacion: String
+        id_modificado_por: ID
+        fecha_modificacion: String
     }
 
     type PreCreateEvent {
@@ -58,7 +58,7 @@ export const actividadesTypeDefs = gql`
     }
 
     type PreEditActividad {
-        id_programa: ID!
+        id_programa: ID
         sedes: [SedeItem!]!
         tiposDeActividad: [TipoActividadItem!]!
         aliados: [AliadoItem!]!

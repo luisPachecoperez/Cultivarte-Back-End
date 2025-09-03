@@ -25,10 +25,9 @@ export const sesionesQueries = {
                 hora_fin = $5, 
                 imagen = $6, 
                 nro_asistentes = $7, 
-                id_creado_por = $8, 
-                fecha_creacion = $9, 
-                id_modificado_por = $10, 
-                fecha_modificacion = $11 
+   
+                id_modificado_por = $8, 
+                fecha_modificacion = $9 
                 WHERE id_sesion = $1 RETURNING *`,
 
     deleteById: `DELETE FROM sesiones WHERE id_sesion = $1`,
@@ -48,17 +47,15 @@ export const sesionesQueries = {
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
                 
     updateSesionesById: `UPDATE sesiones SET 
-                id_sesion = $1,
-                id_actividad = $2,
+                id_sesion = $1::uuid,
+                id_actividad = $2::uuid,
                 fecha_actividad = $3,
                 hora_inicio = $4,
                 hora_fin = $5,
                 imagen = $6,
                 nro_asistentes = $7,
-                id_creado_por = $8,
-                fecha_creacion = $9,
-                id_modificado_por = $10,
-                fecha_modificacion = $11
+                id_modificado_por = $8::uuid,
+                fecha_modificacion = $9
                 WHERE id_sesion = $1 RETURNING *`,
 
     getSessionesSede: `SELECT s.*

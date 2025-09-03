@@ -68,8 +68,6 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             sesion.hora_fin,
             sesion.imagen,
             sesion.nro_asistentes,
-            sesion.id_creado_por,
-            sesion.fecha_creacion,
             sesion.id_modificado_por,
             sesion.fecha_modificacion,
             ];
@@ -123,6 +121,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
              // modificadas sesiones
             if (payload?.modificados?.length) {
                 for (const sesionModificada of payload.modificados) {
+                    console.log("Sesion modificada:",sesionModificada);
                     await client.query(sesionesQueries.updateSesionesById, [
                         sesionModificada.id_sesion,
                         sesionModificada.id_actividad,
@@ -131,8 +130,6 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
                         sesionModificada.hora_fin,
                         sesionModificada.imagen ?? '',
                         sesionModificada.nro_asistentes ?? 0,
-                        sesionModificada.id_creado_por ?? null,
-                        new Date(),
                         sesionModificada.id_modificado_por ?? null,
                         new Date(),
                     ]);
