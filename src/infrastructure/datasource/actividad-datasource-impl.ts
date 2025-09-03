@@ -152,7 +152,32 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                 };
             }
             
-            const sesiones: Sesion[] = sesionesRes.rows ?? [];
+            // Format actividad dates
+            if (actividad.fecha_actividad) {
+                actividad.fecha_actividad = this.formatDateToYYYYMMDD(actividad.fecha_actividad) as any;
+            }
+            if (actividad.fecha_creacion) {
+                actividad.fecha_creacion = this.formatDateToYYYYMMDD(actividad.fecha_creacion) as any;
+            }
+            if (actividad.fecha_modificacion) {
+                actividad.fecha_modificacion = this.formatDateToYYYYMMDD(actividad.fecha_modificacion) as any;
+            }
+            
+            let sesiones: Sesion[] = sesionesRes.rows ?? [];
+            
+            // Format session dates
+           sesiones.forEach(sesion => {
+                if (sesion.fecha_actividad) {
+                    sesion.fecha_actividad = this.formatDateToYYYYMMDD(sesion.fecha_actividad) as any;
+                }
+                if (sesion.fecha_creacion) {
+                    sesion.fecha_creacion = this.formatDateToYYYYMMDD(sesion.fecha_creacion) as any;
+                }
+                if (sesion.fecha_modificacion) {
+                    sesion.fecha_modificacion = this.formatDateToYYYYMMDD(sesion.fecha_modificacion) as any;
+                }
+            });
+
             // Construcción de nombreDeActividad respetando la interfaz NombreActividad { id_tipo_actividad, nombre }
             const nombreEventosRows = nombreDeActividadRes.rows ?? [];
             const nombresDeActividad: NombresActividad[] = [];
@@ -180,6 +205,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                     nombresDeActividad.push({ id_tipo_actividad: '', nombre: '' });
                 }
             }
+            
             const frecuencias: FrecuenciaItem[] = frecuenciasRes.rows ?? [];
             const preEditEventData: PreEditActividad = {
                 id_programa,
@@ -195,13 +221,15 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
             return preEditEventData;
         } catch (error) {
-        // Dejar que la capa superior maneje el error con su propio logger
+            console.error('Error in getPreEditActividad:', error);
             return {
                 exitoso: "N",
-                mensaje: 'No se pudo obtener actividades por sedes: ' + error
+                mensaje: 'Error al obtener datos para editar actividad: ' + error
             };
         }
     }
+
+ 
 
     async getAll(): Promise<Actividad[] | RespuestaGrap> {
         try {
@@ -454,5 +482,14 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         }
         
         return sesiones;
+    }
+
+    // Utility function to format date to YYYY-MM-DD
+    private formatDateToYYYYMMDD(date: Date | string | number): string {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 }

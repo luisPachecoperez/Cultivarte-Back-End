@@ -1,10 +1,10 @@
 import { PersonaGrupoInteres, RespuestaGrap, PersonasGruposInteresRepository } from "../../";
 
-export interface CreatePersonaGrupoInteres {
+export interface CreatePersonaGrupoInteresUseCase {
     execute( personaGrupoInteres: PersonaGrupoInteres ): Promise<RespuestaGrap>;
 }
 
-export class CreatePersonaGrupoInteresImpl implements CreatePersonaGrupoInteres {
+export class CreatePersonaGrupoInteresUseCaseImpl implements CreatePersonaGrupoInteresUseCase {
     constructor(
         private personasGruposInteresRepository: PersonasGruposInteresRepository
     ) {}

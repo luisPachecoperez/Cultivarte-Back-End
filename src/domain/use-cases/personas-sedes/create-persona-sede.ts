@@ -1,9 +1,9 @@
-import { PersonaSede,
+import { PersonasSede,
          RespuestaGrap,
          PersonasSedesRepository } from "../../";
 
 export interface CreatePersonaSedeUseCase {
-    execute(personaSede: PersonaSede): Promise<RespuestaGrap>;
+    execute(personaSede: PersonasSede): Promise<RespuestaGrap>;
 }   
 
 export class CreatePersonaSedeUseCaseImpl implements CreatePersonaSedeUseCase {
@@ -11,7 +11,7 @@ export class CreatePersonaSedeUseCaseImpl implements CreatePersonaSedeUseCase {
         private personaSedeRepository: PersonasSedesRepository
     ) {}
 
-    execute(personaSede: PersonaSede): Promise<RespuestaGrap> {
+    execute(personaSede: PersonasSede): Promise<RespuestaGrap> {
         return this.personaSedeRepository.create(personaSede);
     }
 }

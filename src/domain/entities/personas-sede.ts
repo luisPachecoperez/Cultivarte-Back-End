@@ -1,4 +1,4 @@
-export interface PersonaSede {
+export interface PersonasSede {
     id_personas_sede    : string;   // UUID
     id_persona          : string;         // UUID
     id_sede             : string;            // UUID

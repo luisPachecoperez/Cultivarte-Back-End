@@ -36,4 +36,5 @@ export class SesionesRepositoryImpl implements SesionRepository {
     async updateSesiones( editarSesiones: EditarSesiones ): Promise<RespuestaGrap> {
         return this.sesionesDataSource.updateSesiones( editarSesiones );
     }
+    
 }

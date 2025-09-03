@@ -2,8 +2,8 @@ import { PersonaGrupoInteres, RespuestaGrap } from "../";
 
 export interface PersonasGruposInteresRepository {
     getAll(): Promise<PersonaGrupoInteres[] | RespuestaGrap>;
-    getById( id_sede: string ): Promise<PersonaGrupoInteres | RespuestaGrap>;
-    create( personaSede: PersonaGrupoInteres ): Promise<RespuestaGrap>;
-    updateById( id_sede: string, personaSede: PersonaGrupoInteres ): Promise<RespuestaGrap>;
-    deleteById( id_sede: string ): Promise<RespuestaGrap>;
+    getById( id_persona_grupo_interes: string ): Promise<PersonaGrupoInteres | RespuestaGrap>;
+    create( personaGrupoInteres: PersonaGrupoInteres ): Promise<RespuestaGrap>;
+    updateById( id_persona_grupo_interes: string, personaGrupoInteres: PersonaGrupoInteres ): Promise<RespuestaGrap>;
+    deleteById( id_persona_grupo_interes: string ): Promise<RespuestaGrap>;
 }

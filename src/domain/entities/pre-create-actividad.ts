@@ -53,9 +53,9 @@ export interface PreCreateActividad {
 
 export interface NombreEventos {
    id_parametro_detalle :string;
-   nombre               :string;
+   nombre               :string
 }
   
 export interface RespuestaEventos {
-    NOMBRE_EVENTOS: NombreEventos;
+    NOMBRE_EVENTOS :NombreEventos;
 }

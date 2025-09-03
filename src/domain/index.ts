@@ -116,7 +116,7 @@ export * from './use-cases/sedes/create-sede';
 export * from './use-cases/sedes/update-sede';
 
 /*Exports Personas Sede */
-export * from './entities/persona-sede';
+export * from './entities/personas-sede';
 export * from './repositories/personas-sedes-repository';
 export * from './datasources/personas-sedes-datasource';
 export * from './use-cases/personas-sedes/create-persona-sede';
@@ -133,4 +133,4 @@ export * from './use-cases/personas-grupo-interes/create-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/update-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/delete-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/get-persona-grupo-interes';
-export * from './use-cases/personas-grupo-interes/get-persona-grupo-interes';
+export * from './use-cases/personas-grupo-interes/get-personas-grupo-interes';

@@ -9,13 +9,13 @@ import { Sesion } from "./sesion";
 
 
 export interface PreEditActividad {
-    id_programa:        string;
-    sedes:              SedeItem[];
-    tiposDeActividad:   TipoActividadItem[];
-    aliados:            AliadoItem[];
-    responsables:       ResponsableItem[];
-    nombresDeActividad: NombresActividad[];
-    frecuencias:        FrecuenciaItem[];
-    actividad:          Actividad;
-    sesiones:           Sesion[];
+    id_programa        : string;
+    sedes              : SedeItem[];
+    tiposDeActividad   : TipoActividadItem[];
+    aliados            : AliadoItem[];
+    responsables       : ResponsableItem[];
+    nombresDeActividad : NombresActividad[];
+    frecuencias        : FrecuenciaItem[];
+    actividad          : Actividad;
+    sesiones           : Sesion[];
 }

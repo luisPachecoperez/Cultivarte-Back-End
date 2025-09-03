@@ -1,9 +1,10 @@
-import { PersonaSede,
+import { PersonasSede,
          RespuestaGrap,
-         PersonasSedesRepository } from "../../";
+         PersonasSedesRepository, 
+         PersonaSede} from "../../";
 
 export interface UpdatePersonaSedeUseCase {
-    execute(id_sede: string, personaSede: PersonaSede): Promise<RespuestaGrap>;
+    execute(id_personas_sede: string, personaSede: PersonasSede): Promise<RespuestaGrap>;
 }   
 
 export class UpdatePersonaSedeUseCaseImpl implements UpdatePersonaSedeUseCase {
@@ -11,7 +12,7 @@ export class UpdatePersonaSedeUseCaseImpl implements UpdatePersonaSedeUseCase {
         private personaSedeRepository: PersonasSedesRepository
     ) {}
 
-    execute(id_sede: string, personaSede: PersonaSede): Promise<RespuestaGrap> {
-        return this.personaSedeRepository.updateById(id_sede, personaSede);
+    execute(id_personas_sede: string, personasSede: PersonasSede): Promise<RespuestaGrap> {
+        return this.personaSedeRepository.updateById(id_personas_sede, personasSede);
     }
 }

@@ -77,4 +77,13 @@ export class PersonaRepositoryImpl implements PersonaRepository {
             return { exitoso: "N", mensaje: 'No se pudo eliminar persona: ' + error };
         }
     }
+    async getBeneficiarios(): Promise<Persona[] | RespuestaGrap> {
+        try {
+            const result = await this.personaDataSource.getBeneficiarios();
+            return Array.isArray(result) ? result : [];
+        } catch (error) {
+            console.error('Error en getBeneficiarios:', error);
+            return { exitoso: "N", mensaje: 'No se pudo obtener beneficiarios: ' + error };
+        }
+    }
 }
