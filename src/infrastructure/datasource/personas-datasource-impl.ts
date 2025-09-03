@@ -69,5 +69,13 @@ import { personaQueries } from "../db/personas-queries";
             return { exitoso: "N", mensaje: 'No se pudo obtener beneficiarios: ' + error };
         }
     }
-    
+    async getBeneficiarios(): Promise<Persona[] | RespuestaGrap> {
+        try {
+            const res = await this.pool.query(personaQueries.getBeneficiarios);
+            return res.rows;
+        } catch (error) {
+            return { exitoso: "N", mensaje: 'No se pudo obtener beneficiarios: ' + error };
+        }
+    }
+   
 }
