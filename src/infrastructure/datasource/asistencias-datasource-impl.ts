@@ -191,6 +191,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
                     id_sede: actividad.id_sede || '1', // Usar id_sede de la actividad o valor por defecto
                     numero_asistentes: parseInt(sesion.nro_asistentes) || 0,
                     foto: foto,
+                    descripcion: sesion.descripcion || '',
                     imagen: sesion.imagen || '',
                     sedes: sedes.rows || [],
                     beneficiarios: beneficiarios.rows || [],
