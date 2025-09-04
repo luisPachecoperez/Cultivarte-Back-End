@@ -13,6 +13,7 @@ import { poblacionesResolvers } from '../resolvers/poblaciones-resolvers';
 import { sedeResolvers } from '../resolvers/sede-resolvers';
 import { personasSedesResolvers } from '../resolvers/personas-sedes-resolvers';
 import { personasGrupoInteresResolvers } from '../resolvers/personas-grupo-interes-resolver';
+import { personasProgramaResolvers } from '../resolvers/personas-programa';
 
 export const resolvers = mergeResolvers([
   parametroDetalleResolvers,
@@ -26,5 +27,6 @@ export const resolvers = mergeResolvers([
   poblacionesResolvers,
   sedeResolvers,
   personasSedesResolvers,
-  personasGrupoInteresResolvers
+  personasGrupoInteresResolvers,
+  personasProgramaResolvers
 ]);

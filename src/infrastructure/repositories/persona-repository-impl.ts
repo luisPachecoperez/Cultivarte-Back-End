@@ -18,9 +18,9 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         }
     }
 
-    async getById(id_persona: string): Promise<Persona | RespuestaGrap> {
+    async getById( id_persona: string ): Promise<Persona | RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.getById(id_persona);
+            const result = await this.personaDataSource.getById( id_persona );
             return result;
         } catch (error) {
             console.error('Error en getById:', error);
@@ -28,9 +28,9 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         }
     }
 
-    async getAliadosSede(id_usuario: string): Promise<Persona[] | RespuestaGrap> {
+    async getAliadosSede( id_usuario: string ): Promise<Persona[] | RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.getAliadosSede(id_usuario);
+            const result = await this.personaDataSource.getAliadosSede( id_usuario );
             return Array.isArray(result) ? result : [];
         } catch (error) {
             console.error('Error en getAliadosSede:', error);
@@ -48,9 +48,9 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         }
     }
     
-    async createPersona(persona: Persona): Promise<Persona | RespuestaGrap> {
+    async createPersona( persona: Persona ): Promise<Persona | RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.createPersona(persona);
+            const result = await this.personaDataSource.createPersona( persona );
             return result;
         } catch (error) {
             console.error('Error en createPersona:', error);
@@ -58,9 +58,9 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         }
     }
     
-    async updatePersona(id_persona: string, persona: Persona): Promise<Persona | RespuestaGrap> {
+    async updatePersona( id_persona: string, persona: Persona ): Promise<Persona | RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.updatePersona(id_persona, persona);
+            const result = await this.personaDataSource.updatePersona( id_persona, persona );
             return result;
         } catch (error) {
             console.error('Error en updatePersona:', error);
@@ -68,9 +68,9 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         }
     }
     
-    async deletePersona(id_persona: string): Promise<RespuestaGrap> {
+    async deletePersona( id_persona: string ): Promise<RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.deletePersona(id_persona);
+            const result = await this.personaDataSource.deletePersona( id_persona );
             return result;
         } catch (error) {
             console.error('Error en deletePersona:', error);
