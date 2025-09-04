@@ -134,3 +134,14 @@ export * from './use-cases/personas-grupo-interes/update-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/delete-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/get-persona-grupo-interes';
 export * from './use-cases/personas-grupo-interes/get-personas-grupo-interes';
+
+/*Exports Personas Programa */
+export * from './entities/persona-programa';
+export * from './repositories/personas-programa-repository';
+export * from './datasources/personas-programa-datasource';
+export * from './use-cases/personas-programa/create-persona-programa';
+export * from './use-cases/personas-programa/update-persona-programa';
+export * from './use-cases/personas-programa/delete-persona-programa';
+export * from './use-cases/personas-programa/get-persona-programa';
+export * from './use-cases/personas-programa/get-personas-programa';
+
