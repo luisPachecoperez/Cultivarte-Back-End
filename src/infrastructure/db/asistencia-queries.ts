@@ -66,20 +66,20 @@ export const asistenciasQueries = {
                         nro_asistentes = $4,
                         descripcion = $5
                     WHERE id_sesion = $1 RETURNING *`,
-    
-    actividadSedesResult: `SELECT asi.*
+    //Cambio Nro. 1
+    asistenciaSedesResult: `SELECT asi.*
                             FROM asistencias asi
                             JOIN sesiones s
                             ON asi.id_sesion = s.id_sesion
                             JOIN actividades a
                             ON s.id_actividad = a.id_actividad
-                            WHERE s.fecha_actividad BETWEEN :fecha_inicio AND :fecha_fin
+                            WHERE s.fecha_actividad BETWEEN $2 AND $3
                             AND (
                                 -- Caso 1: usuario tiene sedes → solo asistencias de esas sedes
                                 EXISTS (
                                     SELECT 1
                                     FROM personas_sedes ps
-                                    WHERE ps.id_persona = :idPersona
+                                    WHERE ps.id_persona = $1
                                     AND ps.id_sede = a.id_sede
                                 )
                                 OR
@@ -87,7 +87,7 @@ export const asistenciasQueries = {
                                 NOT EXISTS (
                                     SELECT 1
                                     FROM personas_sedes ps
-                                    WHERE ps.id_persona = :idPersona
+                                    WHERE ps.id_persona = $1
                                 )
                             );`,
                             

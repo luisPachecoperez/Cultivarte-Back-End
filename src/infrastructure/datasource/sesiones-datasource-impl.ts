@@ -27,8 +27,9 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
         }
     }
 
-    async getSesionoesSede(id_usuario:string, fecha_inicio:string, fecha_fin:string)  : Promise<Sesion[] | RespuestaGrap> {
+    async getSesionesSede(id_usuario:string, fecha_inicio:string, fecha_fin:string)  : Promise<Sesion[] | RespuestaGrap> {
        try {
+            console.log("Consultando sesiones por sedes",id_usuario, fecha_inicio, fecha_fin);
             const getSessionesSedeRes = await this.pool.query( sesionesQueries.getSessionesSede, [id_usuario, fecha_inicio, fecha_fin] );
             return getSessionesSedeRes.rows;
         } catch (error) {

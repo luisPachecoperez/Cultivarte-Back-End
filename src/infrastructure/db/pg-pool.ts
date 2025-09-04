@@ -7,7 +7,7 @@ export const pgPool = new Pool({
   host: 'localhost',
   port: 5432,
   user: 'postgres',
-  password: 'Ambiente2a',
+  password: 'Mrrojvg0807',
   database: 'Cultivarte',
 });
 
@@ -17,7 +17,7 @@ export const initDbPool = () => {
     console.error('Unexpected error on idle client', err);
     // Don't crash the app on pool errors, but log them
   });
-  
+  console.log("Database connection established");
   // Test the connection
   return pgPool.query('SELECT NOW()')
     .then(() => console.log('Database connection established'))

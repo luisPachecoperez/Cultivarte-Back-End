@@ -11,6 +11,6 @@ export class GetSesionesSedesUseCaseImpl implements GetSesionesSedesUseCase {
     ) {}
     
     execute( id_usuario:string, fecha_inicio:string, fecha_fin:string ): Promise<Sesion[] | RespuestaGrap> {
-        return this.sesionesRepository.getSesionoesSede( id_usuario, fecha_inicio, fecha_fin );
+        return this.sesionesRepository.getSesionesSede( id_usuario, fecha_inicio, fecha_fin );
     }
 }
