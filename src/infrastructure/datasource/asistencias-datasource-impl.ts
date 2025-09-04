@@ -141,8 +141,12 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     
     async getPreAsistencia(id_sesion: string): Promise<PreAsistencia | RespuestaGrap> {
         try {
+            console.log('id_sesion:', id_sesion);
             const sesionResult = await this.pool.query(sesionesQueries.getById, [id_sesion]);
+
             const sesion = sesionResult.rows[0];
+            console.log('sesion object:', JSON.stringify(sesion, null, 2));
+            
             if (!sesion) {
                 return {
                     exitoso: 'N',
@@ -155,40 +159,53 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
             const actividadResult = await this.pool.query(asistenciasQueries.actividadResult, [actividadId]);
             const actividad = actividadResult.rows[0];
             
+            if (!actividad) {
+                return {
+                    exitoso: 'N',
+                    mensaje: 'No se encontró la actividad asociada a la sesión'
+                };
+            }
+            
             // Ejecutar consultas independientes en paralelo
-            const [ sedes, 
-                    beneficiarios, 
-                    asistentes_sesiones, 
-                    numero_asistentes,
-                    parametrosDetalleActividad
-                ] = await Promise.all([
+            try {
+                const [sedes, beneficiarios, asistentes_sesiones] = await Promise.all([
                     this.pool.query(asistenciasQueries.getSedes),
                     this.pool.query(asistenciasQueries.beneficiariosResult),
-                    this.pool.query(asistenciasQueries.getAsistentesSesiones, [actividadId]),
-                    this.pool.query(asistenciasQueries.numeroAsistentesResult, [actividadId]),
-                    this.pool.query(asistenciasQueries.parametrosDetalleActividadResult, [actividad.id_tipo_actividad]),
+                    this.pool.query(asistenciasQueries.getAsistentesSesiones, [id_sesion])
                 ]);
-            
-            const parametro_actividad = parametrosDetalleActividad.rows[0]; 
-            console.log("parametro actividad",parametro_actividad);
-            let foto = "";
-            if(parametro_actividad.nobre === "Actividad insutucional" || parametro_actividad.nombre === "Ludoteca viajera"){
-                foto = "S";
-            }else{
-                foto = "N";
-            }
 
-            return {
-                id_actividad: actividadId,
-                id_sesion: sesion.id_sesion,
-                id_sede: (sesion as any).id_sede ?? '',
-                numero_asistentes: sesion.nro_asistentes,
-                foto: foto,
-                imagen: sesion.imagen || '',
-                sedes: sedes.rows,
-                beneficiarios: beneficiarios.rows,
-                asistentes_sesiones: asistentes_sesiones.rows,
-            };
+                // Obtener parámetros de la actividad
+                const parametrosResult = await this.pool.query(
+                    asistenciasQueries.parametrosDetalleActividadResult, 
+                    [actividad.id_tipo_actividad]
+                );
+                const parametro_actividad = parametrosResult.rows[0];
+                
+                const foto = (parametro_actividad?.nombre === "Actividad institucional" || 
+                             parametro_actividad?.nombre === "Ludoteca viajera") ? "S" : "N";
+
+                // Crear objeto de respuesta
+                const preAsistencia: PreAsistencia = {
+                    id_sesion: sesion.id_sesion,
+                    id_sede: actividad.id_sede || '1', // Usar id_sede de la actividad o valor por defecto
+                    numero_asistentes: parseInt(sesion.nro_asistentes) || 0,
+                    foto: foto,
+                    imagen: sesion.imagen || '',
+                    sedes: sedes.rows || [],
+                    beneficiarios: beneficiarios.rows || [],
+                    asistentes_sesiones: asistentes_sesiones.rows || []
+                };
+
+                console.log('preAsistencia object:', JSON.stringify(preAsistencia, null, 2));
+                return preAsistencia;
+                
+            } catch (error) {
+                console.error('Error en consultas de pre-asistencia:', error);
+                return {
+                    exitoso: 'N',
+                    mensaje: 'Error al obtener datos de pre-asistencia: ' + error
+                };
+            }
         } catch (error) {
             return {
                 exitoso: 'N',
