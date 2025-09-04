@@ -4,6 +4,7 @@ export interface PreAsistencia {
   numero_asistentes      :number;
   foto                   :string;
   imagen                 :string;
+  descripcion            :string;
   sedes                  :SedeAsistencia[];
   beneficiarios          :Beneficiario[];
   asistentes_sesiones    :AsistenteSesion[];
