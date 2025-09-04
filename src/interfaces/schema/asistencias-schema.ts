@@ -3,7 +3,6 @@ import gql from "graphql-tag";
 export const asistenciasTypeDefs = gql` 
     type Asistencia {
         id_asistencia: ID!
-        id_actividad: ID!
         id_sesion: ID!
         id_persona: ID
 
@@ -14,16 +13,15 @@ export const asistenciasTypeDefs = gql`
     }
 
     input CreateAsistenciaInput {
-        id_actividad: ID!
         id_sesion: ID!
         id_persona: ID
         id_creado_por: ID
     }
 
     input UpdateAsistenciaInput {
-        id_asistencia: ID!
-        id_actividad: ID!
-        id_sesion: ID!
+        id_asistencia: ID
+        id_actividad: ID
+        id_sesion: ID
         id_persona: ID
         imagen: String
         numero_asistentes: Int
@@ -33,6 +31,8 @@ export const asistenciasTypeDefs = gql`
     
     input Nuevo {
         id_persona: ID!
+        id_asistencia: ID!
+        id_sesion: ID!
     }
         
     type PreAsistencia {
@@ -58,6 +58,11 @@ export const asistenciasTypeDefs = gql`
         id_sede: ID!
     }
 
+    type RespuestaGrap {
+        exitoso: String!
+        mensaje: String!
+    }
+
     type AsistenteSesion {
         id_persona: ID!
     }
@@ -70,10 +75,10 @@ export const asistenciasTypeDefs = gql`
     }
         
     type Mutation {
-        createAsistencia(input: CreateAsistenciaInput!): Asistencia!
-        updateAsistencia(id_asistencia: ID!, input: UpdateAsistenciaInput!): Asistencia!
+        createAsistencia(input: CreateAsistenciaInput!): RespuestaGrap!
+        updateAsistencia(id_asistencia: ID!, input: UpdateAsistenciaInput!): RespuestaGrap!
         updateAsistencias(input: UpdateAsistenciaInput!): RespuestaGrap!
-        deleteAsistencia(id_asistencia: ID!): Boolean!
+        deleteAsistencia(id_asistencia: ID!): RespuestaGrap!
         
     }
 `;

@@ -11,13 +11,13 @@ export const asistenciasQueries = {
                         id_modificado_por,
                         fecha_modificacion) 
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    updateAsistencia: `UPDATE asistencias SET 
-                        id_actividad = $2, 
-                        id_sesion = $3, 
-                        id_persona = $4, 
-                        id_modificado_por = $5, 
-                        fecha_modificacion = $6 
-                        WHERE id_asistencia = $1 RETURNING *`,
+    updateAsistencia: `INSERT INTO asistencias (
+                        id_asistencia,
+                        id_sesion,
+                        id_persona
+                        ) 
+                        VALUES ($1, $2, $3) RETURNING *`,
+
     deleteAsistencia: `DELETE FROM asistencias WHERE id_asistencia = $1 RETURNING *`,
     getSedes: `SELECT id_sede, nombre FROM sedes`,
         
