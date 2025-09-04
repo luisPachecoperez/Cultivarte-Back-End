@@ -7,8 +7,8 @@ export const pgPool = new Pool({
   host: 'localhost',
   port: 5432,
   user: 'postgres',
-  password: 'Ambiente2a',
-  database: 'Cultivarte',
+  password: '123456',
+  database: 'eventos',
 });
 
 // Handle pool errors

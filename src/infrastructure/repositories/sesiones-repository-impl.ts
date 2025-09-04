@@ -18,8 +18,8 @@ export class SesionesRepositoryImpl implements SesionRepository {
         return this.sesionesDataSource.getById( id_sesion );
     }
 
-    async getSesionoesSede( id_usuario:string, fecha_inicio:string, fecha_fin:string )  : Promise<Sesion[] | RespuestaGrap> {
-        return this.sesionesDataSource.getSesionoesSede( id_usuario, fecha_inicio, fecha_fin );
+    async getSesionesSede( id_usuario:string, fecha_inicio:string, fecha_fin:string )  : Promise<Sesion[] | RespuestaGrap> {
+        return this.sesionesDataSource.getSesionesSede( id_usuario, fecha_inicio, fecha_fin );
     }
     async createSesion( sesion: Sesion ): Promise<RespuestaGrap> {
         return this.sesionesDataSource.createSesion( sesion );

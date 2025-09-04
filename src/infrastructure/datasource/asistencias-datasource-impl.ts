@@ -36,7 +36,8 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     async getAsistenciasSede(id_usuario:string, fecha_inicio:string, fecha_fin:string): Promise<Asistencia[] | RespuestaGrap> {
        try {
 
-        const result = await this.pool.query( actividadQueries.actividadSedesResult, [id_usuario, fecha_inicio, fecha_fin] );
+       // const result = await this.pool.query( actividadQueries.actividadSedesResult, [id_usuario, fecha_inicio, fecha_fin] );
+        const result = await this.pool.query( asistenciasQueries.asistenciaSedesResult, [id_usuario, fecha_inicio, fecha_fin] );        
         return result.rows;
         
        } catch (error) {

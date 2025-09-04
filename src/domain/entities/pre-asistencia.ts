@@ -22,5 +22,6 @@ export interface Beneficiario {
 
 export interface AsistenteSesion {
   id_persona             :string;
+  eliminar               :"S" | "N"; 
 }
   

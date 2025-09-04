@@ -64,7 +64,7 @@ export const asistenciasTypeDefs = gql`
 
     type AsistenteSesion {
         id_persona: ID!
-        id_sesion: ID!
+        eliminar: String!
     }
 
     type Query {
