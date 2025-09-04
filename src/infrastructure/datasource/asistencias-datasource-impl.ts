@@ -51,8 +51,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     async createAsistencia(asistencia: Asistencia): Promise<RespuestaGrap> {
         try {       
             const result = await this.pool.query( asistenciasQueries.insertAsistencia, [
-                                                asistencia.id_asistencia, 
-                                                asistencia.id_actividad, 
+                                                asistencia.id_asistencia,  
                                                 asistencia.id_sesion,   
                                                 asistencia.id_persona, 
                                                 asistencia.id_creado_por, 
@@ -78,22 +77,18 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
                 asistenciaSesiones.imagen,
                 asistenciaSesiones.numero_asistentes,
                 asistenciaSesiones.descripcion,   
-          
             ]);
             return {
                 exitoso: 'S',
                 mensaje: 'Asistencia actualizada correctamente'
             };
         }else if (asistenciaSesiones.nuevos.length > 0){
-            
+            console.log("entro");
             for(let i = 0; i < asistenciaSesiones.nuevos.length; i++){
                 await this.pool.query(asistenciasQueries.updateAsistencia, [
-                    asistenciaSesiones.id_asistencia,
-                    asistenciaSesiones.id_actividad,
-                    asistenciaSesiones.id_sesion,
+                    asistenciaSesiones.nuevos[i].id_asistencia,
+                    asistenciaSesiones.nuevos[i].id_sesion,
                     asistenciaSesiones.nuevos[i].id_persona,
-                    asistenciaSesiones.id_modificado_por,
-                    asistenciaSesiones.fecha_modificacion
                 ]);
             }
             return {
@@ -113,7 +108,6 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         try {
             const result = await this.pool.query( asistenciasQueries.updateAsistencia, [   
                                                 id_asistencia,
-                                                asistencia.id_actividad,
                                                 asistencia.id_sesion,
                                                 asistencia.id_persona,
                                                 asistencia.id_modificado_por,

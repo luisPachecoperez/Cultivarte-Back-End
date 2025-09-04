@@ -1,6 +1,5 @@
 export interface Asistencia {
     id_asistencia:       string;        // UUID
-    id_actividad:        string;         // UUID
     id_sesion:           string;            // UUID
     id_persona?:         string | null;   // UUID opcional
     id_creado_por?:      string | null;      // UUID opcional
