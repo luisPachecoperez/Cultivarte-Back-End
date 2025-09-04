@@ -228,8 +228,6 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         }
     }
 
- 
-
     async getAll(): Promise<Actividad[] | RespuestaGrap> {
         try {
             const result = await this.pool.query( actividadQueries.actividadesResult );

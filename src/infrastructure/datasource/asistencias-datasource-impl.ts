@@ -158,26 +158,39 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
 
             // Derivar id_actividad desde la sesión para garantizar consistencia
             const actividadId = sesion.id_actividad;
-
+            const actividadResult = await this.pool.query(asistenciasQueries.actividadResult, [actividadId]);
+            const actividad = actividadResult.rows[0];
+            
             // Ejecutar consultas independientes en paralelo
-            const [sedes, beneficiarios, asistentes_sesiones, numero_asistentes] = await Promise.all([
-                this.pool.query(asistenciasQueries.getSedes),
-                this.pool.query(asistenciasQueries.beneficiariosResult),
-                this.pool.query(asistenciasQueries.getAsistentesSesiones, [actividadId]),
-                this.pool.query(asistenciasQueries.numeroAsistentesResult, [actividadId]),
-            ]);
-
-            const cantidad = numero_asistentes?.rows?.[0]?.cantidad_asistentes ?? 0;
+            const [ sedes, 
+                    beneficiarios, 
+                    asistentes_sesiones, 
+                    numero_asistentes,
+                    parametrosDetalleActividad
+                ] = await Promise.all([
+                    this.pool.query(asistenciasQueries.getSedes),
+                    this.pool.query(asistenciasQueries.beneficiariosResult),
+                    this.pool.query(asistenciasQueries.getAsistentesSesiones, [actividadId]),
+                    this.pool.query(asistenciasQueries.numeroAsistentesResult, [actividadId]),
+                    this.pool.query(asistenciasQueries.parametrosDetalleActividadResult, [actividad.id_tipo_actividad]),
+                ]);
+            
+            const parametro_actividad = parametrosDetalleActividad.rows[0]; 
+            console.log("parametro actividad",parametro_actividad);
+            let foto = "";
+            if(parametro_actividad.nobre === "Actividad insutucional" || parametro_actividad.nombre === "Ludoteca viajera"){
+                foto = "S";
+            }else{
+                foto = "N";
+            }
 
             return {
                 id_actividad: actividadId,
                 id_sesion: sesion.id_sesion,
-                // Si el esquema de sesiones no tiene id_sede, devolvemos vacío hasta ajustar la query de origen
                 id_sede: (sesion as any).id_sede ?? '',
                 numero_asistentes: sesion.nro_asistentes,
-                // Usar imagen como fallback para foto si no existe la columna foto
-                foto: (sesion as any).foto ?? sesion.imagen ?? '',
-                imagen: sesion.imagen ?? '',
+                foto: foto,
+                imagen: sesion.imagen || '',
                 sedes: sedes.rows,
                 beneficiarios: beneficiarios.rows,
                 asistentes_sesiones: asistentes_sesiones.rows,

@@ -27,14 +27,14 @@ export const asistenciasQueries = {
                             WHERE a.id_actividad = $1
                             AND s.fecha_actividad <= CURRENT_DATE;`,
     getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
-    beneficiariosResult: `SELECT 
-                                pd.id_parametro_detalle AS id_persona,
-                                pd.nombre AS nombre_completo,
-                                ''::text AS id_sede
-                                FROM parametros_detalle pd
-                                INNER JOIN parametros_generales pg
-                                ON pd.id_parametro_general = pg.id_parametro_general
-                                WHERE pg.nombre_parametro = 'BENEFICIARIOS_CULTIVARTE';`,
+    beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
+                        FROM personas p,
+                            personas_grupo_interes pgi,
+                            parametros_detalle pd, personas_sedes ps
+                        WHERE p.id_persona = pgi.id_persona
+                        AND pgi.id_grupo_interes = pd.id_parametro_detalle
+                        AND p.id_persona = ps.id_persona
+                        AND pd.nombre='BENEFICIARIO_CULTIVARTE';`,
     numeroAsistentesResult: `SELECT COUNT(DISTINCT a.id_persona) AS cantidad_asistentes
                             FROM asistencias a
                             JOIN sesiones s ON s.id_sesion = a.id_sesion
@@ -81,4 +81,10 @@ export const asistenciasQueries = {
                                     WHERE ps.id_persona = :idPersona
                                 )
                             );`,
+                            
+    parametrosDetalleActividadResult: `SELECT * 
+                                        FROM parametros_detalle pd
+                                        WHERE pd.id_parametro_detalle = $1;`,
+
+    actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 }

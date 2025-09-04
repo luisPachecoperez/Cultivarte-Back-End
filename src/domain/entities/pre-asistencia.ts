@@ -9,7 +9,7 @@ export interface PreAsistencia {
   beneficiarios          :Beneficiario[];
   asistentes_sesiones    :AsistenteSesion[];
 }
-  
+
 export interface SedeAsistencia {
   id_sede                :string;
   nombre                 :string;
