@@ -35,7 +35,7 @@ export const asistenciasResolvers = {
     Query: {
         getAsistencias: () => controller.getAsistencias(),
         getAsistencia: (_: any, args: { id:string }) => controller.getAsistencia(args.id),
-        getPreAsistencia: (_: any, args: { id_actividad:string, id_sesion:string }) => controller.getPreAsistencia( args.id_sesion),
+        getPreAsistencia: (_: any, args: { id_sesion:string }) => controller.getPreAsistencia( args.id_sesion),
         getAsistenciasSede: (_: any, args: { id_usuario:string, fecha_inicio:string, fecha_fin:string }) => controller.getAsistenciasSede( args.id_usuario, args.fecha_inicio, args.fecha_fin ),
     },
     Mutation: {

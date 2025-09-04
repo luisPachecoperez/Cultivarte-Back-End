@@ -1,5 +1,4 @@
 export interface PreAsistencia {
-  id_actividad           :string;
   id_sesion              :string;
   id_sede                :string;
   numero_asistentes      :number;

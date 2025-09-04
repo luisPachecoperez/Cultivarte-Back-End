@@ -22,10 +22,19 @@ export const asistenciasQueries = {
     getSedes: `SELECT id_sede, nombre FROM sedes`,
         
     getAsistentesSesiones: `SELECT DISTINCT a.id_persona
-                            FROM asistencias a
-                            JOIN sesiones s ON s.id_sesion = a.id_sesion
-                            WHERE a.id_actividad = $1
-                            AND s.fecha_actividad <= CURRENT_DATE;`,
+							FROM 
+								sesiones s1
+								join asistencias a on s1.id_sesion=a.id_sesion 
+							WHERE
+								s1.id_actividad in (
+										SELECT act.id_actividad
+										FROM 
+											actividades act
+											JOIN sesiones s on act.id_actividad=s.id_actividad
+										WHERE 
+											s.id_sesion= $1
+								)
+								AND s1.fecha_actividad  <= CURRENT_DATE`,
     getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
     beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
                         FROM personas p,
@@ -38,7 +47,7 @@ export const asistenciasQueries = {
     numeroAsistentesResult: `SELECT COUNT(DISTINCT a.id_persona) AS cantidad_asistentes
                             FROM asistencias a
                             JOIN sesiones s ON s.id_sesion = a.id_sesion
-                            WHERE a.id_actividad = $1;`,
+                            WHERE s.id_actividad = $1;`,
 
     insertSesiones: `INSERT INTO sesiones (
                         id_sesion,

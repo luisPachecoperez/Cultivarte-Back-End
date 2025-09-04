@@ -36,15 +36,14 @@ export const asistenciasTypeDefs = gql`
     }
         
     type PreAsistencia {
-        id_actividad: ID!
         id_sesion: ID!
         id_sede: ID!
         numero_asistentes: Int!
-        foto: String
-        imagen: String
-        sedes: [Sede!]!
-        beneficiarios: [Beneficiario!]!
-        asistentes_sesiones: [AsistenteSesion!]!
+        foto: String!
+        imagen: String!
+        sedes: [Sede]!
+        beneficiarios: [Beneficiario]!
+        asistentes_sesiones: [AsistenteSesion]!
     } 
     
     type Sede {
@@ -65,12 +64,13 @@ export const asistenciasTypeDefs = gql`
 
     type AsistenteSesion {
         id_persona: ID!
+        id_sesion: ID!
     }
 
     type Query {
         getAsistencia(id_asistencia: ID!): Asistencia
         getAsistencias: [Asistencia!]!
-        getPreAsistencia(id_sesion: ID!): PreAsistencia!
+        getPreAsistencia(id_sesion: ID!): PreAsistencia
         getAsistenciasSede(id_usuario: String, fecha_inicio: String, fecha_fin: String): [Asistencia!]!
     }
         
