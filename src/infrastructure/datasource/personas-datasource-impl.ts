@@ -7,7 +7,6 @@ import { personaQueries } from "../db/personas-queries";
     private pool = pgPool;
     
     async getAll(): Promise<Persona[] | RespuestaGrap> {
-        console.log("Consultando personas")
         try {
             const res = await this.pool.query(personaQueries.getAll);
             return res.rows;
