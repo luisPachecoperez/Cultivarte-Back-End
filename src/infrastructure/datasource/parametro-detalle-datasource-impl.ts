@@ -1,19 +1,19 @@
 import { ParametroDetalle, ParametroDetalleDataSource, RespuestaGrap } from "../../domain";
 import { pgPool } from "../db/pg-pool";
-import { parametrosGeneralesQueries } from "../db/parametros-generales-queries";
+import { parametrosDetalleQueries } from "../db/parametros-detalle-queries";
 
 export class ParametroDetalleDataSourceImpl implements ParametroDetalleDataSource {
     
     private pool = pgPool;
     
     async getAll(): Promise<ParametroDetalle[]> {
-        const getAllRes = await this.pool.query( parametrosGeneralesQueries.getAll );
+        const getAllRes = await this.pool.query( parametrosDetalleQueries.getAll );
         return getAllRes.rows;
     }
 
     async getById( id_parametro_detalle: string ): Promise<ParametroDetalle | RespuestaGrap> {
         try {
-            const getByIdRes = await this.pool.query( parametrosGeneralesQueries.getById, [id_parametro_detalle]);
+            const getByIdRes = await this.pool.query( parametrosDetalleQueries.getById, [id_parametro_detalle]);
             return getByIdRes.rows[0] || null;
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al obtener parametro detalle: ' + error };
@@ -30,7 +30,7 @@ export class ParametroDetalleDataSourceImpl implements ParametroDetalleDataSourc
                     parametroDetalle.valores,
                 parametroDetalle.estado
             ];
-            const result = await this.pool.query(parametrosGeneralesQueries.create, values);
+            const result = await this.pool.query(parametrosDetalleQueries.create, values);
             return result.rows[0];
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al crear parametro detalle: ' + error };
@@ -48,7 +48,7 @@ export class ParametroDetalleDataSourceImpl implements ParametroDetalleDataSourc
                 parametroDetalle.estado,
             ];
             
-            const result = await this.pool.query( parametrosGeneralesQueries.updateById, values );    
+            const result = await this.pool.query( parametrosDetalleQueries.updateById, values );    
             return result.rows[0];
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al actualizar parametro detalle: ' + error };
@@ -57,7 +57,7 @@ export class ParametroDetalleDataSourceImpl implements ParametroDetalleDataSourc
         
     async deleteById( id_parametro_detalle: string ): Promise<RespuestaGrap> {
         try {
-            await this.pool.query( parametrosGeneralesQueries.deleteById, [id_parametro_detalle] );
+            await this.pool.query( parametrosDetalleQueries.deleteById, [id_parametro_detalle] );
             return { exitoso: 'S', mensaje: 'Parametro detalle eliminado correctamente' };
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al eliminar parametro detalle: ' + error };
