@@ -33,6 +33,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             const getSessionesSedeRes = await this.pool.query( sesionesQueries.getSessionesSede, [id_usuario, fecha_inicio, fecha_fin] );
             return getSessionesSedeRes.rows;
         } catch (error) {
+            console.log(error);
             return { exitoso: "N", mensaje: "Error al obtener sesiones: " + error };
         }
     }
@@ -48,6 +49,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             sesion.hora_fin,
             sesion.imagen,
             sesion.nro_asistentes,
+            sesion.descripcion,
             sesion.id_creado_por,
             sesion.fecha_creacion,
             sesion.id_modificado_por,
@@ -69,6 +71,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
             sesion.hora_fin,
             sesion.imagen,
             sesion.nro_asistentes,
+            sesion.descripcion,
             sesion.id_modificado_por,
             sesion.fecha_modificacion,
             ];
@@ -109,6 +112,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
                         nuevaSesion.hora_fin,
                         nuevaSesion.imagen ?? '',
                         nuevaSesion.nro_asistentes ?? 0,
+                        nuevaSesion.descripcion ?? '',
                         nuevaSesion.id_creado_por ?? null,
                         new Date(),
                         nuevaSesion.id_creado_por ?? null,
@@ -129,6 +133,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
                         sesionModificada.hora_fin,
                         sesionModificada.imagen ?? '',
                         sesionModificada.nro_asistentes ?? 0,
+                        sesionModificada.descripcion ?? '',
                         sesionModificada.id_modificado_por ?? null,
                         new Date(),
                     ]);
@@ -149,7 +154,7 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
         } catch (error) {
             await client.query('ROLLBACK');
             console.error('Error updating sessions:', error);
-            return { exitoso: "N", mensaje: 'Error al actualizar sesiones'};
+            return { exitoso: "N", mensaje: 'Error al actualizar sesiones' + error };
         } finally {
             client.release();
         }

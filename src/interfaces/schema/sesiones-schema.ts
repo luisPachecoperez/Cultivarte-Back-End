@@ -10,7 +10,7 @@ export const sesionesTypeDefs = gql`
         hora_fin: String!
         imagen: String
         nro_asistentes: Int
-        descripcion : String
+        descripcion: String
         id_creado_por: ID
         fecha_creacion: String
         id_modificado_por: ID
@@ -25,6 +25,7 @@ export const sesionesTypeDefs = gql`
         hora_fin: String!
         imagen: String
         nro_asistentes: Int
+        descripcion: String
         id_creado_por: ID
         fecha_creacion: String
         id_modificado_por: ID
@@ -39,6 +40,7 @@ export const sesionesTypeDefs = gql`
         hora_fin: String
         imagen: String
         nro_asistentes: Int
+        descripcion: String
         id_creado_por: ID
         fecha_creacion: String
         id_modificado_por: ID
