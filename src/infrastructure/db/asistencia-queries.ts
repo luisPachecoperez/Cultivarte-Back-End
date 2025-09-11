@@ -21,20 +21,46 @@ export const asistenciasQueries = {
     deleteAsistencia: `DELETE FROM asistencias WHERE id_asistencia = $1 RETURNING *`,
     getSedes: `SELECT id_sede, nombre FROM sedes`,
         
-    getAsistentesSesiones: `SELECT DISTINCT a.id_persona
-							FROM 
-								sesiones s1
-								join asistencias a on s1.id_sesion=a.id_sesion 
-							WHERE
-								s1.id_actividad in (
-										SELECT act.id_actividad
-										FROM 
-											actividades act
-											JOIN sesiones s on act.id_actividad=s.id_actividad
-										WHERE 
-											s.id_sesion= $1
-								)
-								AND s1.fecha_actividad  <= CURRENT_DATE`,
+    getAsistentesSesiones: `SELECT DISTINCT 
+                            a.id_persona,
+                            CASE 
+                                WHEN s.id_sesion = $1
+                                    AND EXISTS (
+                                        SELECT 1 
+                                        FROM asistencias ax 
+                                        WHERE ax.id_sesion = $1
+                                    )
+                                THEN 'N'  -- Caso 1: la sesión sí tiene asistentes → no eliminar
+                                ELSE 'S'  -- Caso 2: la sesión no tiene asistentes → marcar eliminar
+                            END AS eliminar
+                        FROM asistencias a
+                        JOIN sesiones s ON a.id_sesion = s.id_sesion
+                        WHERE 
+                            (
+                                -- Caso 1: si la sesión tiene asistentes, solo muestro esos
+                                s.id_sesion = $1
+                                AND EXISTS (
+                                    SELECT 1 
+                                    FROM asistencias ax 
+                                    WHERE ax.id_sesion = $1
+                                )
+                            )
+                            OR
+                            (
+                                -- Caso 2: si la sesión no tiene asistentes, muestro anteriores de la misma actividad
+                                s.id_actividad = (
+                                    SELECT act.id_actividad
+                                    FROM actividades act
+                                    JOIN sesiones s2 ON act.id_actividad = s2.id_actividad
+                                    WHERE s2.id_sesion = $1
+                                )
+                                AND s.fecha_actividad <= CURRENT_DATE
+                                AND NOT EXISTS (
+                                    SELECT 1 
+                                    FROM asistencias ax 
+                                    WHERE ax.id_sesion = $1
+                                )
+                            );`,
     getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
     beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
                         FROM personas p,
@@ -66,7 +92,7 @@ export const asistenciasQueries = {
                         nro_asistentes = $4,
                         descripcion = $5
                     WHERE id_sesion = $1 RETURNING *`,
-    //Cambio Nro. 1
+    
     asistenciaSedesResult: `SELECT asi.*
                             FROM asistencias asi
                             JOIN sesiones s
@@ -96,4 +122,12 @@ export const asistenciasQueries = {
                                         WHERE pd.id_parametro_detalle = $1;`,
 
     actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
+
+    updateAsistenciaById: `UPDATE asistencias SET 
+                            id_sesion = $2, 
+                            id_persona = $3, 
+                            id_modificado_por = $4, 
+                            fecha_modificacion = $5 
+                            WHERE id_asistencia = $1 RETURNING *`,
+
 }

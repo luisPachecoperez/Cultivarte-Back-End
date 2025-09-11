@@ -35,8 +35,9 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     
     async getAsistenciasSede(id_usuario:string, fecha_inicio:string, fecha_fin:string): Promise<Asistencia[] | RespuestaGrap> {
        try {
-        const result = await this.pool.query( asistenciasQueries.asistenciaSedesResult, [id_usuario, fecha_inicio, fecha_fin] );
-        console.log("Resultados:", result.rows);
+
+       // const result = await this.pool.query( actividadQueries.actividadSedesResult, [id_usuario, fecha_inicio, fecha_fin] );
+        const result = await this.pool.query( asistenciasQueries.asistenciaSedesResult, [id_usuario, fecha_inicio, fecha_fin] );        
         return result.rows;
         
        } catch (error) {
@@ -106,7 +107,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     
     async updateById(id_asistencia: string, asistencia: Asistencia): Promise<RespuestaGrap> {
         try {
-            const result = await this.pool.query( asistenciasQueries.updateAsistencia, [   
+            const result = await this.pool.query( asistenciasQueries.updateAsistenciaById, [   
                                                 id_asistencia,
                                                 asistencia.id_sesion,
                                                 asistencia.id_persona,
@@ -190,6 +191,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
                     id_sede: actividad.id_sede || '1', // Usar id_sede de la actividad o valor por defecto
                     numero_asistentes: parseInt(sesion.nro_asistentes) || 0,
                     foto: foto,
+                    descripcion: sesion.descripcion || '',
                     imagen: sesion.imagen || '',
                     sedes: sedes.rows || [],
                     beneficiarios: beneficiarios.rows || [],

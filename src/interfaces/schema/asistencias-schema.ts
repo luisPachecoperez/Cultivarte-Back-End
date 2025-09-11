@@ -41,6 +41,7 @@ export const asistenciasTypeDefs = gql`
         numero_asistentes: Int!
         foto: String!
         imagen: String!
+        descripcion: String!
         sedes: [Sede]!
         beneficiarios: [Beneficiario]!
         asistentes_sesiones: [AsistenteSesion]!
@@ -64,7 +65,7 @@ export const asistenciasTypeDefs = gql`
 
     type AsistenteSesion {
         id_persona: ID!
-        id_sesion: ID!
+        eliminar: String!
     }
 
     type Query {

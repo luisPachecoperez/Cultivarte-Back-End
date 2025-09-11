@@ -20,11 +20,11 @@ const useCaseCreate = new CreateSesionUseCaseImpl( repository );
 const useCaseUpdate = new UpdateSesionUseCaseImpl( repository );
 const useCaseDelete = new DeleteSesionUseCaseImpl ( repository );
 const useCaseGetAll = new GetSesionesUseCaseImpl( repository );
-const useCasegetSesionesSede = new GetSesionesSedesUseCaseImpl( repository );
+const useCaseGetSesionesSede = new GetSesionesSedesUseCaseImpl( repository );
 const useCaseUpdateSesiones = new UpdateSesionesUseCaseImpl( repository );
 const controller = new SesionesController( useCaseGetAll,
                                            useCaseGetById,
-                                           useCasegetSesionesSede,
+                                           useCaseGetSesionesSede,
                                            useCaseCreate,
                                            useCaseUpdate,
                                            useCaseDelete,
