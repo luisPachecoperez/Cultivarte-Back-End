@@ -123,4 +123,11 @@ export const asistenciasQueries = {
 
     actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 
+    updateAsistenciaById: `UPDATE asistencias SET 
+                            id_sesion = $2, 
+                            id_persona = $3, 
+                            id_modificado_por = $4, 
+                            fecha_modificacion = $5 
+                            WHERE id_asistencia = $1 RETURNING *`,
+
 }

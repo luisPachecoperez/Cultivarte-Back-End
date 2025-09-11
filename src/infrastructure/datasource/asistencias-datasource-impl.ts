@@ -107,7 +107,7 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
     
     async updateById(id_asistencia: string, asistencia: Asistencia): Promise<RespuestaGrap> {
         try {
-            const result = await this.pool.query( asistenciasQueries.updateAsistencia, [   
+            const result = await this.pool.query( asistenciasQueries.updateAsistenciaById, [   
                                                 id_asistencia,
                                                 asistencia.id_sesion,
                                                 asistencia.id_persona,
