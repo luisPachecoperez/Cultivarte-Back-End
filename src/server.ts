@@ -21,10 +21,14 @@ async function startServer() {
     const server = new ApolloServer<BaseContext>({ typeDefs, resolvers });
     await server.start();
   
+    app.use(express.json({ limit: '10mb' }));//Para subir fotos grandes
+    app.use(express.urlencoded({ limit: '10mb', extended: true }));//Para subir fotos grandes
+
     // Configurar Swagger UI
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-    
-    app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server));
+    //Para subir fotos grandes limit 10mb
+    app.use('/graphql', cors(), express.json({ limit: '10mb' }), expressMiddleware(server));
+
     
     const PORT = process.env.PORT || 4000;
     const httpServer = app.listen(PORT, () => {
