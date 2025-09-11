@@ -6,6 +6,7 @@ export interface Sesion {
     hora_fin            :string;       // HH:mm:ss
     imagen              :string;
     nro_asistentes      :number;
+    descripcion         :string;
     id_creado_por       :string;
     fecha_creacion      :Date;   // YYYY-MM-DD
     id_modificado_por   :string;
