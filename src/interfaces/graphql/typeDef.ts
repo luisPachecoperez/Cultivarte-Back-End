@@ -13,6 +13,7 @@ import { sedeTypeDefs } from '../schema/sede-schema';
 import { personaSedeTypeDefs } from '../schema/persona-sede-schema';
 import { personasGrupoInteresTypeDefs } from '../schema/personas-grupo-interes-schema';
 import { personasProgramaSchema } from '../schema/personas-programa-schema';
+import { pingTypeDefs } from '../schema/ping-schema';
 
 export const typeDefs = gql`
   ${parametroDetalleTypeDefs}
@@ -28,4 +29,5 @@ export const typeDefs = gql`
   ${personaSedeTypeDefs}
   ${personasGrupoInteresTypeDefs}
   ${personasProgramaSchema}
+  ${pingTypeDefs}
 `;

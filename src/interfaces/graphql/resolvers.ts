@@ -14,6 +14,7 @@ import { sedeResolvers } from '../resolvers/sede-resolvers';
 import { personasSedesResolvers } from '../resolvers/personas-sedes-resolvers';
 import { personasGrupoInteresResolvers } from '../resolvers/personas-grupo-interes-resolver';
 import { personasProgramaResolvers } from '../resolvers/personas-programa';
+import { pingResolver } from '../resolvers/ping.resolvers';
 
 export const resolvers = mergeResolvers([
   parametroDetalleResolvers,
@@ -28,5 +29,6 @@ export const resolvers = mergeResolvers([
   sedeResolvers,
   personasSedesResolvers,
   personasGrupoInteresResolvers,
-  personasProgramaResolvers
+  personasProgramaResolvers,
+  pingResolver
 ]);

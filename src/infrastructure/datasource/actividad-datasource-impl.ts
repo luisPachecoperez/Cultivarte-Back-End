@@ -97,7 +97,6 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
     async getPreEditActividad( id_actividad: string, id_usuario: string ): Promise<PreEditActividad | RespuestaGrap> {
         try {
-            // Ejecutar consultas independientes en paralelo
             const [
                 programaRes,
                 sedesRes,
@@ -121,6 +120,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
             ]);
         
             // id_programa validation
+            console.log("PreEditActividad programaRes:",programaRes);
             const id_programa: string = programaRes.rows?.[0]?.id_programa ?? "";
             if (!id_programa) {
                 return {
@@ -135,7 +135,7 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
                 const allSedesResult = await this.pool.query(actividadQueries.allSedesResult);
                 sedes = allSedesResult.rows ?? [];
             }
-
+            console.log("PreEditActividad sedes:",sedes);
             const tiposDeActividad: TipoActividadItem[] = tiposDeActividadRes.rows ?? [];
             const aliados: AliadoItem[] = aliadosRes.rows ?? [];
             const responsables: ResponsableItem[] = responsablesRes.rows ?? [];
