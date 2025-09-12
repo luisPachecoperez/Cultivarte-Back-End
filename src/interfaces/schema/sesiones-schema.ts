@@ -72,6 +72,6 @@ export const sesionesTypeDefs = gql`
         createSesion(input: CreateSesionInput!): RespuestaGrap!
         updateSesion(input: UpdateSesionInput!): RespuestaGrap!
         updateSesiones(input: EditarSesiones!): RespuestaGrap!
-        deleteSesion(id_sesion: ID!): Boolean!
+        deleteSesion(id_sesion: ID!): RespuestaGrap!
     }
 `;
