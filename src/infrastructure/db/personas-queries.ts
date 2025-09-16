@@ -1,5 +1,5 @@
 export const personaQueries = {
-    getAll: `SELECT * FROM personas;`,
+    getAll: `SELECT * FROM personas limit 5000;`,
     getById: `SELECT * FROM personas WHERE id_persona = $1;`,
     createPersona: `INSERT INTO personas (id_persona, nombres, apellidos, correo, telefono, id_creado_por, fecha_creacion, id_modificado_por, fecha_modificacion) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
     updatePersona: `UPDATE personas SET nombres = $2, apellidos = $3, correo = $4, telefono = $5, id_creado_por = $6, fecha_creacion = $7, id_modificado_por = $8, fecha_modificacion = $9 WHERE id_persona = $1`,

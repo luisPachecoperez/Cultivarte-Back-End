@@ -19,6 +19,7 @@ export interface Beneficiario {
   id_persona             :string;
   nombre_completo        :string;
   id_sede                :string;
+  identificacion         :string;
 }
 
 export interface AsistenteSesion {

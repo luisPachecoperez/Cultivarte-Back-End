@@ -6,7 +6,7 @@ export const personaTypeDefs = gql`
         id_persona: ID!
         id_tipo_persona: ID!
         id_colegio: ID
-        id_sexo: ID!
+        id_sexo: ID
         id_ubicacion: ID!
         id_pais: ID
         id_departamento: ID

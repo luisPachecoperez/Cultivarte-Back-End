@@ -56,6 +56,7 @@ export const asistenciasTypeDefs = gql`
         id_persona: ID!
         nombre_completo: String!
         id_sede: ID!
+        identificacion: String!
     }
 
     type RespuestaGrap {

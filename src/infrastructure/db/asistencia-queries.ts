@@ -62,7 +62,7 @@ export const asistenciasQueries = {
                                 )
                             );`,
     getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
-    beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
+    beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede, p.identificacion
                         FROM personas p,
                             personas_grupo_interes pgi,
                             parametros_detalle pd, personas_sedes ps

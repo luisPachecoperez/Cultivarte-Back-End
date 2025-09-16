@@ -30,13 +30,17 @@ export const actividadQueries = {
                         ON pd.id_parametro_general = pg.id_parametro_general
                         WHERE pg.nombre_parametro = 'TIPO_ACTIVIDAD_CULTIVARTE';`,
 
-    aliadosResult: `SELECT p.id_persona as id_aliado,p.nombres || p.apellidos nombre
-                        FROM personas p,
-                            personas_grupo_interes pgi,
-                            parametros_detalle pd
-                        WHERE p.id_persona = pgi.id_persona
-                        AND pgi.id_grupo_interes = pd.id_parametro_detalle
-                        AND pd.nombre='ALIADO_CULTIVARTE';`,
+    aliadosResult: `SELECT 
+                        p.id_persona AS id_aliado,
+                        CASE 
+                            WHEN length(p.nombres) >0 
+                            THEN TRIM(p.nombres || ' ' || p.apellidos)
+                            ELSE p.razon_social 
+                        END AS nombre
+                    FROM personas p
+                    INNER JOIN personas_grupo_interes pgi ON p.id_persona = pgi.id_persona
+                    INNER JOIN parametros_detalle pd ON pgi.id_grupo_interes = pd.id_parametro_detalle
+                    WHERE pd.nombre = 'ALIADO_CULTIVARTE';`,
 
     responsablesResult: `SELECT pd.id_parametro_detalle as id_responsable, pd.nombre
                             FROM parametros_detalle pd
@@ -65,7 +69,7 @@ export const actividadQueries = {
 
     actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 
-    sesionesResult: `SELECT * FROM sesiones WHERE id_actividad = $1;`,
+    sesionesResult: `SELECT * FROM sesiones WHERE id_actividad = $1 order by fecha_actividad;`,
 
     insertActividad: `INSERT INTO actividades (
                             id_actividad, 
