@@ -1,7 +1,7 @@
 import { Sesion, SesionRepository, RespuestaGrap } from "../../";
 
 export interface GetSesionesUseCase {
-    execute(): Promise<Sesion[] | RespuestaGrap>;
+    execute(limit:number, offset:number): Promise<Sesion[] | RespuestaGrap>;
 }
 
 export class GetSesionesUseCaseImpl implements GetSesionesUseCase {
@@ -10,7 +10,7 @@ export class GetSesionesUseCaseImpl implements GetSesionesUseCase {
         private sesionRepository: SesionRepository
     ) {}
 
-    execute(): Promise<Sesion[] | RespuestaGrap> {
-        return this.sesionRepository.getAll();
+    execute(limit:number, offset:number): Promise<Sesion[] | RespuestaGrap> {
+        return this.sesionRepository.getAll( limit, offset );
     }
 }

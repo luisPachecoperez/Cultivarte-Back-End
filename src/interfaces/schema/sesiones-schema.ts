@@ -64,7 +64,7 @@ export const sesionesTypeDefs = gql`
 
     type Query {
         getSesion(id_sesion: ID!): Sesion
-        getSesiones: [Sesion!]!
+        getSesiones(limit: Int!, offset: Int!): [Sesion!]!
         getSesionesSedes(id_usuario: ID!, fecha_inicio: String!, fecha_fin: String!): [Sesion!]!
     }
 

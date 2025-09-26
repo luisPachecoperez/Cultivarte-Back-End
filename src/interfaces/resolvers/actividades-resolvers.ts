@@ -40,7 +40,7 @@ const controller = new ActividadesController( getPreCreateActividadUseCase,
 
 export const actividadesResolvers = {
   Query: {
-    getActividades: () => controller.getActividades(),
+    getActividades: (_: any, args: { limit:number, offset:number }) => controller.getActividades( args.limit, args.offset ),
     getActividad: (_: any, args: { id:string }) => controller.getActividad( args.id ), 
     getPreCreateActividad: (_: any, args: { id_usuario:string }) => controller.getPreCreateActividad( args.id_usuario ),
     getPreEditActividad: (_: any, args: { id_actividad:string, id_usuario:string }) => controller.getPreEditActividad( args.id_actividad, args.id_usuario ),

@@ -119,7 +119,7 @@ export const actividadesTypeDefs = gql`
     }
         
     type Query {
-        getActividades: [Actividad!]!
+        getActividades(limit: Int!, offset: Int!): [Actividad!]!
         getPreCreateActividad(id_usuario: ID!): PreCreateEvent
         getPreEditActividad(id_actividad: ID!, id_usuario: ID!): PreEditActividad!
         getActividad(id: ID!): Actividad!

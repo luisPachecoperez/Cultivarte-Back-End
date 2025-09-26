@@ -9,9 +9,9 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
     
     private pool = pgPool;
 
-    async getAll(): Promise<Sesion[] | RespuestaGrap> {
+    async getAll(limit:number, offset:number): Promise<Sesion[] | RespuestaGrap> {
         try {
-            const getAllRes = await this.pool.query(sesionesQueries.getAll);
+            const getAllRes = await this.pool.query(sesionesQueries.getAll, [limit, offset]);
             return getAllRes.rows;
         } catch (error) {
             return { exitoso: "N", mensaje: "Error al obtener sesiones: " + error };

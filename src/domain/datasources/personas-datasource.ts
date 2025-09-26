@@ -4,7 +4,7 @@ import { Persona,
 
 
 export interface PersonaDataSource {
-    getAll(): Promise<Persona[] | RespuestaGrap>;
+    getAll( limit:number, offset:number ): Promise<Persona[] | RespuestaGrap>;
     getById( id_persona:string ): Promise<Persona | RespuestaGrap>;
     getAliadosSede(id_usuario:string): Promise<Persona[] | RespuestaGrap>;
     getBeneficiariosSede(): Promise<PersonaSede[] | RespuestaGrap>;

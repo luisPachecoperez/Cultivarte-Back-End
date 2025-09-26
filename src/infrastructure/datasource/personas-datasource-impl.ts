@@ -6,9 +6,9 @@ import { personaQueries } from "../db/personas-queries";
     
     private pool = pgPool;
     
-    async getAll(): Promise<Persona[] | RespuestaGrap> {
+    async getAll(limit:number, offset:number): Promise<Persona[] | RespuestaGrap> {
         try {
-            const res = await this.pool.query(personaQueries.getAll);
+            const res = await this.pool.query(personaQueries.getAll, [limit, offset]);
             return res.rows;
         } catch (error) {
             return { exitoso: "N", mensaje: 'No se pudo obtener personas: ' + error };

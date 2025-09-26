@@ -10,8 +10,8 @@ export class SesionesRepositoryImpl implements SesionRepository {
         private sesionesDataSource: SesionesDataSource
     ) {}
 
-    async getAll(): Promise<Sesion[] | RespuestaGrap> {
-        return this.sesionesDataSource.getAll();
+    async getAll( limit:number, offset:number ): Promise<Sesion[] | RespuestaGrap> {
+        return this.sesionesDataSource.getAll(limit, offset);
     }
 
     async getById( id_sesion: string ): Promise<Sesion | RespuestaGrap> {

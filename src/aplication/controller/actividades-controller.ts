@@ -36,8 +36,8 @@ export class ActividadesController {
         return this.getPreEditActividadUseCase.execute( id_actividad, id_usuario );
     }
 
-    async getActividades(): Promise<Actividad[] | RespuestaGrap> {
-        return this.getActividadesUseCase.execute();
+    async getActividades(limit:number, offset:number): Promise<Actividad[] | RespuestaGrap> {
+        return this.getActividadesUseCase.execute(limit, offset);
     }
 
     async getActividad( id_actividad: string ): Promise<Actividad | RespuestaGrap> {

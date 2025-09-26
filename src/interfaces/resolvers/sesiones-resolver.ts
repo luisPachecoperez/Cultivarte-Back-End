@@ -33,7 +33,7 @@ const controller = new SesionesController( useCaseGetAll,
 
 export const sesionesResolvers = {
     Query: {
-        getSesiones: () => controller.getSesiones(),
+        getSesiones: (_: any, args: { limit:number, offset:number }) => controller.getSesiones( args.limit, args.offset ),
         getSesion: (_: any, args: { id_sesion:string }) => controller.getSesion( args.id_sesion ),
         getSesionesSedes: (_: any, args: { id_usuario:string, fecha_inicio:string, fecha_fin:string }) => controller.getSesionesSedes( args.id_usuario, args.fecha_inicio, args.fecha_fin )
     },

@@ -3,14 +3,14 @@ import { Persona,
          RespuestaGrap } from "../../";
 
 export interface GetPersonasUseCase {
-    execute(): Promise<Persona[] | RespuestaGrap>;
+    execute(limit:number, offset:number): Promise<Persona[] | RespuestaGrap>;
 }
 
 export class GetPersonasUseCaseImpl implements GetPersonasUseCase {
     
     constructor( private readonly personasRepository: PersonaRepository ) {}
 
-    async execute(): Promise<Persona[] | RespuestaGrap> {
-        return this.personasRepository.getAll();
+    async execute(limit:number, offset:number): Promise<Persona[] | RespuestaGrap> {
+        return this.personasRepository.getAll(limit, offset);
     }
 }

@@ -34,7 +34,7 @@ const controller = new PersonasController(
 
 export const personasResolvers = {
     Query: {
-        getPersonas: () => controller.getPersonas(),
+        getPersonas: (_: any, args: { limit:number, offset:number }) => controller.getPersonas(args.limit, args.offset),
         getPersona: (_: any, args: { id:string }) => controller.getPersona( args.id ), 
         getAliadosSede: (_: any, args: { id_persona: string }) => controller.getAliadosSede(args.id_persona),
         getBeneficiariosSede: () => controller.getBeneficiariosSede()

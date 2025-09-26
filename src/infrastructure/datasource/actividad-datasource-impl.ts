@@ -228,9 +228,9 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         }
     }
 
-    async getAll(): Promise<Actividad[] | RespuestaGrap> {
+    async getAll( limit:number, offset:number ): Promise<Actividad[] | RespuestaGrap> {
         try {
-            const result = await this.pool.query( actividadQueries.actividadesResult );
+            const result = await this.pool.query( actividadQueries.actividadesResult, [limit, offset] );
             return result.rows;
         } catch (error) {
             return {

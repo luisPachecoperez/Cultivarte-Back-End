@@ -1,6 +1,9 @@
 export const sesionesQueries = {
     
-    getAll: `SELECT * FROM sesiones`,
+    getAll: `SELECT * FROM
+             sesiones 
+             ORDER BY id_sesion DESC
+             LIMIT $1 OFFSET $2`,
 
     getById: `SELECT * FROM sesiones WHERE id_sesion = $1`,
 

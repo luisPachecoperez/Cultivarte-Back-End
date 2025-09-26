@@ -35,9 +35,9 @@ export class ActividadRepositoryImpl implements ActividadRepository {
         }
     }
     
-    async getAll(): Promise<Actividad[] | RespuestaGrap> {
+    async getAll(limit: number, offset: number): Promise<Actividad[] | RespuestaGrap> {
         try {
-            return this.actividadDataSource.getAll();   
+            return this.actividadDataSource.getAll(limit, offset);   
         } catch (error) {
             return { exitoso: 'N', mensaje: 'Error al obtener actividades: ' + error };
         }

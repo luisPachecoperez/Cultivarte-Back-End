@@ -73,7 +73,7 @@ export const personaTypeDefs = gql`
     }
 
     type Query {
-        getPersonas: [Persona!]!
+        getPersonas(limit: Int!, offset: Int!): [Persona!]!
         getPersona(id_persona: ID!): Persona
         getAliadosSede(id_persona: ID!): [Persona]
         getBeneficiariosSede: [Persona!]!

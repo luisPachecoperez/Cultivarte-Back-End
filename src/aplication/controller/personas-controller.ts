@@ -37,8 +37,8 @@ export class PersonasController {
         return this.getPersonaUseCase.execute( id_persona );
     }
 
-    async getPersonas(): Promise<Persona[] | RespuestaGrap> {
-        return this.getPersonasUseCase.execute();
+    async getPersonas( limit:number, offset:number ): Promise<Persona[] | RespuestaGrap> {
+        return this.getPersonasUseCase.execute(limit, offset);
     }
 
     async getAliadosSede( id_usuario:string ): Promise<Persona[] | RespuestaGrap> {

@@ -21,8 +21,8 @@ export class SesionesController {
         private readonly updateSesionesUseCase: UpdateSesionesUseCase
     ) {}
 
-    async getSesiones(): Promise<Sesion[] | RespuestaGrap> {
-        return this.getSesionesUseCase.execute();
+    async getSesiones(limit:number, offset:number): Promise<Sesion[] | RespuestaGrap> {
+        return this.getSesionesUseCase.execute( limit, offset );
     }
 
     async getSesion( id_sesion: string ): Promise<Sesion | RespuestaGrap> {

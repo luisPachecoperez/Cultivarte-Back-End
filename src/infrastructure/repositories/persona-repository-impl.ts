@@ -8,9 +8,9 @@ import { PersonaRepository,
 export class PersonaRepositoryImpl implements PersonaRepository {
     constructor( private personaDataSource:PersonaDataSource ) { } 
     
-    async getAll(): Promise<Persona[] | RespuestaGrap> {
+    async getAll( limit:number, offset:number ): Promise<Persona[] | RespuestaGrap> {
         try {
-            const result = await this.personaDataSource.getAll();
+            const result = await this.personaDataSource.getAll(limit, offset);
             return Array.isArray(result) ? result : [];
         } catch (error) {
             console.error('Error en getAll:', error);

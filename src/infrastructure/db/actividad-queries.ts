@@ -61,7 +61,9 @@ export const actividadQueries = {
                     ON pd.id_parametro_general = pg.id_parametro_general
                     WHERE pg.nombre_parametro = 'FRECUENCIA_CULTIVARTE';`,
 
-    actividadesResult: `SELECT * FROM actividades;`,
+    actividadesResult: `SELECT * 
+                        FROM actividades
+                        ORDER BY id_actividad LIMIT $1 OFFSET $2;`,
 
     actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 
