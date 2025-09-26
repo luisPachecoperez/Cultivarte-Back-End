@@ -24,9 +24,17 @@ async function startServer() {
     // Configurar Swagger UI
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
     
-    app.use('/graphql', cors(), bodyParser.json(), expressMiddleware(server));
+    app.use('/graphql', cors({
+        origin:(origin, callback) =>{
+          if(!origin || origin.startsWith('http://localhost')){
+            callback(null, true);
+          }else{
+            callback(new Error('Not allowed by CORS'));
+          }
+        }
+    }), bodyParser.json(), expressMiddleware(server));
     
-    const PORT = process.env.PORT || 4000;
+    const PORT = process.env.PORT || 5000;
     const httpServer = app.listen(PORT, () => {
       console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
       console.log(`📚 API Documentation available at http://localhost:${PORT}/api-docs`);
