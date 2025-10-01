@@ -1,13 +1,15 @@
 import { ParametriaEventos, ParametriaEventosDataSource } from "../../domain";
 import { pgPool } from "../db/pg-pool";
 
-export class ParametriaEventosDataSourceImpl implements ParametriaEventosDataSource {
+export class ParametriaEventosDataSourceImpl
+  implements ParametriaEventosDataSource
+{
+  private pool = pgPool;
 
-    private pool = pgPool;
-
-    async getAll(): Promise<Array<{ grupo: keyof ParametriaEventos; id: string; nombre: string }>> {
-
-        const query = `
+  async getAll(): Promise<
+    Array<{ grupo: keyof ParametriaEventos; id: string; nombre: string }>
+  > {
+    const query = `
             SELECT 
                 CASE 
                     WHEN pg.nombre_parametro ILIKE 'Roles' THEN 'Roles'
@@ -32,7 +34,12 @@ export class ParametriaEventosDataSourceImpl implements ParametriaEventosDataSou
             )
             ORDER BY grupo, pd.nombre;
         `;
-        const result = await this.pool.query( query );
-        return result.rows;
-    }     
+    const result = await this.pool.query(query);
+
+    return result.rows as Array<{
+      grupo: keyof ParametriaEventos;
+      id: string;
+      nombre: string;
+    }>;
+  }
 }

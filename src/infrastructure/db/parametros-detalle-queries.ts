@@ -1,9 +1,9 @@
-export const parametrosDetalleQueries = {   
-    getAll: `SELECT * FROM parametros_detalle`,
+export const parametrosDetalleQueries = {
+  getAll: `SELECT * FROM parametros_detalle`,
 
-    getById: `SELECT * FROM parametros_detalle WHERE id_parametro_general = $1`,
+  getById: `SELECT * FROM parametros_detalle WHERE id_parametro_general = $1`,
 
-    create: `INSERT INTO parametros_detalle (
+  create: `INSERT INTO parametros_detalle (
                 id_parametro_general,
                 nombre,
                 codigo,
@@ -14,7 +14,7 @@ export const parametrosDetalleQueries = {
                 $1,$2,$3,$4,$5,$6
             ) RETURNING *`,
 
-    updateById: `UPDATE 
+  updateById: `UPDATE 
         parametros_detalle 
         SET nombre = $2, 
         codigo = $3, 
@@ -23,5 +23,5 @@ export const parametrosDetalleQueries = {
         estado = $6 
         WHERE id_parametro_general = $1 RETURNING *`,
 
-    deleteById: `DELETE FROM parametros_detalle WHERE id_parametro_general = $1`,
-}
+  deleteById: `DELETE FROM parametros_detalle WHERE id_parametro_general = $1`,
+};

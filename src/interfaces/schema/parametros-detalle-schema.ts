@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from "graphql-tag";
 
 export const parametroDetalleTypeDefs = gql`
   type ParametroDetalle {
@@ -35,7 +35,10 @@ export const parametroDetalleTypeDefs = gql`
 
   type Mutation {
     createParametroDetalle(data: ParametroDetalleInput!): ParametroDetalle
-    updateParametroDetalle(id: ID!, data: ParametroDetalleInput!): ParametroDetalle
+    updateParametroDetalle(
+      id: ID!
+      data: ParametroDetalleInput!
+    ): ParametroDetalle
     deleteParametroDetalle(id: ID!): Boolean
   }
 `;

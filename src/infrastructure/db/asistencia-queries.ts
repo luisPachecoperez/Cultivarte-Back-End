@@ -1,7 +1,6 @@
 export const asistenciasQueries = {
-    
-    asistenciasResult: `SELECT * FROM asistencias`,
-    insertAsistencia: `INSERT INTO asistencias (
+  asistenciasResult: `SELECT * FROM asistencias`,
+  insertAsistencia: `INSERT INTO asistencias (
                         id_asistencia,
                         id_actividad,
                         id_sesion,
@@ -11,17 +10,17 @@ export const asistenciasQueries = {
                         id_modificado_por,
                         fecha_modificacion) 
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    updateAsistencia: `INSERT INTO asistencias (
+  updateAsistencia: `INSERT INTO asistencias (
                         id_asistencia,
                         id_sesion,
                         id_persona
                         ) 
                         VALUES ($1, $2, $3) RETURNING *`,
 
-    deleteAsistencia: `DELETE FROM asistencias WHERE id_asistencia = $1 RETURNING *`,
-    getSedes: `SELECT id_sede, nombre FROM sedes`,
-        
-    getAsistentesSesiones: `SELECT DISTINCT 
+  deleteAsistencia: `DELETE FROM asistencias WHERE id_asistencia = $1 RETURNING *`,
+  getSedes: `SELECT id_sede, nombre FROM sedes`,
+
+  getAsistentesSesiones: `SELECT DISTINCT 
                             a.id_persona,
                             CASE 
                                 WHEN s.id_sesion = $1
@@ -61,8 +60,8 @@ export const asistenciasQueries = {
                                     WHERE ax.id_sesion = $1
                                 )
                             );`,
-    getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
-    beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
+  getPreAsistencia: `SELECT * FROM asistencias WHERE id_persona = $1`,
+  beneficiariosResult: `SELECT p.id_persona as id_persona,p.nombres || ' ' || p.apellidos nombre_completo, ps.id_sede
                         FROM personas p,
                             personas_grupo_interes pgi,
                             parametros_detalle pd, personas_sedes ps
@@ -70,12 +69,12 @@ export const asistenciasQueries = {
                         AND pgi.id_grupo_interes = pd.id_parametro_detalle
                         AND p.id_persona = ps.id_persona
                         AND pd.nombre='BENEFICIARIO_CULTIVARTE';`,
-    numeroAsistentesResult: `SELECT COUNT(DISTINCT a.id_persona) AS cantidad_asistentes
+  numeroAsistentesResult: `SELECT COUNT(DISTINCT a.id_persona) AS cantidad_asistentes
                             FROM asistencias a
                             JOIN sesiones s ON s.id_sesion = a.id_sesion
                             WHERE s.id_actividad = $1;`,
 
-    insertSesiones: `INSERT INTO sesiones (
+  insertSesiones: `INSERT INTO sesiones (
                         id_sesion,
                         id_actividad,
                         id_persona,
@@ -84,16 +83,16 @@ export const asistenciasQueries = {
                         id_modificado_por,
                         fecha_modificacion) 
                         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-                        
-    updateSesiones: `UPDATE sesiones SET 
+
+  updateSesiones: `UPDATE sesiones SET 
                         id_sesion = $1,
                         id_actividad = $2, 
                         imagen = $3, 
                         nro_asistentes = $4,
                         descripcion = $5
                     WHERE id_sesion = $1 RETURNING *`,
-    
-    asistenciaSedesResult: `SELECT asi.*
+
+  asistenciaSedesResult: `SELECT asi.*
                             FROM asistencias asi
                             JOIN sesiones s
                             ON asi.id_sesion = s.id_sesion
@@ -116,18 +115,17 @@ export const asistenciasQueries = {
                                     WHERE ps.id_persona = $1
                                 )
                             );`,
-                            
-    parametrosDetalleActividadResult: `SELECT * 
+
+  parametrosDetalleActividadResult: `SELECT * 
                                         FROM parametros_detalle pd
                                         WHERE pd.id_parametro_detalle = $1;`,
 
-    actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
+  actividadResult: `SELECT * FROM actividades WHERE id_actividad = $1;`,
 
-    updateAsistenciaById: `UPDATE asistencias SET 
+  updateAsistenciaById: `UPDATE asistencias SET 
                             id_sesion = $2, 
                             id_persona = $3, 
                             id_modificado_por = $4, 
                             fecha_modificacion = $5 
                             WHERE id_asistencia = $1 RETURNING *`,
-
-}
+};

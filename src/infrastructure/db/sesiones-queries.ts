@@ -1,13 +1,12 @@
 export const sesionesQueries = {
-    
-    getAll: `SELECT * FROM
+  getAll: `SELECT * FROM
              sesiones 
              ORDER BY id_sesion DESC
              LIMIT $1 OFFSET $2`,
 
-    getById: `SELECT * FROM sesiones WHERE id_sesion = $1`,
+  getById: `SELECT * FROM sesiones WHERE id_sesion = $1`,
 
-    create: `INSERT INTO sesiones (
+  create: `INSERT INTO sesiones (
                 id_sesion, 
                 id_actividad,
                 fecha_actividad,
@@ -21,8 +20,8 @@ export const sesionesQueries = {
                 id_modificado_por,
                 fecha_modificacion) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
-                
-    updateById: `UPDATE sesiones SET 
+
+  updateById: `UPDATE sesiones SET 
                 id_actividad = $2, 
                 fecha_actividad = $3, 
                 hora_inicio = $4, 
@@ -34,9 +33,9 @@ export const sesionesQueries = {
                 fecha_modificacion = $10 
                 WHERE id_sesion = $1 RETURNING *`,
 
-    deleteById: `DELETE FROM sesiones WHERE id_sesion = $1`,
+  deleteById: `DELETE FROM sesiones WHERE id_sesion = $1`,
 
-    insertSesion: `INSERT INTO sesiones (
+  insertSesion: `INSERT INTO sesiones (
                 id_sesion, 
                 id_actividad,
                 fecha_actividad,
@@ -49,8 +48,8 @@ export const sesionesQueries = {
                 id_modificado_por,
                 fecha_modificacion) 
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-                
-    updateSesionesById: `UPDATE sesiones SET 
+
+  updateSesionesById: `UPDATE sesiones SET 
                 id_sesion = $1::uuid,
                 id_actividad = $2::uuid,
                 fecha_actividad = $3,
@@ -63,7 +62,7 @@ export const sesionesQueries = {
                 fecha_modificacion = $10
                 WHERE id_sesion = $1 RETURNING *`,
 
-    getSessionesSede: `SELECT s.*
+  getSessionesSede: `SELECT s.*
                         FROM sesiones s
                         JOIN actividades a
                         ON s.id_actividad = a.id_actividad
@@ -84,5 +83,4 @@ export const sesionesQueries = {
                                 WHERE ps.id_persona = $1
                             )
                         );`,
-
 };

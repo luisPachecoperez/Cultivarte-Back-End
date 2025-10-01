@@ -1,16 +1,15 @@
-import { PreCreateActividad, ActividadRepository, RespuestaGrap } from '../..';
+import { PreCreateActividad, ActividadRepository, RespuestaGrap } from "../..";
 
 export interface GetPreCreateActividadUseCase {
-    execute( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap>;
+  execute(id_usuario: string): Promise<PreCreateActividad | RespuestaGrap>;
 }
 
-export class GetPreCreateActividadUseCaseImpl implements GetPreCreateActividadUseCase {
-    
-    constructor( 
-        private actividadRepository: ActividadRepository
-    ) {}
+export class GetPreCreateActividadUseCaseImpl
+  implements GetPreCreateActividadUseCase
+{
+  constructor(private actividadRepository: ActividadRepository) {}
 
-    execute( id_usuario: string ): Promise<PreCreateActividad | RespuestaGrap> {
-        return this.actividadRepository.getPreCreateActividad( id_usuario );
-    }
+  execute(id_usuario: string): Promise<PreCreateActividad | RespuestaGrap> {
+    return this.actividadRepository.getPreCreateActividad(id_usuario);
+  }
 }
