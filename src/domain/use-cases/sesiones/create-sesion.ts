@@ -1,16 +1,13 @@
-import { Sesion, SesionRepository, RespuestaGrap } from "../../";
+import { Sesion, SesionRepository, RespuestaGrap } from '../../';
 
 export interface CreateSesionUseCase {
-    execute( sesion: Sesion ): Promise<RespuestaGrap>;
+  execute(sesion: Sesion): Promise<RespuestaGrap>;
 }
 
 export class CreateSesionUseCaseImpl implements CreateSesionUseCase {
-    
-    constructor( 
-        private sesionRepository: SesionRepository
-    ) {}
+  constructor(private readonly sesionRepository: SesionRepository) {}
 
-    execute( sesion: Sesion ): Promise<RespuestaGrap> {
-        return this.sesionRepository.createSesion( sesion );
-    }
+  execute(sesion: Sesion): Promise<RespuestaGrap> {
+    return this.sesionRepository.createSesion(sesion);
+  }
 }

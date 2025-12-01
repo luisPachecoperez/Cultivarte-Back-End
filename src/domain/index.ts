@@ -1,5 +1,3 @@
-
-
 /**Exports Parametros Detalle */
 export * from './entities/parametros-detalle';
 export * from './repositories/parametro-detalle-repository';
@@ -31,18 +29,18 @@ export * from './use-cases/queries/get-parametria-eventos';
 export * from './entities/pre-create-actividad';
 export * from './repositories/actividad-repository';
 export * from './datasources/actividad-datasource';
-export * from './use-cases/actividad/pre-create-actividad';
-export * from './use-cases/actividad/create-actividad-sesiones';
-export * from './use-cases/actividad/delete-actividad';
-export * from './use-cases/actividad/get-actividad';
-export * from './use-cases/actividad/get-actividades';
-export * from './use-cases/actividad/update-evento';
-export * from './use-cases/actividad/delete-actividad';
-export * from './use-cases/actividad/get-actividad-sedes';
+export * from './use-cases/Actividad/pre-create-actividad';
+export * from './use-cases/Actividad/create-actividad-sesiones';
+export * from './use-cases/Actividad/delete-actividad';
+export * from './use-cases/Actividad/get-actividad';
+export * from './use-cases/Actividad/get-actividades';
+export * from './use-cases/Actividad/update-evento';
+export * from './use-cases/Actividad/delete-actividad';
+export * from './use-cases/Actividad/get-actividad-sedes';
 export * from './entities/actividad';
 export * from './entities/pre-edit-actividad';
-export * from './use-cases/actividad/create-actividad';
-export * from './use-cases/actividad/pre-edit-actividad';
+export * from './use-cases/Actividad/create-actividad';
+export * from './use-cases/Actividad/pre-edit-actividad';
 
 /**Exports Calendario Fecha */
 export * from './entities/calendario-fecha';
@@ -93,7 +91,6 @@ export * from './use-cases/persona/get-persona';
 export * from './use-cases/persona/get-personas';
 export * from './use-cases/persona/get-aliados-sede';
 export * from './use-cases/persona/get-beneficiarios-sede';
-export * from './entities/persona-sede';
 
 /*Exports Poblaciones */
 export * from './entities/poblacion';
@@ -144,4 +141,3 @@ export * from './use-cases/personas-programa/update-persona-programa';
 export * from './use-cases/personas-programa/delete-persona-programa';
 export * from './use-cases/personas-programa/get-persona-programa';
 export * from './use-cases/personas-programa/get-personas-programa';
-

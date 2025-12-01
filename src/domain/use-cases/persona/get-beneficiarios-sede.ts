@@ -1,17 +1,15 @@
-import { Persona,
-         PersonaRepository,
-         PersonaSede,
-         RespuestaGrap } from "../../";
+import { PersonaRepository, Persona, RespuestaGrap } from '../../';
 
 export interface GetBeneficiariosSedeUseCase {
-    execute(): Promise<PersonaSede[] | RespuestaGrap>;
+  execute(): Promise<Persona[] | RespuestaGrap>;
 }
 
-export class GetBeneficiariosSedeUseCaseImpl implements GetBeneficiariosSedeUseCase {
-    
-    constructor( private readonly personasRepository: PersonaRepository ) {}
+export class GetBeneficiariosSedeUseCaseImpl
+  implements GetBeneficiariosSedeUseCase
+{
+  constructor(private readonly personasRepository: PersonaRepository) {}
 
-    async execute(): Promise<PersonaSede[] | RespuestaGrap> {
-        return this.personasRepository.getBeneficiariosSede();
-    }
+  async execute(): Promise<Persona[] | RespuestaGrap> {
+    return this.personasRepository.getBenSedes();
+  }
 }

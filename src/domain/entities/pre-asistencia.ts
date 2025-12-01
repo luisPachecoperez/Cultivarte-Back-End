@@ -1,28 +1,27 @@
 export interface PreAsistencia {
-  id_sesion              :string;
-  id_sede                :string;
-  numero_asistentes      :number;
-  foto                   :string;
-  imagen                 :string;
-  descripcion            :string;
-  sedes                  :SedeAsistencia[];
-  beneficiarios          :Beneficiario[];
-  asistentes_sesiones    :AsistenteSesion[];
+  id_sesion: string;
+  id_sede: string;
+  numero_asistentes: number;
+  foto: string;
+  imagen: string;
+  descripcion: string;
+  sedes: SedeAsistencia[];
+  beneficiarios: Beneficiario[];
+  asistentes_sesiones: AsistenteSesion[];
 }
 
 export interface SedeAsistencia {
-  id_sede                :string;
-  nombre                 :string;
+  id_sede: string;
+  nombre: string;
 }
 
 export interface Beneficiario {
-  id_persona             :string;
-  nombre_completo        :string;
-  id_sede                :string;
+  id_persona: string;
+  nombre_completo: string;
+  id_sede: string;
 }
 
 export interface AsistenteSesion {
-  id_persona             :string;
-  eliminar               :"S" | "N"; 
+  id_persona: string;
+  eliminar: 'S' | 'N';
 }
-  

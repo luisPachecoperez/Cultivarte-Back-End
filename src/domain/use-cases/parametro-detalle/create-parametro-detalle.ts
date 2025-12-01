@@ -1,19 +1,25 @@
-import { ParametroDetalle, 
-         ParametroDetalleRepository, 
-         RespuestaGrap } from "../../";
+import {
+  ParametroDetalle,
+  ParametroDetalleRepository,
+  RespuestaGrap,
+} from '../../';
 
 export interface CreateParametroDetalleUseCase {
-     execute( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap>;
+  execute(
+    parametroDetalle: ParametroDetalle,
+  ): Promise<ParametroDetalle | RespuestaGrap>;
 }
 
-export class CreateParametroDetalleUseCaseImpl implements CreateParametroDetalleUseCase {
-    
-    constructor(
-        private readonly parametroDetalleRepository: ParametroDetalleRepository
-    ) {}
+export class CreateParametroDetalleUseCaseImpl
+  implements CreateParametroDetalleUseCase
+{
+  constructor(
+    private readonly parametroDetalleRepository: ParametroDetalleRepository,
+  ) {}
 
-    execute( parametroDetalle: ParametroDetalle ): Promise<ParametroDetalle | RespuestaGrap> {
-        return this.parametroDetalleRepository.create( parametroDetalle );
-    }
+  execute(
+    parametroDetalle: ParametroDetalle,
+  ): Promise<ParametroDetalle | RespuestaGrap> {
+    return this.parametroDetalleRepository.create(parametroDetalle);
+  }
 }
-    

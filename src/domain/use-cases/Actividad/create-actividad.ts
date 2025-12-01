@@ -1,18 +1,13 @@
-import { Actividad,
-         ActividadRepository,
-         RespuestaGrap } from "../..";
+import { Actividad, ActividadRepository, RespuestaGrap } from '../..';
 
 export interface CreateActividadUseCase {
-    execute( actividad: Actividad ): Promise<RespuestaGrap>;
+  execute(actividad: Actividad): Promise<RespuestaGrap>;
 }
 
 export class CreateActividadUseCaseImpl implements CreateActividadUseCase {
-    
-    constructor(
-        private actividadRepository: ActividadRepository
-    ) {}
+  constructor(private readonly actividadRepository: ActividadRepository) {}
 
-    async execute( actividad: Actividad ): Promise<RespuestaGrap> {
-        return this.actividadRepository.createActividad( actividad );
-    }
+  async execute(actividad: Actividad): Promise<RespuestaGrap> {
+    return this.actividadRepository.createActividad(actividad);
+  }
 }

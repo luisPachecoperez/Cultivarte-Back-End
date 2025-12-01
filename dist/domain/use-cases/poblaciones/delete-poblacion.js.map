@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-poblacion.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/poblaciones/delete-poblacion.ts"],"names":[],"mappings":";;;AAMA,MAAa,0BAA0B;IACrC,YAA6B,mBAAwC;QAAxC,wBAAmB,GAAnB,mBAAmB,CAAqB;IAAG,CAAC;IAEzE,KAAK,CAAC,OAAO,CAAC,YAAoB;QAChC,OAAO,IAAI,CAAC,mBAAmB,CAAC,mBAAmB,CAAC,YAAY,CAAC,CAAC;IACpE,CAAC;CACF;AAND,gEAMC"}

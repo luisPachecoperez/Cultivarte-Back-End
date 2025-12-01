@@ -28,5 +28,5 @@ export const resolvers = mergeResolvers([
   sedeResolvers,
   personasSedesResolvers,
   personasGrupoInteresResolvers,
-  personasProgramaResolvers
+  personasProgramaResolvers,
 ]);

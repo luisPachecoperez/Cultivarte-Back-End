@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-persona-programa.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/personas-programa/delete-persona-programa.ts"],"names":[],"mappings":";;;AAMA,MAAa,gCAAgC;IAG3C,YACmB,0BAAsD;QAAtD,+BAA0B,GAA1B,0BAA0B,CAA4B;IACtE,CAAC;IAEJ,OAAO,CAAC,mBAA2B;QACjC,OAAO,IAAI,CAAC,0BAA0B,CAAC,UAAU,CAAC,mBAAmB,CAAC,CAAC;IACzE,CAAC;CACF;AAVD,4EAUC"}

@@ -1,5 +1,4 @@
-import gql from "graphql-tag";
-
+import gql from 'graphql-tag';
 
 export const parametroGeneralTypeDefs = gql`
   type ParametroGeneral {
@@ -30,7 +29,10 @@ export const parametroGeneralTypeDefs = gql`
 
   type Mutation {
     createParametroGeneral(data: ParametroGeneralInput!): ParametroGeneral
-    updateParametroGeneral(id: ID!, data: ParametroGeneralInput!): ParametroGeneral
+    updateParametroGeneral(
+      id: ID!
+      data: ParametroGeneralInput!
+    ): ParametroGeneral
     deleteParametroGeneral(id: ID!): Boolean
   }
 `;

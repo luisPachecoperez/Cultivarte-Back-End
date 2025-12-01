@@ -1,18 +1,13 @@
-import { PreAsistencia, 
-         AsistenciaRepository, 
-         RespuestaGrap } from "../../";
+import { PreAsistencia, AsistenciaRepository, RespuestaGrap } from '../../';
 
 export interface GetPreAsistenciaUseCase {
-    execute( id_sesion: string ): Promise<PreAsistencia | RespuestaGrap >;
+  execute(id_sesion: string): Promise<PreAsistencia | RespuestaGrap>;
 }
 
 export class GetPreAsistenciaUseCaseImpl implements GetPreAsistenciaUseCase {
-    
-    constructor(
-        private asistenciaRepository: AsistenciaRepository
-    ) {}
+  constructor(private readonly asistenciaRepository: AsistenciaRepository) {}
 
-    execute( id_sesion: string ): Promise<PreAsistencia | RespuestaGrap> {
-        return this.asistenciaRepository.getPreAsistencia( id_sesion );
-    }
+  execute(id_sesion: string): Promise<PreAsistencia | RespuestaGrap> {
+    return this.asistenciaRepository.getPreAsistencia(id_sesion);
+  }
 }

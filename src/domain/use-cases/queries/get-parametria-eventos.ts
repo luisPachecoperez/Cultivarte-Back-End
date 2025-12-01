@@ -1,17 +1,15 @@
-import { ParametriaEventos, ParametriaEventosRepository } from "../../";
-
+import { ParametriaEventos, ParametriaEventosRepository } from '../../';
 
 export interface GetParametriaEventosUseCase {
-    execute(): Promise<ParametriaEventos | null>;
+  execute(): Promise<ParametriaEventos | null>;
 }
 
-export class GetParametriaEventosUseCaseImpl implements GetParametriaEventosUseCase {
+export class GetParametriaEventosUseCaseImpl
+  implements GetParametriaEventosUseCase
+{
+  constructor(private readonly repository: ParametriaEventosRepository) {}
 
-    constructor(
-        private repository: ParametriaEventosRepository 
-    ) {}
-
-    async execute(): Promise<ParametriaEventos | null> {
-       return this.repository.getAll();
-    }
+  async execute(): Promise<ParametriaEventos | null> {
+    return this.repository.getAll();
+  }
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-paramtero-detalle.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametro-detalle/delete-paramtero-detalle.ts"],"names":[],"mappings":";;;AAMA,MAAa,iCAAiC;IAG5C,YACmB,0BAAsD;QAAtD,+BAA0B,GAA1B,0BAA0B,CAA4B;IACtE,CAAC;IAEJ,OAAO,CAAC,oBAA4B;QAClC,OAAO,IAAI,CAAC,0BAA0B,CAAC,UAAU,CAAC,oBAAoB,CAAC,CAAC;IAC1E,CAAC;CACF;AAVD,8EAUC"}

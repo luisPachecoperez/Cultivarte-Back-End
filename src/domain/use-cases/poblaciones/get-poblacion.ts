@@ -1,15 +1,13 @@
-import { Poblacion, 
-         RespuestaGrap,
-         PoblacionRepository } from "../../";
+import { Poblacion, RespuestaGrap, PoblacionRepository } from '../../';
 
 export interface GetPoblacionUseCase {
-    execute( id_poblacion: string ): Promise<Poblacion | RespuestaGrap>;
+  execute(id_poblacion: string): Promise<Poblacion | RespuestaGrap>;
 }
 
 export class GetPoblacionUseCaseImpl implements GetPoblacionUseCase {
-    constructor( private readonly poblacionRepository: PoblacionRepository ) {}
+  constructor(private readonly poblacionRepository: PoblacionRepository) {}
 
-    async execute( id_poblacion: string ): Promise<Poblacion | RespuestaGrap> {
-        return this.poblacionRepository.getPoblacionById( id_poblacion );
-    }
+  async execute(id_poblacion: string): Promise<Poblacion | RespuestaGrap> {
+    return this.poblacionRepository.getPoblacionById(id_poblacion);
+  }
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"parametros-detalle-queries.js","sourceRoot":"","sources":["../../../src/infrastructure/db/parametros-detalle-queries.ts"],"names":[],"mappings":";;;AAAa,QAAA,wBAAwB,GAAG;IACtC,MAAM,EAAE,kCAAkC;IAE1C,OAAO,EAAE,kEAAkE;IAE3E,MAAM,EAAE;;;;;;;;;0BASgB;IAExB,UAAU,EAAE;;;;;;;oDAOsC;IAElD,UAAU,EAAE,gEAAgE;CAC7E,CAAC"}

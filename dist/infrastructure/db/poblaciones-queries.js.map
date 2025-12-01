@@ -1,0 +1,1 @@
+{"version":3,"file":"poblaciones-queries.js","sourceRoot":"","sources":["../../../src/infrastructure/db/poblaciones-queries.ts"],"names":[],"mappings":";;;AAAa,QAAA,kBAAkB,GAAG;IAChC,iBAAiB,EAAE,2BAA2B;IAC9C,aAAa,EAAE,gFAAgF;IAC/F,eAAe,EAAE,0FAA0F;IAC3G,eAAe,EAAE,uFAAuF;IACxG,eAAe,EAAE,6DAA6D;CAC/E,CAAC"}

@@ -35,7 +35,10 @@ export const parametroDetalleTypeDefs = gql`
 
   type Mutation {
     createParametroDetalle(data: ParametroDetalleInput!): ParametroDetalle
-    updateParametroDetalle(id: ID!, data: ParametroDetalleInput!): ParametroDetalle
+    updateParametroDetalle(
+      id: ID!
+      data: ParametroDetalleInput!
+    ): ParametroDetalle
     deleteParametroDetalle(id: ID!): Boolean
   }
 `;

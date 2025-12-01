@@ -1,7 +1,7 @@
-import { CalendarioInput, 
-         Evento, 
-         RespuestaGrap } from "../";
+import { CalendarioInput, Evento, RespuestaGrap } from '../';
 
 export interface CalendarioFechaRepository {
-    getByDate( calendarioInput: CalendarioInput ): Promise<Evento[] | RespuestaGrap>;
+  getByDate(
+    calendarioInput: CalendarioInput,
+  ): Promise<Evento[] | RespuestaGrap>;
 }

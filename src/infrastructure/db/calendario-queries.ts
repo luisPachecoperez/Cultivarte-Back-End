@@ -1,5 +1,5 @@
 export const calendarioQueries = {
-    getByDate: `
+  getByDate: `
         SELECT 
             a.id_actividad     AS id_actividad,
             s.id_sesion        AS id_sesion,
@@ -14,5 +14,5 @@ export const calendarioQueries = {
             ON asist.id_sesion = s.id_sesion
         WHERE s.fecha_actividad BETWEEN $1 AND $2
         GROUP BY a.id_actividad, s.id_sesion, a.nombre_actividad, s.fecha_actividad, s.hora_inicio, s.hora_fin
-        ORDER BY s.fecha_actividad, s.hora_inicio;` 
-}           
+        ORDER BY s.fecha_actividad, s.hora_inicio;`,
+};

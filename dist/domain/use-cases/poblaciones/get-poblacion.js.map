@@ -1,0 +1,1 @@
+{"version":3,"file":"get-poblacion.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/poblaciones/get-poblacion.ts"],"names":[],"mappings":";;;AAMA,MAAa,uBAAuB;IAClC,YAA6B,mBAAwC;QAAxC,wBAAmB,GAAnB,mBAAmB,CAAqB;IAAG,CAAC;IAEzE,KAAK,CAAC,OAAO,CAAC,YAAoB;QAChC,OAAO,IAAI,CAAC,mBAAmB,CAAC,gBAAgB,CAAC,YAAY,CAAC,CAAC;IACjE,CAAC;CACF;AAND,0DAMC"}

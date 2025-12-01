@@ -1,0 +1,1 @@
+{"version":3,"file":"get-personas-grupo-interes.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/personas-grupo-interes/get-personas-grupo-interes.ts"],"names":[],"mappings":";;;AAUA,MAAa,kCAAkC;IAG7C,YACmB,+BAAgE;QAAhE,oCAA+B,GAA/B,+BAA+B,CAAiC;IAChF,CAAC;IAEJ,OAAO;QACL,OAAO,IAAI,CAAC,+BAA+B,CAAC,MAAM,EAAE,CAAC;IACvD,CAAC;CACF;AAVD,gFAUC"}

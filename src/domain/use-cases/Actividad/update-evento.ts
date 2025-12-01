@@ -1,17 +1,19 @@
-import { Actividad, ActividadRepository, RespuestaGrap } from "../..";
-
+import { Actividad, ActividadRepository, RespuestaGrap } from '../..';
 
 export interface UpdateActividadUseCase {
-    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | RespuestaGrap>;
+  execute(
+    id_actividad: string,
+    actividad: Actividad,
+  ): Promise<Actividad | RespuestaGrap>;
 }
 
 export class UpdateActividadUseCaseImpl implements UpdateActividadUseCase {
-    
-    constructor( 
-        private actividadRepository: ActividadRepository
-    ) {}
+  constructor(private readonly actividadRepository: ActividadRepository) {}
 
-    execute( id_actividad: string, actividad: Actividad ): Promise<Actividad | RespuestaGrap> {
-        return this.actividadRepository.updateById( id_actividad, actividad );
-    }
-}   
+  execute(
+    id_actividad: string,
+    actividad: Actividad,
+  ): Promise<Actividad | RespuestaGrap> {
+    return this.actividadRepository.updateById(id_actividad, actividad);
+  }
+}
