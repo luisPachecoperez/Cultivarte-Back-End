@@ -134,5 +134,5 @@ export const actividadQueries = {
                                         FROM personas_sedes ps
                                         WHERE ps.id_persona = $3
                                     )
-                                );`,
+                                )LIMIT $4 OFFSET $5;    ;`,
 };

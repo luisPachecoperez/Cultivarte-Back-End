@@ -1,1 +1,0 @@
-{"version":3,"file":"get-parametria-eventos.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/queries/get-parametria-eventos.ts"],"names":[],"mappings":";;;AAMA,MAAa,+BAA+B;IAG1C,YAA6B,UAAuC;QAAvC,eAAU,GAAV,UAAU,CAA6B;IAAG,CAAC;IAExE,KAAK,CAAC,OAAO;QACX,OAAO,IAAI,CAAC,UAAU,CAAC,MAAM,EAAE,CAAC;IAClC,CAAC;CACF;AARD,0EAQC"}

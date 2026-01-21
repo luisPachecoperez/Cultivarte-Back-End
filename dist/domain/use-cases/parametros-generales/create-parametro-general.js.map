@@ -1,1 +1,0 @@
-{"version":3,"file":"create-parametro-general.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametros-generales/create-parametro-general.ts"],"names":[],"mappings":";;;AAYA,MAAa,iCAAiC;IAG5C,YAA6B,UAAyC;QAAzC,eAAU,GAAV,UAAU,CAA+B;IAAG,CAAC;IAE1E,KAAK,CAAC,OAAO,CACX,mBAAwC;QAExC,OAAO,IAAI,CAAC,UAAU,CAAC,MAAM,CAAC,mBAAmB,CAAC,CAAC;IACrD,CAAC;CACF;AAVD,8EAUC"}

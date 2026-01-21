@@ -5,11 +5,15 @@ import {
   RespuestaGrap,
 } from '../../domain';
 import { personasGrupoInteresQueries } from '../db/personas-grupo-interes-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
 export class PersonasGrupoInteresDataSourceImpl
+  extends BaseHomologatedDataSource
   implements PersonasGruposInteresDataSource
 {
-  private readonly pool = pgPool;
+  constructor() {
+    super(pgPool);
+  }
 
   async create(
     personaGrupoInteres: PersonaGrupoInteres,
@@ -26,11 +30,13 @@ export class PersonasGrupoInteresDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo crear persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -51,11 +57,13 @@ export class PersonasGrupoInteresDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo actualizar persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -73,25 +81,35 @@ export class PersonasGrupoInteresDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo eliminar persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
 
-  async getAll(): Promise<PersonaGrupoInteres[] | RespuestaGrap> {
+  async getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaGrupoInteres[] | RespuestaGrap> {
     try {
-      const res = await this.pool.query(personasGrupoInteresQueries.getAll);
+      const res = await this.pool.query(personasGrupoInteresQueries.getAll, [
+        limit,
+        offset,
+      ]);
       return res.rows as PersonaGrupoInteres[];
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener personas: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener personas: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -110,12 +128,15 @@ export class PersonasGrupoInteresDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
+
 }

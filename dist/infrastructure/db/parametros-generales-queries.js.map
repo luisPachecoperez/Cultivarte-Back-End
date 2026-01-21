@@ -1,1 +1,0 @@
-{"version":3,"file":"parametros-generales-queries.js","sourceRoot":"","sources":["../../../src/infrastructure/db/parametros-generales-queries.ts"],"names":[],"mappings":";;;AAAa,QAAA,0BAA0B,GAAG;IACxC,MAAM,EAAE,oCAAoC;IAE5C,OAAO,EAAE,kEAAkE;IAE3E,MAAM,EAAE;;;;;;;;0BAQgB;IAExB,UAAU,EAAE;;;;;;;oDAOsC;IAElD,UAAU,EAAE,kEAAkE;CAC/E,CAAC"}

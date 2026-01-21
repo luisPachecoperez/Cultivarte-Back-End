@@ -16,7 +16,7 @@ describe('PersonasSedesRepositoryImpl', () => {
   });
 
   it('getAll retorna resultado del datasource', async () => {
-    const result = await repo.getAll();
+    const result = await repo.getAll(1,100);
     expect(result).toBe('all');
     expect(mockDataSource.getAll).toHaveBeenCalled();
   });

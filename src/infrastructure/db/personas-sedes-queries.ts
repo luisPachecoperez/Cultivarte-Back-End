@@ -1,5 +1,5 @@
 export const personasSedesQueries = {
-  getAll: 'SELECT * FROM personas_sedes',
+  getAll: 'SELECT * FROM personas_sedes  LIMIT $1 OFFSET $2;  ',
   getById: 'SELECT * FROM personas_sedes WHERE id_sede = $1',
   create:
     'INSERT INTO personas_sedes ( id_persona_sede, id_persona, id_sede) VALUES ($1, $2, $3)',

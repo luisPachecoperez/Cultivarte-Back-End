@@ -48,12 +48,16 @@ export class ActividadRepositoryImpl implements ActividadRepository {
     id_usuario: string,
     fecha_inicio: string,
     fecha_fin: string,
+    limit: number,
+    offset: number,
   ): Promise<Actividad[] | RespuestaGrap> {
     try {
       return await this.actividadDataSource.getActividadSedes(
         id_usuario,
         fecha_inicio,
         fecha_fin,
+        limit,
+        offset,
       );
     } catch (error: unknown) {
       return {

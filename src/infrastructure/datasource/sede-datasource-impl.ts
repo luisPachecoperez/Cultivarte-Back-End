@@ -2,20 +2,28 @@ import { SedeDataSource } from '../../domain/datasources/sede-datasource';
 import { pgPool } from '../db/pool';
 import { Sede, RespuestaGrap } from '../../domain';
 import { sedesQueries } from '../db/sedes-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
-export class SedeDataSourceImpl implements SedeDataSource {
-  private readonly pool = pgPool;
+export class SedeDataSourceImpl
+  extends BaseHomologatedDataSource
+  implements SedeDataSource
+{
+  constructor() {
+    super(pgPool);
+  }
 
   async getAll(): Promise<Sede[] | RespuestaGrap> {
     try {
       const result = await this.pool.query<Sede>(sedesQueries.sedesResult);
       return result.rows;
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener sedes: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -33,11 +41,13 @@ export class SedeDataSourceImpl implements SedeDataSource {
       }
       return result.rows[0];
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener la sede: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener la sede: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -50,11 +60,13 @@ export class SedeDataSourceImpl implements SedeDataSource {
         mensaje: 'Sede creada exitosamente',
       };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear la sede: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo crear la sede: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -67,11 +79,13 @@ export class SedeDataSourceImpl implements SedeDataSource {
         mensaje: 'Sede actualizada exitosamente',
       };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar la sede: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo actualizar la sede: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -84,12 +98,15 @@ export class SedeDataSourceImpl implements SedeDataSource {
         mensaje: 'Sede eliminada exitosamente',
       };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar la sede: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo eliminar la sede: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
+
 }

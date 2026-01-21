@@ -1,1 +1,0 @@
-{"version":3,"file":"create-parametro-detalle.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametro-detalle/create-parametro-detalle.ts"],"names":[],"mappings":";;;AAYA,MAAa,iCAAiC;IAG5C,YACmB,0BAAsD;QAAtD,+BAA0B,GAA1B,0BAA0B,CAA4B;IACtE,CAAC;IAEJ,OAAO,CACL,gBAAkC;QAElC,OAAO,IAAI,CAAC,0BAA0B,CAAC,MAAM,CAAC,gBAAgB,CAAC,CAAC;IAClE,CAAC;CACF;AAZD,8EAYC"}

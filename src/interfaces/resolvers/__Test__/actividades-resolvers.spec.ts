@@ -41,14 +41,14 @@ describe('actividadesResolvers', () => {
     jest.spyOn(controller, 'getActividadSedes').mockImplementation(() => {
       throw 123;
     });
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toEqual(expect.objectContaining({ exitoso: 'N', mensaje: expect.stringContaining('123') }));
   });
 
   it('getActividadSedes retorna null si el controlador retorna null', async () => {
     jest.spyOn(controller, 'getActividadSedes').mockResolvedValue(null);
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toBeNull();
   });
@@ -62,7 +62,7 @@ describe('actividadesResolvers', () => {
   });
   it('getActividadSedes retorna undefined si el controlador retorna undefined', async () => {
     jest.spyOn(controller, 'getActividadSedes').mockResolvedValue(undefined);
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toBeUndefined();
   });
@@ -79,7 +79,7 @@ describe('actividadesResolvers', () => {
     jest.spyOn(controller, 'getActividadSedes').mockImplementation(() => {
       throw new Error('DB error');
     });
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toEqual(expect.objectContaining({ exitoso: 'N' }));
   });
@@ -142,7 +142,7 @@ describe('actividadesResolvers', () => {
       fecha_modificacion: new Date().toISOString(),
     }];
     jest.spyOn(actividadesResolvers.Query, 'getActividadSedes').mockResolvedValue(mockResult);
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toBe(mockResult);
   });
@@ -150,7 +150,7 @@ describe('actividadesResolvers', () => {
   it('getActividadSedes retorna error si exitoso === N', async () => {
     jest.restoreAllMocks();
     jest.spyOn(controller, 'getActividadSedes').mockResolvedValue({ exitoso: "N", mensaje: "error" });
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).toEqual({ exitoso: 'N', mensaje: 'error' });
   });
@@ -176,7 +176,7 @@ describe('actividadesResolvers', () => {
         estado: 'A',
       }
     ]);
-    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+    const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
     const result = await actividadesResolvers.Query.getActividadSedes({}, args);
     expect(result).not.toBeUndefined();
   });
@@ -184,16 +184,23 @@ describe('actividadesResolvers', () => {
 it('getActividadSedes retorna error si exitoso === N', async () => {
   jest.restoreAllMocks();
   jest.spyOn(controller, 'getActividadSedes').mockResolvedValue({ exitoso: "N", mensaje: "error" });
-  const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+  const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
   const result = await actividadesResolvers.Query.getActividadSedes({}, args);
   expect(result).toEqual({ exitoso: "N", mensaje: "error" });
 });
 
 it('getActividadSedes retorna error si el resultado es exitoso N', async () => {
   jest.spyOn(controller, 'getActividadSedes').mockResolvedValue({ exitoso: 'N', mensaje: 'Error de consulta' });
-  const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31' };
+  const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
   const result = await actividadesResolvers.Query.getActividadSedes({}, args);
   expect(result).toEqual({ exitoso: 'N', mensaje: 'Error de consulta' });
+});
+
+it('getActividadSedes retorna respuesta cuando exitoso es S', async () => {
+  jest.spyOn(controller, 'getActividadSedes').mockResolvedValue({ exitoso: 'S', mensaje: 'Todo bien' });
+  const args = { id_usuario: 'u1', fecha_inicio: '2023-01-01', fecha_fin: '2023-01-31', limit: 10, offset: 0 };
+  const result = await actividadesResolvers.Query.getActividadSedes({}, args);
+  expect(result).toEqual({ exitoso: 'S', mensaje: 'Todo bien' });
 });
 
 it('createActividadAndSesiones ejecuta correctamente', async () => {

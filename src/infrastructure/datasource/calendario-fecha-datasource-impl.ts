@@ -6,11 +6,15 @@ import {
 } from '../../domain';
 import { pgPool } from '../db/pool';
 import { calendarioQueries } from '../db/calendario-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
 export class CalendarioFechaDataSourceImpl
+  extends BaseHomologatedDataSource
   implements CalendarioFechaDataSource
 {
-  private readonly pool = pgPool;
+  constructor() {
+    super(pgPool);
+  }
 
   async getByDate(
     calendarioInput: CalendarioInput,
@@ -26,12 +30,15 @@ export class CalendarioFechaDataSourceImpl
 
       return eventos;
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener eventos por fecha: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener eventos por fecha: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
+
 }

@@ -1,7 +1,10 @@
 import { PersonaGrupoInteres, RespuestaGrap } from '../';
 
 export interface PersonasGruposInteresRepository {
-  getAll(): Promise<PersonaGrupoInteres[] | RespuestaGrap>;
+  getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaGrupoInteres[] | RespuestaGrap>;
   getById(
     id_persona_grupo_interes: string,
   ): Promise<PersonaGrupoInteres | RespuestaGrap>;

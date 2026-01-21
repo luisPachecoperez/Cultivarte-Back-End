@@ -1,1 +1,0 @@
-{"version":3,"file":"get-sesiones.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/sesiones/get-sesiones.ts"],"names":[],"mappings":";;;AAMA,MAAa,sBAAsB;IACjC,YAA6B,gBAAkC;QAAlC,qBAAgB,GAAhB,gBAAgB,CAAkB;IAAG,CAAC;IAEnE,OAAO,CAAC,KAAa,EAAE,MAAc;QACnC,OAAO,IAAI,CAAC,gBAAgB,CAAC,MAAM,CAAC,KAAK,EAAE,MAAM,CAAC,CAAC;IACrD,CAAC;CACF;AAND,wDAMC"}

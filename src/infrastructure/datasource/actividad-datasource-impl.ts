@@ -17,9 +17,15 @@ import { Actividad } from '../../domain/entities/actividad';
 import { actividadQueries } from '../db/actividad-queries';
 import { randomUUID } from 'node:crypto';
 import { PreEditActividad } from '../../domain/entities/pre-edit-actividad';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
-export class ActividadDataSourceImpl implements ActividadDataSource {
-  private readonly pool = pgPool;
+export class ActividadDataSourceImpl
+  extends BaseHomologatedDataSource
+  implements ActividadDataSource
+{
+  constructor() {
+    super(pgPool);
+  }
 
   async getPreCreateActividad(
     id_usuario: string,
@@ -104,11 +110,14 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
       return preCreateEventData;
     } catch (error) {
       console.error('Error in getPreCreateActividad:', error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener pre-create actividad: ',
+        error,
+        client,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener pre-create actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     } finally {
       client.release();
@@ -269,11 +278,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
       return preEditEventData;
     } catch (error) {
       console.error('Error in getPreEditActividad:', error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener datos para editar actividad: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener datos para editar actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -289,11 +300,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
       ]);
       return result.rows as Actividad[];
     } catch (error) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -316,11 +329,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
       return actividad;
     } catch (error) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividad: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -329,21 +344,25 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
     id_usuario: string,
     fecha_inicio: string,
     fecha_fin: string,
+    limit: number,
+    offset: number,
   ): Promise<Actividad[] | RespuestaGrap> {
     try {
       const result = await this.pool.query<Actividad>(
         actividadQueries.actividadSedesResult,
-        [fecha_inicio, fecha_fin, id_usuario],
+        [fecha_inicio, fecha_fin, id_usuario, limit, offset],
       );
 
       // Tipar explícitamente los rows como Actividad[]
       return result.rows;
     } catch (error) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades por sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades por sedes: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -422,11 +441,14 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
         // loguea el error de rollback si ocurre
         console.error('Error en rollback:', rollbackError);
       }
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo crear actividad: ',
+        error,
+        client,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo crear actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     } finally {
       client.release();
@@ -461,11 +483,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
       return { exitoso: 'S', mensaje: 'Actividad creada exitosamente' };
     } catch (error) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear actividad: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al crear actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -499,11 +523,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
 
       return { exitoso: 'S', mensaje: 'Actividad actualizada exitosamente' };
     } catch (error) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar actividad: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al actualizar actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -513,11 +539,13 @@ export class ActividadDataSourceImpl implements ActividadDataSource {
       await this.pool.query(actividadQueries.deleteActividad, [id_actividad]);
       return { exitoso: 'S', mensaje: 'Actividad eliminada exitosamente' };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar actividad: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al eliminar actividad: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }

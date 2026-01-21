@@ -1,10 +1,14 @@
 import { ParametriaEventos, ParametriaEventosDataSource } from '../../domain';
 import { pgPool } from '../db/pool';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
 export class ParametriaEventosDataSourceImpl
+  extends BaseHomologatedDataSource
   implements ParametriaEventosDataSource
 {
-  private readonly pool = pgPool;
+  constructor() {
+    super(pgPool);
+  }
 
   async getAll(): Promise<
     Array<{ grupo: keyof ParametriaEventos; id: string; nombre: string }>
@@ -34,12 +38,21 @@ export class ParametriaEventosDataSourceImpl
             )
             ORDER BY grupo, pd.nombre;
         `;
-    const result = await this.pool.query(query);
+    try {
+      const result = await this.pool.query(query);
 
-    return result.rows as Array<{
-      grupo: keyof ParametriaEventos;
-      id: string;
-      nombre: string;
-    }>;
+      return result.rows as Array<{
+        grupo: keyof ParametriaEventos;
+        id: string;
+        nombre: string;
+      }>;
+    } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener parametria de eventos: ',
+        error,
+      );
+      throw new Error(mensaje);
+    }
   }
+
 }

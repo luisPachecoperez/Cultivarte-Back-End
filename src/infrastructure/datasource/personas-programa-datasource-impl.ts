@@ -5,22 +5,34 @@ import {
   RespuestaGrap,
 } from '../../domain';
 import { personasProgramaQueries } from '../db/personas-programa-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
 export class PersonasProgramaDataSourceImpl
+  extends BaseHomologatedDataSource
   implements PersonasProgramaDataSource
 {
-  private readonly pool = pgPool;
+  constructor() {
+    super(pgPool);
+  }
 
-  async getAll(): Promise<PersonaPrograma[] | RespuestaGrap> {
+  async getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap> {
     try {
-      const result = await this.pool.query(personasProgramaQueries.getAll);
+      const result = await this.pool.query(personasProgramaQueries.getAll, [
+        limit,
+        offset,
+      ]);
       return result.rows as PersonaPrograma[];
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener personas: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener personas: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -39,11 +51,13 @@ export class PersonasProgramaDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -62,11 +76,13 @@ export class PersonasProgramaDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo crear persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -88,11 +104,13 @@ export class PersonasProgramaDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo actualizar persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -109,12 +127,15 @@ export class PersonasProgramaDataSourceImpl
         }
       );
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar persona: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo eliminar persona: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
+
 }

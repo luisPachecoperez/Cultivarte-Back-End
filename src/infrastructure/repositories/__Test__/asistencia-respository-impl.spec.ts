@@ -18,13 +18,13 @@ describe('AsistenciaRepositoryImpl', () => {
     repo = new AsistenciaRepositoryImpl(mockDataSource);
   });
 
-  it('getAll retorna resultado del datasource', async () => {
+  it('getAll retorna resultado del datasourcesss', async () => {
     const result = await repo.getAll();
     expect(result).toBe('all');
     expect(mockDataSource.getAll).toHaveBeenCalled();
   });
 
-  it('getById retorna resultado del datasource', async () => {
+  it('getById retorna resultado del datasources', async () => {
     const result = await repo.getById('a1');
     expect(result).toBe('byId');
     expect(mockDataSource.getById).toHaveBeenCalledWith('a1');

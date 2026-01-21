@@ -69,13 +69,13 @@ describe('ActividadRepositoryImpl', () => {
 
   it('getActividadSedes retorna resultado del datasource', async () => {
     mockDataSource.getActividadSedes.mockResolvedValue('ok');
-    const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31');
+    const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31', 10, 0);
     expect(result).toBe('ok');
   });
 
   it('getActividadSedes retorna error si ocurre excepción', async () => {
     mockDataSource.getActividadSedes.mockImplementation(() => { throw new Error('fail'); });
-    const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31');
+    const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31', 10, 0);
     expect(result).toEqual({
       exitoso: 'N',
       mensaje: expect.stringContaining('Error al obtener actividades por sedes: fail'),
@@ -84,7 +84,7 @@ describe('ActividadRepositoryImpl', () => {
 
     it('getActividadSedes retorna error si ocurre excepción no Error', async () => {
       mockDataSource.getActividadSedes.mockImplementation(() => { throw 123; });
-      const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31');
+      const result = await repo.getActividadSedes('u1', '2023-01-01', '2023-01-31', 10, 0);
       expect(result).toEqual({
         exitoso: 'N',
         mensaje: expect.stringContaining('Error al obtener actividades por sedes: 123'),

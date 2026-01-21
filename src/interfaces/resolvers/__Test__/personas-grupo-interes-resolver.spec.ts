@@ -31,7 +31,7 @@ describe('personasGrupoInteresResolvers', () => {
   it('getPersonasGrupoInteres retorna error si el controlador falla', async () => {
     const mockError = { exitoso: 'N' as 'N', mensaje: 'Error de consulta' };
     const spy = jest.spyOn(personasGrupoInteresResolvers.Query, 'getPersonasGrupoInteres').mockResolvedValue(mockError);
-    const result = await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres();
+    const result = await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres({}, {limit: 1, offset: 100});
     expect(spy).toHaveBeenCalled();
     expect(result).toEqual(mockError);
     spy.mockRestore();
@@ -96,7 +96,7 @@ describe('personasGrupoInteresResolvers', () => {
       id_grupo_interes: '3',
     };
     const spy = jest.spyOn(personasGrupoInteresResolvers.Query, 'getPersonasGrupoInteres').mockResolvedValue([mockPersonaGrupoInteres]);
-    await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres();
+    await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres( {}, {limit: 1, offset: 100});
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
@@ -156,7 +156,7 @@ describe('personasGrupoInteresResolvers', () => {
 });
 
 it('getPersonasGrupoInteres ejecuta correctamente', async () => {
-  const result = await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres();
+  const result = await personasGrupoInteresResolvers.Query.getPersonasGrupoInteres( {}, {limit: 1, offset: 100});
   expect(result).not.toBeUndefined();
 });
 

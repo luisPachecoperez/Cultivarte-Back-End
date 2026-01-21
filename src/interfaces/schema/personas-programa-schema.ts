@@ -26,7 +26,7 @@ export const personasProgramaSchema = gql`
   }
 
   type Query {
-    getPersonaProgramas: [PersonaPrograma!]!
+    getPersonaProgramas(limit: Int!, offset: Int): [PersonaPrograma!]!
     getPersonaProgramaById(id_persona_programa: ID!): PersonaPrograma
   }
 

@@ -2,9 +2,15 @@ import { pgPool } from '../db/pool';
 import { Poblacion, RespuestaGrap, PoblacionDataSource } from '../../domain';
 import { randomUUID } from 'node:crypto';
 import { poblacionesQueries } from '../db/poblaciones-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
-export class PoblacionDataSourceImpl implements PoblacionDataSource {
-  private readonly pool = pgPool;
+export class PoblacionDataSourceImpl
+  extends BaseHomologatedDataSource
+  implements PoblacionDataSource
+{
+  constructor() {
+    super(pgPool);
+  }
 
   async getPoblaciones(): Promise<Poblacion[] | RespuestaGrap> {
     try {
@@ -13,11 +19,13 @@ export class PoblacionDataSourceImpl implements PoblacionDataSource {
       );
       return result.rows as Poblacion[];
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener poblaciones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `No se pudo obtener poblaciones: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -39,12 +47,13 @@ export class PoblacionDataSourceImpl implements PoblacionDataSource {
 
       return result.rows[0] as Poblacion;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
-      console.error('Error en getPoblacionById:', mensaje);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener la población: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `Error al obtener la población: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -69,12 +78,13 @@ export class PoblacionDataSourceImpl implements PoblacionDataSource {
         mensaje: 'Población creada exitosamente',
       };
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
-      console.error('Error en createPoblacion:', mensaje);
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear la población: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `No se pudo crear la población: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -90,11 +100,13 @@ export class PoblacionDataSourceImpl implements PoblacionDataSource {
       ]);
       return (result.rows[0] as RespuestaGrap) || null;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar la población: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `No se pudo actualizar poblacion: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -106,12 +118,15 @@ export class PoblacionDataSourceImpl implements PoblacionDataSource {
       ]);
       return (result.rows[0] as RespuestaGrap) || null;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar la población: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `No se pudo eliminar poblacion: ${mensaje}`,
+        mensaje,
       };
     }
   }
+
 }

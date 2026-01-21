@@ -17,6 +17,8 @@ export interface ActividadDataSource {
     id_usuario: string,
     fecha_inicio: string,
     fecha_fin: string,
+    limit: number,
+    offset: number,
   ): Promise<Actividad[] | RespuestaGrap>;
   getAll(limit: number, offset: number): Promise<Actividad[] | RespuestaGrap>;
   getById(id_actividad: string): Promise<Actividad | RespuestaGrap>;

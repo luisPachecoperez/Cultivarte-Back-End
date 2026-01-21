@@ -31,7 +31,10 @@ export const personasGrupoInteresResolvers = {
       _parent: unknown,
       args: { id_persona_grupo_interes: string },
     ) => controller.getPersonaGrupoInteresById(args.id_persona_grupo_interes),
-    getPersonasGrupoInteres: () => controller.getPersonasGrupoInteres(),
+    getPersonasGrupoInteres: (
+      _: any,
+      args: { limit: number; offset: number },
+    ) => controller.getPersonasGrupoInteres(args.limit, args.offset),
   },
   Mutation: {
     createPersonaGrupoInteres: (

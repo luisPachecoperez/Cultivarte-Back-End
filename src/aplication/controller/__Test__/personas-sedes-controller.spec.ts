@@ -41,13 +41,13 @@ describe('PersonasSedesController', () => {
 
   it('getAll - success', async () => {
     getPersonasSedesUseCase.execute.mockResolvedValueOnce([mockPersonasSede]);
-    await expect(controller.getAll()).resolves.toEqual([mockPersonasSede]);
+    await expect(controller.getAll(1,100)).resolves.toEqual([mockPersonasSede]);
     expect(getPersonasSedesUseCase.execute).toHaveBeenCalled();
   });
 
   it('getAll - error', async () => {
     getPersonasSedesUseCase.execute.mockResolvedValueOnce(mockRespuesta);
-    await expect(controller.getAll()).resolves.toBe(mockRespuesta);
+    await expect(controller.getAll(1,100)).resolves.toBe(mockRespuesta);
   });
 
   it('getById - success', async () => {

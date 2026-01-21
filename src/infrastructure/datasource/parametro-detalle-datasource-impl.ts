@@ -5,11 +5,15 @@ import {
 } from '../../domain';
 import { pgPool } from '../db/pool';
 import { parametrosDetalleQueries } from '../db/parametros-detalle-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
 export class ParametroDetalleDataSourceImpl
+  extends BaseHomologatedDataSource
   implements ParametroDetalleDataSource
 {
-  private readonly pool = pgPool;
+  constructor() {
+    super(pgPool);
+  }
 
   async getAll(): Promise<ParametroDetalle[]> {
     const getAllRes = await this.pool.query(parametrosDetalleQueries.getAll);
@@ -26,11 +30,13 @@ export class ParametroDetalleDataSourceImpl
       );
       return (getByIdRes.rows[0] as ParametroDetalle) || null;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener parametro detalle: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `Error al obtener parametro detalle: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -53,11 +59,13 @@ export class ParametroDetalleDataSourceImpl
       );
       return (result.rows[0] as ParametroDetalle) || null;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear parametro detalle: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `Error al crear parametro detalle: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -82,11 +90,13 @@ export class ParametroDetalleDataSourceImpl
       );
       return (result.rows[0] as ParametroDetalle) || null;
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar parametro detalle: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `Error al actualizar parametro detalle: ${mensaje}`,
+        mensaje,
       };
     }
   }
@@ -101,12 +111,15 @@ export class ParametroDetalleDataSourceImpl
         mensaje: 'Parametro detalle eliminado correctamente',
       };
     } catch (error: unknown) {
-      const mensaje =
-        error instanceof Error ? error.message : JSON.stringify(error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar parametro detalle: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: `Error al eliminar parametro detalle: ${mensaje}`,
+        mensaje,
       };
     }
   }
+
 }

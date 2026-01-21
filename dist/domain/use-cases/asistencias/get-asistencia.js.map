@@ -1,1 +1,0 @@
-{"version":3,"file":"get-asistencia.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/asistencias/get-asistencia.ts"],"names":[],"mappings":";;;AAMA,MAAa,wBAAwB;IACnC,YAA6B,oBAA0C;QAA1C,yBAAoB,GAApB,oBAAoB,CAAsB;IAAG,CAAC;IAE3E,OAAO,CAAC,aAAqB;QAC3B,OAAO,IAAI,CAAC,oBAAoB,CAAC,OAAO,CAAC,aAAa,CAAC,CAAC;IAC1D,CAAC;CACF;AAND,4DAMC"}

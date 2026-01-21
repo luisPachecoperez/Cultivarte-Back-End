@@ -55,11 +55,15 @@ export class ActividadesController {
     id_usuario: string,
     fecha_inicio: string,
     fecha_fin: string,
+    limit: number,
+    offset: number,
   ): Promise<Actividad[] | RespuestaGrap> {
     return this.getActividadSedesUseCase.execute(
       id_usuario,
       fecha_inicio,
       fecha_fin,
+      limit,
+      offset,
     );
   }
 

@@ -1,1 +1,0 @@
-{"version":3,"file":"get-parametro-general.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametros-generales/get-parametro-general.ts"],"names":[],"mappings":";;;AAYA,MAAa,8BAA8B;IAGzC,YACmB,0BAAyD;QAAzD,+BAA0B,GAA1B,0BAA0B,CAA+B;IACzE,CAAC;IAEJ,OAAO,CACL,oBAA4B;QAE5B,OAAO,IAAI,CAAC,0BAA0B,CAAC,OAAO,CAAC,oBAAoB,CAAC,CAAC;IACvE,CAAC;CACF;AAZD,wEAYC"}

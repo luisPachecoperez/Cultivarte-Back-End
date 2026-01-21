@@ -4,9 +4,15 @@ import { sesionesQueries } from '../db/sesiones-queries';
 import { Sesion } from '../../domain/entities/sesion';
 import { EditarSesiones } from '../../domain/entities/editar-sesiones';
 import { randomUUID } from 'node:crypto';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
-export class SesionesDataSourceImpl implements SesionesDataSource {
-  private readonly pool = pgPool;
+export class SesionesDataSourceImpl
+  extends BaseHomologatedDataSource
+  implements SesionesDataSource
+{
+  constructor() {
+    super(pgPool);
+  }
 
   async getAll(
     limit: number,
@@ -19,11 +25,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       ]);
       return getAllRes.rows as Sesion[]; // ✅ casteo seguro
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)), // ✅ conversión segura
+        mensaje,
       };
     }
   }
@@ -45,11 +53,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
 
       return sesion;
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -68,12 +78,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       // Cast explícito para evitar `any[]`
       return getSessionesSedeRes.rows as Sesion[];
     } catch (error: unknown) {
-      console.error('Error en getSesionesSede:', error);
+      const mensaje = await this.buildErrorMessage(
+        'Error al obtener sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al obtener sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -98,11 +109,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       await this.pool.query(sesionesQueries.create, values);
       return { exitoso: 'S', mensaje: 'Sesion creada correctamente' };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al crear sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al crear sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -124,11 +137,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       await this.pool.query(sesionesQueries.updateById, values);
       return { exitoso: 'S', mensaje: 'Sesion actualizada correctamente' };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al actualizar sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al actualizar sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -138,11 +153,13 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       await this.pool.query(sesionesQueries.deleteById, [id_sesion]);
       return { exitoso: 'S', mensaje: 'Sesion eliminada correctamente' };
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'Error al eliminar sesiones: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'Error al eliminar sesiones: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -178,7 +195,6 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       // sesiones modificadas
       if (modificados.length) {
         for (const sesionModificada of modificados) {
-          console.log('Sesion modificada:', sesionModificada);
           await client.query(sesionesQueries.updateSesionesById, [
             sesionModificada.id_sesion,
             sesionModificada.id_actividad,
@@ -206,22 +222,20 @@ export class SesionesDataSourceImpl implements SesionesDataSource {
       return { exitoso: 'S', mensaje: 'Sesiones actualizadas correctamente' };
     } catch (error) {
       await client.query('ROLLBACK');
-      console.error('Error updating sessions:', error);
-      let mensajeError;
-      if (error instanceof Error && error.message) {
-        mensajeError = error.message;
-      } else {
-        mensajeError = JSON.stringify(error);
-      }
+      const mensajeError = await this.buildErrorMessage(
+        'Error al actualizar sesiones: ',
+        error,
+        client,
+      );
       return {
         exitoso: 'N',
-        mensaje: 'Error al actualizar sesiones: ' + mensajeError,
+        mensaje: mensajeError,
       };
     } finally {
       try {
         client.release();
       } catch (releaseError) {
-        console.error('Error al liberar el cliente:', releaseError);
+        console.warn('Error al liberar el cliente:', releaseError);
       }
     }
   }

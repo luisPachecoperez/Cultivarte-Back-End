@@ -15,7 +15,7 @@ import {
   DeleteActividadUseCase,
 } from '../../../domain';
 
-describe('ActividadesController test', () => {
+describe('ActividadesController tests', () => {
   // Mocks
   const getPreCreateActividadUseCase = { execute: jest.fn() };
   const getPreEditActividadUseCase = { execute: jest.fn() };
@@ -150,19 +150,20 @@ describe('ActividadesController test', () => {
   it('getActividadSedes - success', async () => {
     getActividadSedesUseCase.execute.mockResolvedValueOnce([mockActividad]);
     await expect(
-      controller.getActividadSedes('user', '2024-01-01', '2024-01-31'),
+      controller.getActividadSedes('user', '2024-01-01', '2024-01-31', 10, 0),
     ).resolves.toEqual([mockActividad]);
     expect(getActividadSedesUseCase.execute).toHaveBeenCalledWith(
       'user',
       '2024-01-01',
       '2024-01-31',
+      10, 0,
     );
   });
 
   it('getActividadSedes - error', async () => {
     getActividadSedesUseCase.execute.mockResolvedValueOnce(mockRespuesta);
     await expect(
-      controller.getActividadSedes('user', '2024-01-01', '2024-01-31'),
+      controller.getActividadSedes('user', '2024-01-01', '2024-01-31', 10, 0),
     ).resolves.toBe(mockRespuesta);
   });
 

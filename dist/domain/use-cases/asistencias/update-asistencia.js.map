@@ -1,1 +1,0 @@
-{"version":3,"file":"update-asistencia.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/asistencias/update-asistencia.ts"],"names":[],"mappings":";;;AASA,MAAa,2BAA2B;IACtC,YAA6B,oBAA0C;QAA1C,yBAAoB,GAApB,oBAAoB,CAAsB;IAAG,CAAC;IAE3E,OAAO,CACL,aAAqB,EACrB,UAAsB;QAEtB,OAAO,IAAI,CAAC,oBAAoB,CAAC,UAAU,CAAC,aAAa,EAAE,UAAU,CAAC,CAAC;IACzE,CAAC;CACF;AATD,kEASC"}

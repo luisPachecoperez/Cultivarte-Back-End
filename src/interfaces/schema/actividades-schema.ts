@@ -127,6 +127,8 @@ export const actividadesTypeDefs = gql`
       id_usuario: ID!
       fecha_inicio: String!
       fecha_fin: String!
+      limit: Int!
+      offset: Int!
     ): [Actividad]
   }
 

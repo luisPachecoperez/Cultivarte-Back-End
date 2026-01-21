@@ -75,13 +75,21 @@ export const actividadesResolvers = {
     ) => controller.getPreEditActividad(args.id_actividad, args.id_usuario),
     getActividadSedes: async (
       _: any,
-      args: { id_usuario: string; fecha_inicio: string; fecha_fin: string },
+      args: {
+        id_usuario: string;
+        fecha_inicio: string;
+        fecha_fin: string;
+        limit: number;
+        offset: number;
+      },
     ) => {
       try {
         const result = await controller.getActividadSedes(
           args.id_usuario,
           args.fecha_inicio,
           args.fecha_fin,
+          args.limit,
+          args.offset,
         );
         if (result && 'exitoso' in result && result.exitoso === 'N') {
           throw new Error(result.mensaje);

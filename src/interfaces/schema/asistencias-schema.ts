@@ -76,6 +76,8 @@ export const asistenciasTypeDefs = gql`
       id_usuario: String
       fecha_inicio: String
       fecha_fin: String
+      limit: Int!
+      offset: Int!
     ): [Asistencia!]!
   }
 

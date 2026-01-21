@@ -5,7 +5,10 @@ import {
 } from '../../';
 
 export interface GetPersonasProgramaUseCase {
-  execute(): Promise<PersonaPrograma[] | RespuestaGrap>;
+  execute(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap>;
 }
 
 export class GetPersonasProgramaUseCaseImpl
@@ -15,7 +18,10 @@ export class GetPersonasProgramaUseCaseImpl
     private readonly personasProgramaRepository: PersonasProgramaRepository,
   ) {}
 
-  execute(): Promise<PersonaPrograma[] | RespuestaGrap> {
-    return this.personasProgramaRepository.getAll();
+  execute(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap> {
+    return this.personasProgramaRepository.getAll(limit, offset);
   }
 }

@@ -17,8 +17,11 @@ export class PersonasSedesController {
     private readonly deletePersonaSedeUseCase: DeletePersonaSedeUseCase,
   ) {}
 
-  async getAll(): Promise<PersonasSede[] | RespuestaGrap> {
-    return this.getPersonasSedesUseCase.execute();
+  async getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonasSede[] | RespuestaGrap> {
+    return this.getPersonasSedesUseCase.execute(limit, offset);
   }
 
   async getById(id_sede: string): Promise<PersonasSede | RespuestaGrap> {

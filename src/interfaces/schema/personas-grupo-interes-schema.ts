@@ -23,7 +23,7 @@ export const personasGrupoInteresTypeDefs = gql`
     getPersonaGrupoInteresById(
       id_personas_grupo_interes: ID!
     ): PersonaGrupoInteres
-    getPersonasGrupoInteres: [PersonaGrupoInteres!]!
+    getPersonasGrupoInteres(limit: Int!, offset: Int!): [PersonaGrupoInteres!]!
   }
 
   type Mutation {

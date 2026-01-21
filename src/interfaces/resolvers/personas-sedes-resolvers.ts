@@ -44,7 +44,8 @@ export const personasSedesResolvers = {
   Query: {
     getPersonaSede: (_: any, args: { id_sede: string }) =>
       controller.getById(args.id_sede),
-    getPersonasSedes: () => controller.getAll(),
+    getPersonasSedes: (_: any, args: { limit: number; offset: number }) =>
+      controller.getAll(args.limit, args.offset),
   },
   Mutation: {
     createPersonaSede: (_: any, args: { personasSede: PersonasSede }) =>

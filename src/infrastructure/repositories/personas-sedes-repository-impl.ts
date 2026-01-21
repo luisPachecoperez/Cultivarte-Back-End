@@ -10,8 +10,11 @@ export class PersonasSedesRepositoryImpl implements PersonasSedesRepository {
     private readonly personasSedesDataSource: PersonasSedesDataSource,
   ) {}
 
-  getAll(): Promise<PersonasSede[] | RespuestaGrap> {
-    return this.personasSedesDataSource.getAll();
+  getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonasSede[] | RespuestaGrap> {
+    return this.personasSedesDataSource.getAll(limit, offset);
   }
 
   getById(id_sede: string): Promise<PersonasSede | RespuestaGrap> {

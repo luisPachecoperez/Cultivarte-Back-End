@@ -1,1 +1,0 @@
-{"version":3,"file":"delete-persona.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/persona/delete-persona.ts"],"names":[],"mappings":";;;AAMA,MAAa,wBAAwB;IACnC,YAA6B,kBAAqC;QAArC,uBAAkB,GAAlB,kBAAkB,CAAmB;IAAG,CAAC;IAEtE,KAAK,CAAC,OAAO,CAAC,UAAkB;QAC9B,OAAO,IAAI,CAAC,kBAAkB,CAAC,aAAa,CAAC,UAAU,CAAC,CAAC;IAC3D,CAAC;CACF;AAND,4DAMC"}

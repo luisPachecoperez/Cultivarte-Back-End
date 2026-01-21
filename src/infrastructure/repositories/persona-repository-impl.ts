@@ -1,9 +1,11 @@
+import { PreBeneficiario } from '@/domain/entities/beneficiario';
 import {
   PersonaRepository,
   Persona,
   RespuestaGrap,
   PersonaDataSource,
 } from '../../domain';
+import { EditarBeneficiarios } from '@/domain/entities/Editar-beneficiarios';
 
 export class PersonaRepositoryImpl implements PersonaRepository {
   constructor(private readonly personaDataSource: PersonaDataSource) {}
@@ -132,6 +134,94 @@ export class PersonaRepositoryImpl implements PersonaRepository {
         exitoso: 'N',
         mensaje:
           'No se pudo obtener beneficiarios: ' +
+          (error instanceof Error ? error.message : JSON.stringify(error)),
+      };
+    }
+  }
+
+  async getPreBeneficiarios(
+    id_usuario: string,
+  ): Promise<PreBeneficiario[] | RespuestaGrap> {
+    try {
+      const result =
+        await this.personaDataSource.getPreBeneficiarios(id_usuario);
+      return Array.isArray(result) ? result : [];
+    } catch (error: unknown) {
+      console.error('Error en getPreBeneficiarios:', error);
+      return {
+        exitoso: 'N',
+        mensaje:
+          'No se pudo obtener pre beneficiarios: ' +
+          (error instanceof Error ? error.message : JSON.stringify(error)),
+      };
+    }
+  }
+
+  async getPersonasParams(
+    id_sede: string,
+    id_programa: string,
+    id_grupo_interes: string,
+    limit: number,
+    offset: number,
+  ): Promise<Persona[] | RespuestaGrap> {
+    try {
+      const result = await this.personaDataSource.getPersonasParams(
+        id_sede,
+        id_programa,
+        id_grupo_interes,
+        limit,
+        offset,
+      );
+      return Array.isArray(result) ? result : [];
+    } catch (error: unknown) {
+      console.error('Error en getPersonasParams:', error);
+      return {
+        exitoso: 'N',
+        mensaje:
+          'No se pudo obtener personas con parámetros: ' +
+          (error instanceof Error ? error.message : JSON.stringify(error)),
+      };
+    }
+  }
+
+  async getPersonaByTipoIdenficacionNumeroIdentificacion(
+    id_tipo_identificacion: string,
+    identificacion: string,
+  ): Promise<Persona | RespuestaGrap> {
+    try {
+      const result =
+        await this.personaDataSource.getPersonaByTipoIdenficacionNumeroIdentificacion(
+          id_tipo_identificacion,
+          identificacion,
+        );
+      return result;
+    } catch (error: unknown) {
+      console.error(
+        'Error en getPersonaByTipoIdenficacionNumeroIdentificacion:',
+        error,
+      );
+      return {
+        exitoso: 'N',
+        mensaje:
+          'No se pudo obtener persona por tipo y número de identificación: ' +
+          (error instanceof Error ? error.message : JSON.stringify(error)),
+      };
+    }
+  }
+
+  async updateBeneficiarios(
+    editarBeneficiarios: EditarBeneficiarios,
+  ): Promise<RespuestaGrap> {
+    try {
+      const result =
+        await this.personaDataSource.updateBeneficiarios(editarBeneficiarios);
+      return result;
+    } catch (error: unknown) {
+      console.error('Error en updateBeneficiarios:', error);
+      return {
+        exitoso: 'N',
+        mensaje:
+          'No se pudo actualizar beneficiarios: ' +
           (error instanceof Error ? error.message : JSON.stringify(error)),
       };
     }

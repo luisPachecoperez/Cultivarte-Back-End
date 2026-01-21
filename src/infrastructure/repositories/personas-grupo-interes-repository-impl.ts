@@ -12,8 +12,11 @@ export class PersonasGrupoInteresRepositoryImpl
     private readonly personasGrupoInteresDataSource: PersonasGruposInteresDataSource,
   ) {}
 
-  async getAll(): Promise<PersonaGrupoInteres[] | RespuestaGrap> {
-    return this.personasGrupoInteresDataSource.getAll();
+  async getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaGrupoInteres[] | RespuestaGrap> {
+    return this.personasGrupoInteresDataSource.getAll(limit, offset);
   }
 
   async getById(

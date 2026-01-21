@@ -1,7 +1,10 @@
 import { PersonasSede, RespuestaGrap, PersonasSedesRepository } from '../../';
 
 export interface GetPersonasSedesUseCase {
-  execute(): Promise<PersonasSede[] | RespuestaGrap>;
+  execute(
+    limit: number,
+    offset: number,
+  ): Promise<PersonasSede[] | RespuestaGrap>;
 }
 
 export class GetPersonasSedesUseCaseImpl implements GetPersonasSedesUseCase {
@@ -9,7 +12,10 @@ export class GetPersonasSedesUseCaseImpl implements GetPersonasSedesUseCase {
     private readonly personaSedeRepository: PersonasSedesRepository,
   ) {}
 
-  execute(): Promise<PersonasSede[] | RespuestaGrap> {
-    return this.personaSedeRepository.getAll();
+  execute(
+    limit: number,
+    offset: number,
+  ): Promise<PersonasSede[] | RespuestaGrap> {
+    return this.personaSedeRepository.getAll(limit, offset);
   }
 }

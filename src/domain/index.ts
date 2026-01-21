@@ -91,6 +91,10 @@ export * from './use-cases/persona/get-persona';
 export * from './use-cases/persona/get-personas';
 export * from './use-cases/persona/get-aliados-sede';
 export * from './use-cases/persona/get-beneficiarios-sede';
+export * from './use-cases/persona/get-pre-benificiarios';
+export * from './use-cases/persona/update-beneficiario';
+export * from './use-cases/persona/get-persona-identif-numero';
+export * from './use-cases/persona/get-personas-param';
 
 /*Exports Poblaciones */
 export * from './entities/poblacion';
@@ -141,3 +145,10 @@ export * from './use-cases/personas-programa/update-persona-programa';
 export * from './use-cases/personas-programa/delete-persona-programa';
 export * from './use-cases/personas-programa/get-persona-programa';
 export * from './use-cases/personas-programa/get-personas-programa';
+
+/*Exports Excepciones */
+export * from './entities/excepciones';
+export * from './repositories/excepciones-repository';
+export * from './datasources/excepciones-datasource';
+export * from './use-cases/exepciones/get-excepciones';
+export * from './use-cases/exepciones/persist-excepcion';

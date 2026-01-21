@@ -1,1 +1,0 @@
-{"version":3,"file":"get-parametros-detalle.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametro-detalle/get-parametros-detalle.ts"],"names":[],"mappings":";;;AAUA,MAAa,+BAA+B;IAG1C,YACmB,0BAAsD;QAAtD,+BAA0B,GAA1B,0BAA0B,CAA4B;IACtE,CAAC;IAEJ,OAAO;QACL,OAAO,IAAI,CAAC,0BAA0B,CAAC,MAAM,EAAE,CAAC;IAClD,CAAC;CACF;AAVD,0EAUC"}

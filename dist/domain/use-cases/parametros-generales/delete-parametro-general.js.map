@@ -1,1 +1,0 @@
-{"version":3,"file":"delete-parametro-general.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/parametros-generales/delete-parametro-general.ts"],"names":[],"mappings":";;;AAMA,MAAa,iCAAiC;IAG5C,YACmB,0BAAyD;QAAzD,+BAA0B,GAA1B,0BAA0B,CAA+B;IACzE,CAAC;IAEJ,OAAO,CAAC,oBAA4B;QAClC,OAAO,IAAI,CAAC,0BAA0B,CAAC,UAAU,CAAC,oBAAoB,CAAC,CAAC;IAC1E,CAAC;CACF;AAVD,8EAUC"}

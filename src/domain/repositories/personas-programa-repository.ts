@@ -1,7 +1,10 @@
 import { PersonaPrograma, RespuestaGrap } from '..';
 
 export interface PersonasProgramaRepository {
-  getAll(): Promise<PersonaPrograma[] | RespuestaGrap>;
+  getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap>;
   getById(
     id_persona_programa: string,
   ): Promise<PersonaPrograma | RespuestaGrap>;

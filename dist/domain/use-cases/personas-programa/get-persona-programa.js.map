@@ -1,1 +1,0 @@
-{"version":3,"file":"get-persona-programa.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/personas-programa/get-persona-programa.ts"],"names":[],"mappings":";;;AAYA,MAAa,6BAA6B;IAGxC,YACmB,0BAAsD;QAAtD,+BAA0B,GAA1B,0BAA0B,CAA4B;IACtE,CAAC;IAEJ,OAAO,CACL,mBAA2B;QAE3B,OAAO,IAAI,CAAC,0BAA0B,CAAC,OAAO,CAAC,mBAAmB,CAAC,CAAC;IACtE,CAAC;CACF;AAZD,sEAYC"}

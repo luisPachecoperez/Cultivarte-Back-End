@@ -16,8 +16,11 @@ export class PersonasProgramaRepositoryImpl
     return this.dataSource.getById(id_persona_programa);
   }
 
-  async getAll(): Promise<PersonaPrograma[] | RespuestaGrap> {
-    return this.dataSource.getAll();
+  async getAll(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap> {
+    return this.dataSource.getAll(limit, offset);
   }
   async create(personaPrograma: PersonaPrograma): Promise<RespuestaGrap> {
     return this.dataSource.create(personaPrograma);

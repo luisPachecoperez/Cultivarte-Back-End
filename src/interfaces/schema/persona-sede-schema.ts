@@ -31,7 +31,7 @@ export const personaSedeTypeDefs = gql`
 
   type Query {
     getPersonaSede(id_personas_sede: ID!): PersonaSede
-    getPersonasSedes: [PersonaSede!]!
+    getPersonasSedes(limit: Int!, offset: Int!): [PersonaSede!]!
   }
 
   type Mutation {

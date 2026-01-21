@@ -59,7 +59,7 @@ describe('PersonasGruposInteresController', () => {
     getPersonasGrupoInteresUseCase.execute.mockResolvedValueOnce([
       mockPersonaGrupoInteres,
     ]);
-    await expect(controller.getPersonasGrupoInteres()).resolves.toEqual([
+    await expect(controller.getPersonasGrupoInteres(1,100)).resolves.toEqual([
       mockPersonaGrupoInteres,
     ]);
     expect(getPersonasGrupoInteresUseCase.execute).toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe('PersonasGruposInteresController', () => {
 
   it('getPersonasGrupoInteres - error', async () => {
     getPersonasGrupoInteresUseCase.execute.mockResolvedValueOnce(mockRespuesta);
-    await expect(controller.getPersonasGrupoInteres()).resolves.toBe(
+    await expect(controller.getPersonasGrupoInteres(1,100)).resolves.toBe(
       mockRespuesta,
     );
   });

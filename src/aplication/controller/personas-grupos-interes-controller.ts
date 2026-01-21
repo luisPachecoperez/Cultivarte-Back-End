@@ -25,10 +25,11 @@ export class PersonasGruposInteresController {
     );
   }
 
-  async getPersonasGrupoInteres(): Promise<
-    PersonaGrupoInteres[] | RespuestaGrap
-  > {
-    return this.getPersonasGrupoInteresUseCase.execute();
+  async getPersonasGrupoInteres(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaGrupoInteres[] | RespuestaGrap> {
+    return this.getPersonasGrupoInteresUseCase.execute(limit, offset);
   }
 
   async createPersonaGrupoInteres(

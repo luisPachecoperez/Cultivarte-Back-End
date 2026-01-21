@@ -31,18 +31,19 @@ describe('GetActividadSedesUseCaseImpl', () => {
     actividadRepository.getActividadSedes.mockResolvedValueOnce([
       mockActividad,
     ]);
-    const result = await useCase.execute('user1', '2024-01-01', '2024-01-31');
+    const result = await useCase.execute('user1', '2024-01-01', '2024-01-31', 10, 0);
     expect(actividadRepository.getActividadSedes).toHaveBeenCalledWith(
       'user1',
       '2024-01-01',
       '2024-01-31',
+      10, 0,
     );
     expect(result).toEqual([mockActividad]);
   });
 
   it('retorna respuesta de error', async () => {
     actividadRepository.getActividadSedes.mockResolvedValueOnce(mockRespuesta);
-    const result = await useCase.execute('user1', '2024-01-01', '2024-01-31');
+    const result = await useCase.execute('user1', '2024-01-01', '2024-01-31', 10, 0);
     expect(result).toBe(mockRespuesta);
   });
 
@@ -51,7 +52,7 @@ describe('GetActividadSedesUseCaseImpl', () => {
       new Error('DB error'),
     );
     await expect(
-      useCase.execute('user1', '2024-01-01', '2024-01-31'),
+      useCase.execute('user1', '2024-01-01', '2024-01-31', 10, 0),
     ).rejects.toThrow('DB error');
   });
 });

@@ -15,6 +15,10 @@ describe('PersonaRepositoryImpl', () => {
       updatePersona: jest.fn(),
       deletePersona: jest.fn(),
       getBeneficiarios: jest.fn(),
+      getPreBeneficiarios: jest.fn(),
+      getPersonasParams: jest.fn(),
+      getPersonaByTipoIdenficacionNumeroIdentificacion: jest.fn(),
+      updateBeneficiarios: jest.fn(),
     };
     repo = new PersonaRepositoryImpl(mockDataSource);
   });
@@ -247,6 +251,122 @@ describe('PersonaRepositoryImpl', () => {
     expect(result).toEqual({
       exitoso: 'N',
       mensaje: expect.stringContaining('No se pudo obtener beneficiarios: fail'),
+    });
+  });
+
+  it('getPreBeneficiarios retorna array si datasource retorna array', async () => {
+    mockDataSource.getPreBeneficiarios.mockResolvedValue([{ id_programa: 1 }]);
+    const result = await repo.getPreBeneficiarios('user-1');
+    expect(Array.isArray(result)).toBe(true);
+    expect(result[0]).toHaveProperty('id_programa', 1);
+  });
+
+  it('getPreBeneficiarios retorna array vacío si datasource retorna objeto', async () => {
+    mockDataSource.getPreBeneficiarios.mockResolvedValue({ exitoso: 'N' });
+    const result = await repo.getPreBeneficiarios('user-1');
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      expect(result.length).toBe(0);
+    }
+  });
+
+  it('getPreBeneficiarios retorna error si ocurre excepción Error', async () => {
+    mockDataSource.getPreBeneficiarios.mockImplementation(() => { throw new Error('fail'); });
+    const result = await repo.getPreBeneficiarios('user-1');
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener pre beneficiarios: fail'),
+    });
+  });
+
+  it('getPreBeneficiarios retorna error si ocurre excepción no Error', async () => {
+    mockDataSource.getPreBeneficiarios.mockImplementation(() => { throw 'fail'; });
+    const result = await repo.getPreBeneficiarios('user-1');
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener pre beneficiarios: "fail"'),
+    });
+  });
+
+  it('getPersonasParams retorna array si datasource retorna array', async () => {
+    mockDataSource.getPersonasParams.mockResolvedValue([{ id_persona: 'p1' }]);
+    const result = await repo.getPersonasParams('sede', 'prog', 'grupo', 1, 0);
+    expect(Array.isArray(result)).toBe(true);
+    expect(result[0]).toHaveProperty('id_persona', 'p1');
+  });
+
+  it('getPersonasParams retorna array vacío si datasource retorna objeto', async () => {
+    mockDataSource.getPersonasParams.mockResolvedValue({ exitoso: 'N' });
+    const result = await repo.getPersonasParams('sede', 'prog', 'grupo', 1, 0);
+    expect(Array.isArray(result)).toBe(true);
+    if (Array.isArray(result)) {
+      expect(result.length).toBe(0);
+    }
+  });
+
+  it('getPersonasParams retorna error si ocurre excepción Error', async () => {
+    mockDataSource.getPersonasParams.mockImplementation(() => { throw new Error('fail'); });
+    const result = await repo.getPersonasParams('sede', 'prog', 'grupo', 1, 0);
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener personas con parámetros: fail'),
+    });
+  });
+
+  it('getPersonasParams retorna error si ocurre excepción no Error', async () => {
+    mockDataSource.getPersonasParams.mockImplementation(() => { throw 'fail'; });
+    const result = await repo.getPersonasParams('sede', 'prog', 'grupo', 1, 0);
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener personas con parámetros: "fail"'),
+    });
+  });
+
+  it('getPersonaByTipoIdenficacionNumeroIdentificacion retorna resultado del datasource', async () => {
+    mockDataSource.getPersonaByTipoIdenficacionNumeroIdentificacion.mockResolvedValue({ id_persona: 'p1' });
+    const result = await repo.getPersonaByTipoIdenficacionNumeroIdentificacion('CC', '123');
+    expect(result).toHaveProperty('id_persona', 'p1');
+  });
+
+  it('getPersonaByTipoIdenficacionNumeroIdentificacion retorna error si ocurre excepción Error', async () => {
+    mockDataSource.getPersonaByTipoIdenficacionNumeroIdentificacion.mockImplementation(() => { throw new Error('fail'); });
+    const result = await repo.getPersonaByTipoIdenficacionNumeroIdentificacion('CC', '123');
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener persona por tipo y número de identificación: fail'),
+    });
+  });
+
+  it('getPersonaByTipoIdenficacionNumeroIdentificacion retorna error si ocurre excepción no Error', async () => {
+    mockDataSource.getPersonaByTipoIdenficacionNumeroIdentificacion.mockImplementation(() => { throw 'fail'; });
+    const result = await repo.getPersonaByTipoIdenficacionNumeroIdentificacion('CC', '123');
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo obtener persona por tipo y número de identificación: "fail"'),
+    });
+  });
+
+  it('updateBeneficiarios retorna resultado del datasource', async () => {
+    mockDataSource.updateBeneficiarios.mockResolvedValue({ exitoso: 'S' });
+    const result = await repo.updateBeneficiarios({} as any);
+    expect(result).toHaveProperty('exitoso', 'S');
+  });
+
+  it('updateBeneficiarios retorna error si ocurre excepción Error', async () => {
+    mockDataSource.updateBeneficiarios.mockImplementation(() => { throw new Error('fail'); });
+    const result = await repo.updateBeneficiarios({} as any);
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo actualizar beneficiarios: fail'),
+    });
+  });
+
+  it('updateBeneficiarios retorna error si ocurre excepción no Error', async () => {
+    mockDataSource.updateBeneficiarios.mockImplementation(() => { throw 'fail'; });
+    const result = await repo.updateBeneficiarios({} as any);
+    expect(result).toEqual({
+      exitoso: 'N',
+      mensaje: expect.stringContaining('No se pudo actualizar beneficiarios: "fail"'),
     });
   });
 

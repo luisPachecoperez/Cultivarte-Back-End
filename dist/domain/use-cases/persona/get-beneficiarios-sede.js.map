@@ -1,1 +1,0 @@
-{"version":3,"file":"get-beneficiarios-sede.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/persona/get-beneficiarios-sede.ts"],"names":[],"mappings":";;;AAMA,MAAa,+BAA+B;IAG1C,YAA6B,kBAAqC;QAArC,uBAAkB,GAAlB,kBAAkB,CAAmB;IAAG,CAAC;IAEtE,KAAK,CAAC,OAAO;QACX,OAAO,IAAI,CAAC,kBAAkB,CAAC,WAAW,EAAE,CAAC;IAC/C,CAAC;CACF;AARD,0EAQC"}

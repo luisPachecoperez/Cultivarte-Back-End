@@ -113,7 +113,7 @@ it('formatDateToYYYYMMDD formatea correctamente la fecha', () => {
 import { ActividadDataSourceImpl } from '../../../infrastructure/datasource/actividad-datasource-impl';
 import { pgPool } from '../../db/pool';
 
-jest.mock('../../../infrastructure/db/pg-pool', () => ({
+jest.mock('../../../infrastructure/db/pool', () => ({
   pgPool: {
     connect: jest.fn(),
     query: jest.fn(),
@@ -388,7 +388,7 @@ it('debe retornar error si ocurre excepción en getById', async () => {
 it('debe retornar actividades por sedes correctamente en getActividadSedes', async () => {
   // @ts-ignore
     dataSource['pool'].query = jest.fn().mockResolvedValue({ rows: [{ id_actividad: 'act1' }] });
-    const result = await dataSource.getActividadSedes('user1', '2023-01-01', '2023-01-31');
+    const result = await dataSource.getActividadSedes('user1', '2023-01-01', '2023-01-31', 10, 0);
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('id_actividad', 'act1');
 });
@@ -396,7 +396,7 @@ it('debe retornar actividades por sedes correctamente en getActividadSedes', asy
 it('debe retornar error si ocurre excepción en getActividadSedes', async () => {
   // @ts-ignore
   dataSource['pool'].query = jest.fn().mockRejectedValue(new Error('DB error'));
-  const result = await dataSource.getActividadSedes('user1', '2023-01-01', '2023-01-31');
+  const result = await dataSource.getActividadSedes('user1', '2023-01-01', '2023-01-31', 10, 0);
   if ('exitoso' in result) {
     expect(result.exitoso).toBe('N');
     expect(result.mensaje).toMatch(/No se pudo obtener actividades por sedes/);
@@ -785,7 +785,7 @@ it('getAll retorna error si ocurre excepción no Error', async () => {
 
 it('getActividadSedes retorna error si ocurre excepción no Error', async () => {
   (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
-  const result = await dataSource.getActividadSedes('u1', '2023-01-01', '2023-01-31');
+  const result = await dataSource.getActividadSedes('u1', '2023-01-01', '2023-01-31', 10, 0);
   if ('exitoso' in result){
     expect(result.exitoso).toBe('N');
     expect(result.mensaje).toMatch(/custom/);

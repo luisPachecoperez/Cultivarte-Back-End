@@ -1,6 +1,34 @@
+const mockQuery = jest.fn().mockResolvedValue({ rows: [] });
+const mockConnect = jest.fn();
+const mockOn = jest.fn();
+const mockEnd = jest.fn();
+
+jest.mock('../../../infrastructure/db/pool', () => ({
+  pgPool: {
+    query: (...args: unknown[]) => mockQuery(...args),
+    connect: (...args: unknown[]) => mockConnect(...args),
+    on: (...args: unknown[]) => mockOn(...args),
+    end: (...args: unknown[]) => mockEnd(...args),
+  },
+  initDbPool: jest.fn(),
+  closeDbPool: jest.fn(),
+}));
+
+jest.mock('../../../interfaces/services/secrets.service', () => ({
+  SecretService: jest.fn().mockImplementation(() => ({
+    getSecret: jest.fn().mockResolvedValue(undefined),
+  })),
+}));
+
 import { parametrosGeneralesResolvers } from '../parametros-generales-resolvers';
 
 describe('parametrosGeneralesResolvers', () => {
+  beforeEach(() => {
+    mockQuery.mockClear();
+    mockConnect.mockClear();
+    mockOn.mockClear();
+    mockEnd.mockClear();
+  });
 
   const mockParametrosGenerales = {
     id_parametro_general: '1',

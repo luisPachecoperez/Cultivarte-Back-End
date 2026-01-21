@@ -14,6 +14,8 @@ export interface Persona {
   apellidos?: string | null;
   razon_social?: string | null;
   fecha_nacimiento?: Date | null;
+  id_tipo_identificacion_acudiente?: string | null;
+  identificacion_acudiente?: string | null;
   nombre_acudiente?: string | null;
   apellidos_acudiente?: string | null;
   correo_acudiente?: string | null;
@@ -29,6 +31,9 @@ export interface Persona {
   telefono_movil_contacto?: string | null;
   telefono_movil?: string | null;
   eliminado?: 'S' | 'N' | null;
+  discapacitado?: 'S' | 'N' | null;
+  id_eps?: string | null;
+  direccion?: string | null;
 
   // Campos de auditoría
   id_creado_por?: string | null;

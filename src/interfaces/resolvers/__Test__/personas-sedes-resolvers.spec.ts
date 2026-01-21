@@ -30,7 +30,7 @@ describe('personasSedesResolvers', () => {
 
   it('getPersonasSedes llama al método del controlador', async () => {
     const spy = jest.spyOn(controller, 'getAll').mockResolvedValue([]);
-    await personasSedesResolvers.Query.getPersonasSedes();
+    await personasSedesResolvers.Query.getPersonasSedes( {}, { limit: 1, offset: 100 });
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });

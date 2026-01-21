@@ -129,7 +129,7 @@ describe('Cobertura branches faltantes', () => {
 import { AsistenciaDataSourceImpl } from '../../../infrastructure/datasource/asistencias-datasource-impl';
 import { pgPool } from '../../db/pool';
 
-jest.mock('../../../infrastructure/db/pg-pool', () => ({
+jest.mock('../../../infrastructure/db/pool', () => ({
   pgPool: {
     query: jest.fn(),
   },
@@ -467,17 +467,90 @@ describe('AsistenciaDataSourceImpl', () => {
 }
 });
 
+describe('AsistenciaDataSourceImpl additional coverage', () => {
+  let dataSource: AsistenciaDataSourceImpl;
+
+  beforeEach(() => {
+    dataSource = new AsistenciaDataSourceImpl();
+    (pgPool.query as jest.Mock).mockReset();
+  });
+
+  it('updateById captura excepciones no Error', async () => {
+    (pgPool.query as jest.Mock).mockRejectedValueOnce({ reason: 'boom' });
+
+    const result = await dataSource.updateById(
+      'id-asistencia',
+      {
+        id_sesion: 's1',
+        id_persona: 'p1',
+        id_modificado_por: 'u1',
+        fecha_modificacion: '2023-01-01',
+      } as any,
+    );
+
+    expect(result.exitoso).toBe('N');
+    expect(result.mensaje).toContain('boom');
+  });
+
+  it('deleteById captura excepciones no Error', async () => {
+    (pgPool.query as jest.Mock).mockRejectedValueOnce('kaput');
+
+    const result = await dataSource.deleteById('id-asistencia');
+
+    expect(result.exitoso).toBe('N');
+    expect(result.mensaje).toContain('kaput');
+  });
+
+  it('getPreAsistencia arma respuesta con valores por defecto', async () => {
+    (pgPool.query as jest.Mock)
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id_sesion: 's1',
+            id_actividad: 'a1',
+            nro_asistentes: '7',
+            descripcion: 'Sesión prueba',
+            imagen: 'img.png',
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id_sede: 'sede-1',
+            id_tipo_actividad: 'tipo-1',
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ id_sede: 'sede-1' }] })
+      .mockResolvedValueOnce({ rows: [{ id_persona: 'p1' }] })
+      .mockResolvedValueOnce({ rows: [{ id_asistencia: 'a1' }] })
+      .mockResolvedValueOnce({ rows: [{ nombre: 'Actividad institucional' }] });
+
+    const result = await dataSource.getPreAsistencia('s1');
+
+    if ('exitoso' in result) {
+      fail('Se esperaba un objeto de pre-asistencia');
+      return;
+    }
+
+    expect(result.id_sede).toBe('sede-1');
+    expect(result.numero_asistentes).toBe(7);
+    expect(result.foto).toBe('S');
+    expect(result.descripcion).toBe('Sesión prueba');
+    expect(result.imagen).toBe('img.png');
+  });
+});
+
 it('getPreAsistencia retorna error general si ocurre excepción', async () => {
   (pgPool.query as jest.Mock).mockRejectedValue(new Error('General error'));
   const result = await dataSource.getPreAsistencia('s1');
 if ('exitoso' in result) {
   // Aquí es seguro acceder a result.exitoso
   expect(result.exitoso).toBe('N');
-  expect([
-  'No se pudo obtener la pre-asistencia',
-  "Error al obtener datos de pre-asistencia: DB error",
-  'Error al obtener datos de pre-asistencia'
-]).toContain(result.mensaje);;
+  expect(result.mensaje).toBe(
+    'No se pudo obtener la pre-asistencia: General error',
+  );
 } else {
   // Aquí puedes hacer pruebas para PreAsistencia
   expect(result).toHaveProperty('id_sesion', 's1');

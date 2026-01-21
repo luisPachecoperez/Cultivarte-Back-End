@@ -1,1 +1,0 @@
-{"version":3,"file":"get-actividad.js","sourceRoot":"","sources":["../../../../src/domain/use-cases/Actividad/get-actividad.ts"],"names":[],"mappings":";;;AAMA,MAAa,uBAAuB;IAClC,YAA6B,mBAAwC;QAAxC,wBAAmB,GAAnB,mBAAmB,CAAqB;IAAG,CAAC;IAEzE,OAAO,CAAC,YAAoB;QAC1B,OAAO,IAAI,CAAC,mBAAmB,CAAC,OAAO,CAAC,YAAY,CAAC,CAAC;IACxD,CAAC;CACF;AAND,0DAMC"}

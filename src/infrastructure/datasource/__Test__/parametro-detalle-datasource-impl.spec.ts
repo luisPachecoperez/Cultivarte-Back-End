@@ -1,7 +1,7 @@
 import { ParametroDetalleDataSourceImpl } from '../parametro-detalle-datasource-impl';
 import { pgPool } from '../../db/pool';
 
-jest.mock('../../db/pg-pool', () => ({
+jest.mock('../../db/pool', () => ({
   pgPool: {
     query: jest.fn(),
   },
@@ -9,10 +9,15 @@ jest.mock('../../db/pg-pool', () => ({
 
 describe('ParametroDetalleDataSourceImpl', () => {
   let dataSource: ParametroDetalleDataSourceImpl;
+  const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
   beforeEach(() => {
     dataSource = new ParametroDetalleDataSourceImpl();
     jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    warnSpy.mockRestore();
   });
 
   it('getAll retorna lista correctamente', async () => {
@@ -35,11 +40,30 @@ describe('ParametroDetalleDataSourceImpl', () => {
   });
 
   it('getById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [{ mensaje: 'Mensaje homologado' }] });
     const result = await dataSource.getById('1');
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener parametro detalle: DB error/);
+      expect(result.mensaje).toBe(
+        'Error al obtener parametro detalle: Mensaje homologado',
+      );
+    } else {
+      throw new Error('Expected result to be of type RespuestaGrap');
+    }
+  });
+
+  it('getById retorna mensaje original cuando no hay homologación', async () => {
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const result = await dataSource.getById('1');
+    if ('exitoso' in result) {
+      expect(result.exitoso).toBe('N');
+      expect(result.mensaje).toBe(
+        'Error al obtener parametro detalle: DB error',
+      );
     } else {
       throw new Error('Expected result to be of type RespuestaGrap');
     }
@@ -53,13 +77,33 @@ describe('ParametroDetalleDataSourceImpl', () => {
   });
 
   it('create retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [{ mensaje: 'Homologado' }] });
     const detalle = { id_parametro_general: 'g1', nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
     const result = await dataSource.create(detalle as any);
     expect('exitoso' in result).toBe(true);
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al crear parametro detalle: DB error/);
+      expect(result.mensaje).toBe(
+        'Error al crear parametro detalle: Homologado',
+      );
+    } else {
+      throw new Error('Expected result to be of type RespuestaGrap');
+    }
+  });
+
+  it('create usa mensaje original cuando no hay homologación', async () => {
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const detalle = { id_parametro_general: 'g1', nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
+    const result = await dataSource.create(detalle as any);
+    if ('exitoso' in result) {
+      expect(result.exitoso).toBe('N');
+      expect(result.mensaje).toBe(
+        'Error al crear parametro detalle: DB error',
+      );
     } else {
       throw new Error('Expected result to be of type RespuestaGrap');
     }
@@ -73,13 +117,33 @@ describe('ParametroDetalleDataSourceImpl', () => {
   });
 
   it('updateById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [{ mensaje: 'Homologado' }] });
     const detalle = { nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
     const result = await dataSource.updateById('1', detalle as any);
     expect('exitoso' in result).toBe(true);
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al actualizar parametro detalle: DB error/);
+      expect(result.mensaje).toBe(
+        'Error al actualizar parametro detalle: Homologado',
+      );
+    } else {
+      throw new Error('Expected result to be of type RespuestaGrap');
+    }
+  });
+
+  it('updateById usa mensaje original cuando no hay homologación', async () => {
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const detalle = { nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
+    const result = await dataSource.updateById('1', detalle as any);
+    if ('exitoso' in result) {
+      expect(result.exitoso).toBe('N');
+      expect(result.mensaje).toBe(
+        'Error al actualizar parametro detalle: DB error',
+      );
     } else {
       throw new Error('Expected result to be of type RespuestaGrap');
     }
@@ -93,10 +157,25 @@ describe('ParametroDetalleDataSourceImpl', () => {
   });
 
   it('deleteById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [{ mensaje: 'Homologado' }] });
     const result = await dataSource.deleteById('1');
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al eliminar parametro detalle: DB error/);
+    expect(result.mensaje).toBe(
+      'Error al eliminar parametro detalle: Homologado',
+    );
+  });
+
+  it('deleteById usa mensaje original cuando no hay homologación', async () => {
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const result = await dataSource.deleteById('1');
+    expect(result.exitoso).toBe('N');
+    expect(result.mensaje).toBe(
+      'Error al eliminar parametro detalle: DB error',
+    );
   });
 
   it('getById retorna null si rows[0] es undefined', async () => {
@@ -106,7 +185,9 @@ describe('ParametroDetalleDataSourceImpl', () => {
 });
 
 it('getById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const result = await dataSource.getById('1');
   if ('exitoso' in result) {
     expect(result.exitoso).toBe('N');
@@ -123,7 +204,9 @@ it('create retorna null si rows[0] es undefined', async () => {
 });
 
 it('create retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const detalle = { id_parametro_general: 'g1', nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
   const result = await dataSource.create(detalle as any);
   if ('exitoso' in result) {
@@ -141,7 +224,9 @@ it('updateById retorna null si rows[0] es undefined', async () => {
 });
 
 it('updateById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const detalle = { nombre: 'n', codigo: 'c', orden: 1, valores: 'v', estado: 'A' };
   const result = await dataSource.updateById('1', detalle as any);
   if ('exitoso' in result) {
@@ -152,7 +237,9 @@ it('updateById retorna error si ocurre excepción no Error', async () => {
 });
 
 it('deleteById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const result = await dataSource.deleteById('1');
   expect(result.exitoso).toBe('N');
   expect(result.mensaje).toMatch(/Error al eliminar parametro detalle:/);

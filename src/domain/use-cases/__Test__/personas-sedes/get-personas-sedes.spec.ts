@@ -27,7 +27,7 @@ describe('GetPersonasSedesUseCaseImpl', () => {
     (personaSedeRepository.getAll as jest.Mock).mockResolvedValueOnce(
       mockPersonasSede,
     );
-    const result = await useCase.execute();
+    const result = await useCase.execute(1,100);
     expect(personaSedeRepository.getAll).toHaveBeenCalled();
     expect(result).toBe(mockPersonasSede);
   });
@@ -36,7 +36,7 @@ describe('GetPersonasSedesUseCaseImpl', () => {
     (personaSedeRepository.getAll as jest.Mock).mockResolvedValueOnce(
       mockRespuesta,
     );
-    const result = await useCase.execute();
+    const result = await useCase.execute(1,100);
     expect(result).toBe(mockRespuesta);
   });
 
@@ -44,6 +44,6 @@ describe('GetPersonasSedesUseCaseImpl', () => {
     (personaSedeRepository.getAll as jest.Mock).mockRejectedValueOnce(
       new Error('DB error'),
     );
-    await expect(useCase.execute()).rejects.toThrow('DB error');
+    await expect(useCase.execute(1,100)).rejects.toThrow('DB error');
   });
 });

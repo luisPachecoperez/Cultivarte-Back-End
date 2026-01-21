@@ -56,6 +56,10 @@ export const sesionesTypeDefs = gql`
   }
 
   input EditarSesiones {
+    sesiones: EditarSesionesSesionesInput!
+  }
+
+  input EditarSesionesSesionesInput {
     nuevos: [CreateSesionInput!]!
     modificados: [UpdateSesionInput!]!
     eliminados: [SesionEliminadaInput!]!
@@ -68,6 +72,8 @@ export const sesionesTypeDefs = gql`
       id_usuario: ID!
       fecha_inicio: String!
       fecha_fin: String!
+      limit: Int!
+      offset: Int!
     ): [Sesion!]!
   }
 

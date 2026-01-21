@@ -32,7 +32,8 @@ export const personasProgramaResolvers = {
       _parent: unknown,
       args: { id_persona_programa: string },
     ) => controller.getPersonaPrograma(args.id_persona_programa),
-    getPersonaProgramas: () => controller.getPersonasPrograma(),
+    getPersonaProgramas: (_: any, args: { limit: number; offset: number }) =>
+      controller.getPersonasPrograma(args.limit, args.offset),
   },
   Mutation: {
     createPersonaPrograma: (

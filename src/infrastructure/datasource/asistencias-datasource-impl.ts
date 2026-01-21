@@ -13,9 +13,15 @@ import {
 import { pgPool } from '../db/pool';
 import { asistenciasQueries } from '../db/asistencia-queries';
 import { sesionesQueries } from '../db/sesiones-queries';
+import { BaseHomologatedDataSource } from './base-homologated-datasource';
 
-export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
-  private readonly pool = pgPool;
+export class AsistenciaDataSourceImpl
+  extends BaseHomologatedDataSource
+  implements AsistenciaDataSource
+{
+  constructor() {
+    super(pgPool);
+  }
 
   async getAll(): Promise<Asistencia[] | RespuestaGrap> {
     try {
@@ -24,10 +30,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
       );
       return result.rows as Asistencia[]; // ✅ Tipado seguro
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades por sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades por sedes: ' + JSON.stringify(error), // ✅ Forzar a string
+        mensaje,
       };
     }
   }
@@ -42,11 +51,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
       // Hacemos cast explícito para evitar el "any"
       return (result.rows[0] as Asistencia) || null;
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades por sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades por sedes: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -65,11 +76,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
       // Cast explícito del array
       return result.rows as Asistencia[];
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades por sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades por sedes: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -92,11 +105,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
       // Cast explícito para evitar any
       return result.rows[0] as RespuestaGrap;
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener actividades por sedes: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo obtener actividades por sedes: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -138,12 +153,14 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
           mensaje: 'No se pudo actualizar la asistencia',
         };
       }
-    } catch (error) {
+    } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo actualizar la asistencia: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo actualizar la asistencia: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -176,11 +193,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         };
       }
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo actualizar la asistencia: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo actualizar la asistencia: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -204,11 +223,13 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         };
       }
     } catch (error: unknown) {
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo eliminar la asistencia: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje:
-          'No se pudo eliminar la asistencia: ' +
-          (error instanceof Error ? error.message : JSON.stringify(error)),
+        mensaje,
       };
     }
   }
@@ -303,21 +324,27 @@ export class AsistenciaDataSourceImpl implements AsistenciaDataSource {
         return preAsistencia;
       } catch (error: unknown) {
         console.error('Error en consultas de pre-asistencia:', error);
+        const mensaje = await this.buildErrorMessage(
+          'Error al obtener datos de pre-asistencia: ',
+          error,
+        );
 
         return {
           exitoso: 'N',
-          // ✅ Convertimos el error a string de forma segura
-          mensaje:
-            'Error al obtener datos de pre-asistencia: ' +
-            (error instanceof Error ? error.message : JSON.stringify(error)),
+          mensaje,
         };
       }
     } catch (error: unknown) {
       console.error('Error general en getPreAsistencia:', error); // ✅ así ya usamos `error`
+      const mensaje = await this.buildErrorMessage(
+        'No se pudo obtener la pre-asistencia: ',
+        error,
+      );
       return {
         exitoso: 'N',
-        mensaje: 'No se pudo obtener la pre-asistencia',
+        mensaje,
       };
     }
   }
+
 }

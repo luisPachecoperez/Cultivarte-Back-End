@@ -1,1 +1,0 @@
-{"version":3,"file":"personas-grupo-interes-queries.js","sourceRoot":"","sources":["../../../src/infrastructure/db/personas-grupo-interes-queries.ts"],"names":[],"mappings":";;;AAAa,QAAA,2BAA2B,GAAG;IACzC,MAAM,EAAE,sCAAsC;IAC9C,OAAO,EAAE,0EAA0E;IACnF,yBAAyB,EAAE,6HAA6H;IACxJ,yBAAyB,EAAE,0HAA0H;IACrJ,yBAAyB,EAAE,oFAAoF;CAChH,CAAC"}

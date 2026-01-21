@@ -1,6 +1,34 @@
+const mockQuery = jest.fn().mockResolvedValue({ rows: [] });
+const mockConnect = jest.fn();
+const mockOn = jest.fn();
+const mockEnd = jest.fn();
+
+jest.mock('../../../infrastructure/db/pool', () => ({
+  pgPool: {
+    query: (...args: unknown[]) => mockQuery(...args),
+    connect: (...args: unknown[]) => mockConnect(...args),
+    on: (...args: unknown[]) => mockOn(...args),
+    end: (...args: unknown[]) => mockEnd(...args),
+  },
+  initDbPool: jest.fn(),
+  closeDbPool: jest.fn(),
+}));
+
+jest.mock('../../../interfaces/services/secrets.service', () => ({
+  SecretService: jest.fn().mockImplementation(() => ({
+    getSecret: jest.fn().mockResolvedValue(undefined),
+  })),
+}));
+
 import { personasProgramaResolvers } from '../personas-programa';
 
 describe('personasProgramaResolvers', () => {
+  beforeEach(() => {
+    mockQuery.mockClear();
+    mockConnect.mockClear();
+    mockOn.mockClear();
+    mockEnd.mockClear();
+  });
 
     const mockPersonaPrograma = {
       id_persona_programa: '1',
@@ -38,7 +66,7 @@ describe('personasProgramaResolvers', () => {
 
   it('getPersonaProgramas llama al método del controlador', async () => {
     const spy = jest.spyOn(personasProgramaResolvers.Query, 'getPersonaProgramas').mockResolvedValue([]);
-    await personasProgramaResolvers.Query.getPersonaProgramas();
+    await personasProgramaResolvers.Query.getPersonaProgramas( {}, {limit: 1, offset: 100});
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
@@ -85,7 +113,7 @@ describe('personasProgramaResolvers', () => {
 });
 
 it('getPersonaProgramas ejecuta correctamente', async () => {
-  const result = await personasProgramaResolvers.Query.getPersonaProgramas();
+  const result = await personasProgramaResolvers.Query.getPersonaProgramas( {}, {limit: 1, offset: 100});
   expect(result).not.toBeUndefined();
 });
 

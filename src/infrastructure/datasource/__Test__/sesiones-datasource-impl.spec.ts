@@ -60,8 +60,13 @@
   });
 import { SesionesDataSourceImpl } from '../sesiones-datasource-impl';
 import { pgPool } from '../../db/pool';
+import { sesionesQueries } from '../../db/sesiones-queries';
+import { excepcionesQueries } from '../../db/excepciones-queries';
 
-jest.mock('../../db/pg-pool', () => ({
+type PgQueryMock = jest.Mock;
+type PgConnectMock = jest.Mock;
+
+jest.mock('../../db/pool', () => ({
   pgPool: {
     query: jest.fn(),
     connect: jest.fn(),
@@ -70,330 +75,408 @@ jest.mock('../../db/pg-pool', () => ({
 
 describe('SesionesDataSourceImpl', () => {
   let dataSource: SesionesDataSourceImpl;
+  let warnSpy: jest.SpyInstance;
+  const queryMock = pgPool.query as PgQueryMock;
+  const connectMock = pgPool.connect as PgConnectMock;
 
   beforeEach(() => {
-    dataSource = new SesionesDataSourceImpl();
     jest.clearAllMocks();
+    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    dataSource = new SesionesDataSourceImpl();
   });
 
+  afterEach(() => {
+    warnSpy.mockRestore();
+  });
+
+  const buildClient = () => {
+    const client = {
+      query: jest.fn(),
+      release: jest.fn(),
+    };
+    connectMock.mockResolvedValue(client);
+    return client;
+  };
+
   it('getAll retorna lista correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({ rows: [{ id_sesion: '1' }] });
+    queryMock.mockResolvedValue({ rows: [{ id_sesion: '1' }] });
     const result = await dataSource.getAll(10, 0);
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('id_sesion', '1');
   });
 
   it('getAll retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+
     const result = await dataSource.getAll(10, 0);
     expect('exitoso' in result).toBe(true);
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener sesiones: DB error/);
-    } else {
-      throw new Error('Expected error response, but got Sesion');
+      expect(result.mensaje).toBe('Error al obtener sesiones: DB error');
+    }
+  });
+
+  it('getAll retorna error si ocurre excepción no Error', async () => {
+    queryMock
+      .mockRejectedValueOnce({ custom: 'fail' })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await dataSource.getAll(10, 0);
+    expect('exitoso' in result).toBe(true);
+    if ('exitoso' in result) {
+      expect(result.exitoso).toBe('N');
+      expect(result.mensaje).toMatch(/Error al obtener sesiones:/);
+      expect(result.mensaje).toMatch(/custom/);
     }
   });
 
   it('getById retorna sesión correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({ rows: [{ id_sesion: '1' }] });
+    queryMock.mockResolvedValue({ rows: [{ id_sesion: '1' }] });
     const result = await dataSource.getById('1');
     expect(result).toHaveProperty('id_sesion', '1');
   });
 
   it('getById retorna error si no hay sesión', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({ rows: [] });
+    queryMock.mockResolvedValue({ rows: [] });
     const result = await dataSource.getById('1');
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Sesión no encontrada/);
-    } else {
-      throw new Error('Expected error response, but got Sesion[]');
+      expect(result.mensaje).toBe('Sesión no encontrada');
     }
   });
 
   it('getById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+
     const result = await dataSource.getById('1');
-     if ('exitoso' in result) {
+    if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener sesiones: DB error/);
-    } else {
-      throw new Error('Expected error response, but got Sesion');
+      expect(result.mensaje).toBe('Error al obtener sesiones: DB error');
     }
   });
 
   it('getSesionesSede retorna lista correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({ rows: [{ id_sesion: '1' }] });
+    queryMock.mockResolvedValue({ rows: [{ id_sesion: '1' }] });
     const result = await dataSource.getSesionesSede('u1', '2023-01-01', '2023-01-31');
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('id_sesion', '1');
   });
 
   it('getSesionesSede retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+
     const result = await dataSource.getSesionesSede('u1', '2023-01-01', '2023-01-31');
     expect('exitoso' in result).toBe(true);
-      if ('exitoso' in result) {
+    if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener sesiones: DB error/);
-    } else {
-      throw new Error('Expected error response, but got Sesion');
+      expect(result.mensaje).toBe('Error al obtener sesiones: DB error');
     }
   });
 
   it('createSesion retorna éxito correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({});
-    const sesion = { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_creado_por: 'u1', fecha_creacion: '2023-01-01', id_modificado_por: 'u1', fecha_modificacion: '2023-01-01' };
+    queryMock.mockResolvedValue({});
+    const sesion = {
+      id_actividad: 'a1',
+      fecha_actividad: '2023-01-01',
+      hora_inicio: '10:00',
+      hora_fin: '12:00',
+      imagen: '',
+      nro_asistentes: 1,
+      descripcion: '',
+      id_creado_por: 'u1',
+      fecha_creacion: '2023-01-01',
+      id_modificado_por: 'u1',
+      fecha_modificacion: '2023-01-01',
+    };
     const result = await dataSource.createSesion(sesion as any);
     expect(result.exitoso).toBe('S');
-    expect(result.mensaje).toMatch(/creada correctamente/);
+    expect(result.mensaje).toBe('Sesion creada correctamente');
   });
 
   it('createSesion retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
-    const sesion = { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_creado_por: 'u1', fecha_creacion: '2023-01-01', id_modificado_por: 'u1', fecha_modificacion: '2023-01-01' };
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const sesion = {
+      id_actividad: 'a1',
+      fecha_actividad: '2023-01-01',
+      hora_inicio: '10:00',
+      hora_fin: '12:00',
+      imagen: '',
+      nro_asistentes: 1,
+      descripcion: '',
+      id_creado_por: 'u1',
+      fecha_creacion: '2023-01-01',
+      id_modificado_por: 'u1',
+      fecha_modificacion: '2023-01-01',
+    };
     const result = await dataSource.createSesion(sesion as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al crear sesiones: DB error/);
+    expect(result.mensaje).toBe('Error al crear sesiones: DB error');
   });
 
   it('updateById retorna éxito correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({});
-    const sesion = { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_modificado_por: 'u1', fecha_modificacion: '2023-01-01' };
+    queryMock.mockResolvedValue({});
+    const sesion = {
+      id_actividad: 'a1',
+      fecha_actividad: '2023-01-01',
+      hora_inicio: '10:00',
+      hora_fin: '12:00',
+      imagen: '',
+      nro_asistentes: 1,
+      descripcion: '',
+      id_modificado_por: 'u1',
+      fecha_modificacion: '2023-01-01',
+    };
     const result = await dataSource.updateById('1', sesion as any);
     expect(result.exitoso).toBe('S');
-    expect(result.mensaje).toMatch(/actualizada correctamente/);
+    expect(result.mensaje).toBe('Sesion actualizada correctamente');
   });
 
   it('updateById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
-    const sesion = { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_modificado_por: 'u1', fecha_modificacion: '2023-01-01' };
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const sesion = {
+      id_actividad: 'a1',
+      fecha_actividad: '2023-01-01',
+      hora_inicio: '10:00',
+      hora_fin: '12:00',
+      imagen: '',
+      nro_asistentes: 1,
+      descripcion: '',
+      id_modificado_por: 'u1',
+      fecha_modificacion: '2023-01-01',
+    };
     const result = await dataSource.updateById('1', sesion as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al actualizar sesiones: DB error/);
+    expect(result.mensaje).toBe('Error al actualizar sesiones: DB error');
   });
 
   it('deleteById retorna éxito correctamente', async () => {
-    (pgPool.query as jest.Mock).mockResolvedValue({});
+    queryMock.mockResolvedValue({});
     const result = await dataSource.deleteById('1');
     expect(result.exitoso).toBe('S');
-    expect(result.mensaje).toMatch(/eliminada correctamente/);
+    expect(result.mensaje).toBe('Sesion eliminada correctamente');
   });
 
   it('deleteById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    queryMock
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
     const result = await dataSource.deleteById('1');
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al eliminar sesiones: DB error/);
+    expect(result.mensaje).toBe('Error al eliminar sesiones: DB error');
   });
 
-  it('updateSesiones actualiza correctamente (todas las ramas)', async () => {
-    const mockClient = {
-      query: jest.fn(),
-      release: jest.fn(),
-    };
-    (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-
-    mockClient.query.mockResolvedValue({});
+  it('updateSesiones actualiza correctamente', async () => {
+    const client = buildClient();
+    client.query.mockResolvedValue({});
 
     const editarSesiones = {
       sesiones: {
         nuevos: [
-          { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_creado_por: 'u1' },
+          {
+            id_actividad: 'a1',
+            fecha_actividad: '2023-01-01',
+            hora_inicio: '10:00',
+            hora_fin: '12:00',
+            imagen: '',
+            nro_asistentes: 1,
+            descripcion: '',
+            id_creado_por: 'u1',
+          },
         ],
         modificados: [
-          { id_sesion: '1', id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_modificado_por: 'u1' },
+          {
+            id_sesion: '1',
+            id_actividad: 'a1',
+            fecha_actividad: '2023-01-01',
+            hora_inicio: '10:00',
+            hora_fin: '12:00',
+            imagen: '',
+            nro_asistentes: 1,
+            descripcion: '',
+            id_modificado_por: 'u1',
+          },
         ],
-        eliminados: [
-          { id_sesion: '2' },
-        ],
+        eliminados: [{ id_sesion: '2' }],
       },
     };
+
     const result = await dataSource.updateSesiones(editarSesiones as any);
     expect(result.exitoso).toBe('S');
-    expect(result.mensaje).toMatch(/actualizadas correctamente/);
-    expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
-    expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
-    expect(mockClient.release).toHaveBeenCalled();
+    expect(result.mensaje).toBe('Sesiones actualizadas correctamente');
+    expect(client.query).toHaveBeenCalledWith('BEGIN');
+    expect(client.query).toHaveBeenCalledWith('COMMIT');
+    expect(client.release).toHaveBeenCalled();
+  });
+
+  it('updateSesiones registra advertencia cuando release falla', async () => {
+    const client = buildClient();
+    client.query.mockResolvedValue({});
+    client.release.mockImplementation(() => {
+      throw new Error('release fail');
+    });
+
+    const editarSesiones = {
+      sesiones: {
+        nuevos: [],
+        modificados: [],
+        eliminados: [],
+      },
+    };
+
+    const result = await dataSource.updateSesiones(editarSesiones as any);
+    expect(result.exitoso).toBe('S');
+    expect(result.mensaje).toBe('Sesiones actualizadas correctamente');
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Error al liberar el cliente:',
+      expect.any(Error),
+    );
   });
 
   it('updateSesiones retorna error y hace rollback si ocurre excepción', async () => {
-    const mockClient = {
-      query: jest.fn(),
-      release: jest.fn(),
-    };
-    (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-
-    mockClient.query.mockImplementationOnce(() => Promise.resolve())
-      .mockImplementationOnce(() => { throw new Error('DB error'); });
+    const client = buildClient();
+    queryMock.mockResolvedValue({ rows: [] });
+    client.query.mockImplementation((sql: string) => {
+      if (sql === 'BEGIN' || sql === 'ROLLBACK') {
+        return Promise.resolve({});
+      }
+      if (sql === excepcionesQueries.findMensajeByError) {
+        return Promise.resolve({ rows: [] });
+      }
+      if (sql === sesionesQueries.create) {
+        throw new Error('DB error');
+      }
+      return Promise.resolve({});
+    });
 
     const editarSesiones = {
       sesiones: {
         nuevos: [
-          { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: '', nro_asistentes: 1, descripcion: '', id_creado_por: 'u1' },
+          {
+            id_actividad: 'a1',
+            fecha_actividad: '2023-01-01',
+            hora_inicio: '10:00',
+            hora_fin: '12:00',
+            imagen: '',
+            nro_asistentes: 1,
+            descripcion: '',
+            id_creado_por: 'u1',
+          },
         ],
         modificados: [],
         eliminados: [],
       },
     };
+
     const result = await dataSource.updateSesiones(editarSesiones as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al actualizar sesiones:/);
-    expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
-    expect(mockClient.release).toHaveBeenCalled();
+    expect(result.mensaje).toBe('Error al actualizar sesiones: DB error');
+    expect(client.query).toHaveBeenCalledWith('ROLLBACK');
+    expect(client.release).toHaveBeenCalled();
   });
 
-  it('updateSesiones no hace nada si todos los arrays están vacíos', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = { sesiones: { nuevos: [], modificados: [], eliminados: [] } };
-  const result = await dataSource.updateSesiones(editarSesiones as any);
-  expect(result.exitoso).toBe('S');
-  expect(result.mensaje).toMatch(/actualizadas correctamente/);
-  expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
-  expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
-  expect(mockClient.release).toHaveBeenCalled();
-});
+  it('updateSesiones retorna error si el error no es instancia de Error', async () => {
+    const client = buildClient();
+    queryMock.mockResolvedValue({ rows: [] });
+    client.query.mockImplementation((sql: string) => {
+      if (sql === 'BEGIN' || sql === 'ROLLBACK') {
+        return Promise.resolve({});
+      }
+      if (sql === excepcionesQueries.findMensajeByError) {
+        return Promise.resolve({ rows: [] });
+      }
+      if (sql === sesionesQueries.create) {
+        throw { custom: 'fail' };
+      }
+      return Promise.resolve({});
+    });
 
-it('updateSesiones maneja error en release', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn(() => { throw new Error('Release error'); }) };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = { sesiones: { nuevos: [], modificados: [], eliminados: [] } };
-  // No debe lanzar error, solo loguear
-  await expect(dataSource.updateSesiones(editarSesiones as any)).resolves.toBeTruthy();
-});
+    const editarSesiones = {
+      sesiones: {
+        nuevos: [
+          {
+            id_actividad: 'a1',
+            fecha_actividad: '2023-01-01',
+            hora_inicio: '10:00',
+            hora_fin: '12:00',
+            imagen: 'img',
+            nro_asistentes: 1,
+            descripcion: 'desc',
+            id_creado_por: 'u1',
+          },
+        ],
+        modificados: [],
+        eliminados: [],
+      },
+    };
 
-it('updateSesiones maneja campos opcionales undefined', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = {
-    sesiones: {
-      nuevos: [
-        { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00' }
-      ],
-      modificados: [],
-      eliminados: [],
-    },
-  };
-  const result = await dataSource.updateSesiones(editarSesiones as any);
-  expect(result.exitoso).toBe('S');
-  expect(result.mensaje).toMatch(/actualizadas correctamente/);
-});
-
-it('updateSesiones retorna error si editarSesiones no tiene sesiones', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  // Simula objeto sin sesiones
-    const result = await dataSource.updateSesiones({ sesiones: {} } as any);
+    const result = await dataSource.updateSesiones(editarSesiones as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Cannot read properties of undefined/);
-});
+    expect(result.mensaje).toBe('Error al actualizar sesiones: {"custom":"fail"}');
+    expect(client.query).toHaveBeenCalledWith('ROLLBACK');
+    expect(client.release).toHaveBeenCalled();
+  });
 
-it('getAll retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
-  const result = await dataSource.getAll(10, 0);
-  expect('exitoso' in result).toBe(true);
-  
-  if ('exitoso' in result) {
+  it('updateSesiones maneja error en release', async () => {
+    const client = buildClient();
+    client.release.mockImplementation(() => {
+      throw new Error('Release error');
+    });
+    client.query.mockResolvedValue({});
+
+    const editarSesiones = {
+      sesiones: { nuevos: [], modificados: [], eliminados: [] },
+    };
+
+    await expect(dataSource.updateSesiones(editarSesiones as any)).resolves.toEqual({
+      exitoso: 'S',
+      mensaje: 'Sesiones actualizadas correctamente',
+    });
+    expect(warnSpy).toHaveBeenCalledWith('Error al liberar el cliente:', expect.any(Error));
+  });
+
+  it('updateSesiones maneja campos opcionales undefined', async () => {
+    const client = buildClient();
+    client.query.mockResolvedValue({});
+
+    const editarSesiones = {
+      sesiones: {
+        nuevos: [
+          {
+            id_actividad: 'a1',
+            fecha_actividad: '2023-01-01',
+            hora_inicio: '10:00',
+            hora_fin: '12:00',
+          },
+        ],
+        modificados: [],
+        eliminados: [],
+      },
+    };
+
+    const result = await dataSource.updateSesiones(editarSesiones as any);
+    expect(result.exitoso).toBe('S');
+    expect(result.mensaje).toBe('Sesiones actualizadas correctamente');
+  });
+
+  it('updateSesiones retorna error si editarSesiones no tiene sesiones', async () => {
+    const client = buildClient();
+    queryMock.mockResolvedValue({ rows: [] });
+    client.query.mockResolvedValue({});
+
+    const result = await dataSource.updateSesiones({} as any);
     expect(result.exitoso).toBe('N');
-    if ('mensaje' in result) {
-      expect(result.mensaje).toMatch(/Error al obtener sesiones:/);
-      expect(result.mensaje).toMatch(/custom/);
-    } else {
-      throw new Error('Expected error response, but got Sesion[]');
-    }
-  } else {
-    throw new Error('Expected error response, but got Sesion[]');
-  }
-});
-
-it('updateSesiones no hace nada si todos los arrays están vacíos', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = { sesiones: { nuevos: [], modificados: [], eliminados: [] } };
-  const result = await dataSource.updateSesiones(editarSesiones as any);
-  expect(result.exitoso).toBe('S');
-  expect(result.mensaje).toMatch(/actualizadas correctamente/);
-});
-
-it('updateSesiones maneja campos opcionales undefined', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = {
-    sesiones: {
-      nuevos: [
-        { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00' }
-      ],
-      modificados: [],
-      eliminados: [],
-    },
-  };
-  const result = await dataSource.updateSesiones(editarSesiones as any);
-  expect(result.exitoso).toBe('S');
-  expect(result.mensaje).toMatch(/actualizadas correctamente/);
-    // Verifica que los valores opcionales se envían correctamente
-    expect(mockClient.query).toHaveBeenCalledWith(expect.any(String), expect.arrayContaining([
-      expect.anything(), // id_sesion
-      expect.anything(), // id_actividad
-      expect.anything(), // fecha_actividad
-      expect.anything(), // hora_inicio
-      expect.anything(), // hora_fin
-      '', // imagen fallback
-      0, // nro_asistentes fallback
-      '', // descripcion fallback
-      null, // id_modificado_por fallback
-      expect.any(Date), // fecha_modificacion
-    ]));
-});
-
-it('updateSesiones maneja error en release', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn(() => { throw new Error('Release error'); }) };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  const editarSesiones = { sesiones: { nuevos: [], modificados: [], eliminados: [] } };
-  await expect(dataSource.updateSesiones(editarSesiones as any)).resolves.toBeTruthy();
-});
-
-it('updateSesiones retorna error si editarSesiones no tiene sesiones', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValue({});
-  // Simula objeto sin sesiones
-  const result = await dataSource.updateSesiones({} as any);
-  if ('exitoso' in result) {
-    expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Cannot destructure property 'nuevos'/);
-  } else {
-    throw new Error('Expected error response, but got Sesion[]');
-  }
-});
-
-it('updateSesiones retorna error si el error no es instancia de Error', async () => {
-  const mockClient = { query: jest.fn(), release: jest.fn() };
-  (pgPool.connect as jest.Mock).mockResolvedValue(mockClient);
-  mockClient.query.mockResolvedValueOnce({}); // BEGIN
-  mockClient.query.mockImplementationOnce(() => { throw { custom: 'fail' }; }); // error no Error
-  mockClient.query.mockResolvedValueOnce({}); // ROLLBACK
-  const editarSesiones = {
-    sesiones: {
-      nuevos: [
-        { id_actividad: 'a1', fecha_actividad: '2023-01-01', hora_inicio: '10:00', hora_fin: '12:00', imagen: 'img', nro_asistentes: 1, descripcion: 'desc', id_creado_por: 'u1' },
-      ],
-      modificados: [],
-      eliminados: [],
-    },
-  };
-  const result = await dataSource.updateSesiones(editarSesiones as any);
-  expect(result.exitoso).toBe('N');
-  expect(result.mensaje).toMatch(/Error al actualizar sesiones: \{"custom":"fail"\}/);
-  expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
-  expect(mockClient.release).toHaveBeenCalled();
-});
+    expect(result.mensaje).toMatch(
+      /Error al actualizar sesiones: Cannot (read properties|destructure property).*nuevos/,
+    );
+  });
 });

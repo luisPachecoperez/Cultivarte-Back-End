@@ -45,7 +45,10 @@ export class PersonasProgramaController {
     return this.getPersonaProgramaUseCase.execute(id_persona_programa);
   }
 
-  async getPersonasPrograma(): Promise<PersonaPrograma[] | RespuestaGrap> {
-    return this.getPersonasProgramaUseCase.execute();
+  async getPersonasPrograma(
+    limit: number,
+    offset: number,
+  ): Promise<PersonaPrograma[] | RespuestaGrap> {
+    return this.getPersonasProgramaUseCase.execute(limit, offset);
   }
 }

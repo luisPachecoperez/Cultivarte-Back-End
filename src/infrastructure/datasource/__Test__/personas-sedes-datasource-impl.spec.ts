@@ -1,7 +1,7 @@
 import { PersonasSedesDataSourceImpl } from '../personas-sedes-datasource-impl';
 import { pgPool } from '../../db/pool';
 
-jest.mock('../../db/pg-pool', () => ({
+jest.mock('../../db/pool', () => ({
   pgPool: {
     query: jest.fn(),
   },
@@ -9,26 +9,33 @@ jest.mock('../../db/pg-pool', () => ({
 
 describe('PersonasSedesDataSourceImpl', () => {
   let dataSource: PersonasSedesDataSourceImpl;
+  const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
   beforeEach(() => {
     dataSource = new PersonasSedesDataSourceImpl();
     jest.clearAllMocks();
   });
 
+  afterAll(() => {
+    warnSpy.mockRestore();
+  });
+
   it('getAll retorna lista correctamente', async () => {
     (pgPool.query as jest.Mock).mockResolvedValue({ rows: [{ id_personas_sede: '1' }] });
-    const result = await dataSource.getAll();
+    const result = await dataSource.getAll(1,100);
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('id_personas_sede', '1');
   });
 
   it('getAll retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
-    const result = await dataSource.getAll();
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
+    const result = await dataSource.getAll(1,100);
     expect('exitoso' in result).toBe(true);
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener personas sedes: DB error/);
+      expect(result.mensaje).toBe('Error al obtener personas sedes: DB error');
     }
   });
 
@@ -45,12 +52,14 @@ describe('PersonasSedesDataSourceImpl', () => {
   });
 
   it('getById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
     const result = await dataSource.getById('1');
     expect('exitoso' in result).toBe(true);
     if ('exitoso' in result) {
       expect(result.exitoso).toBe('N');
-      expect(result.mensaje).toMatch(/Error al obtener persona sede: DB error/);
+      expect(result.mensaje).toBe('Error al obtener persona sede: DB error');
     }
   });
 
@@ -63,11 +72,13 @@ describe('PersonasSedesDataSourceImpl', () => {
   });
 
   it('create retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
     const personaSede = { id_personas_sede: '1', id_persona: '2', id_sede: '3' };
     const result = await dataSource.create(personaSede as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al crear persona sede: DB error/);
+    expect(result.mensaje).toBe('Error al crear persona sede: DB error');
   });
 
   it('updateById retorna éxito correctamente', async () => {
@@ -79,11 +90,13 @@ describe('PersonasSedesDataSourceImpl', () => {
   });
 
   it('updateById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
     const personaSede = { id_personas_sede: '1', id_persona: '2', id_sede: '3' };
     const result = await dataSource.updateById('1', personaSede as any);
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al actualizar persona sede: DB error/);
+    expect(result.mensaje).toBe('Error al actualizar persona sede: DB error');
   });
 
   it('deleteById retorna éxito correctamente', async () => {
@@ -94,19 +107,23 @@ describe('PersonasSedesDataSourceImpl', () => {
   });
 
   it('deleteById retorna error si ocurre excepción', async () => {
-    (pgPool.query as jest.Mock).mockRejectedValue(new Error('DB error'));
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce(new Error('DB error'))
+      .mockResolvedValueOnce({ rows: [] });
     const result = await dataSource.deleteById('1');
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al eliminar persona sede: DB error/);
+    expect(result.mensaje).toBe('Error al eliminar persona sede: DB error');
   });
 
   it('getAll retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
-  const result = await dataSource.getAll();
+    (pgPool.query as jest.Mock)
+      .mockRejectedValueOnce({ custom: 'fail' })
+      .mockResolvedValueOnce({ rows: [] });
+  const result = await dataSource.getAll(1,100);
   expect('exitoso' in result).toBe(true);
   if ('exitoso' in result) {
     expect(result.exitoso).toBe('N');
-    expect(result.mensaje).toMatch(/Error al obtener personas sedes:/);
+      expect(result.mensaje).toMatch(/Error al obtener personas sedes:/);
     expect(result.mensaje).toMatch(/custom/);
   }
 });
@@ -118,7 +135,9 @@ it('getById retorna null si rows[0] es undefined', async () => {
 });
 
 it('getById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const result = await dataSource.getById('1');
   if ('exitoso' in result) {
     expect(result.exitoso).toBe('N');
@@ -128,7 +147,9 @@ it('getById retorna error si ocurre excepción no Error', async () => {
 });
 
 it('create retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const personaSede = { id_personas_sede: '1', id_persona: '2', id_sede: '3' };
   const result = await dataSource.create(personaSede as any);
   expect(result.exitoso).toBe('N');
@@ -137,7 +158,9 @@ it('create retorna error si ocurre excepción no Error', async () => {
 });
 
 it('updateById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const personaSede = { id_personas_sede: '1', id_persona: '2', id_sede: '3' };
   const result = await dataSource.updateById('1', personaSede as any);
   expect(result.exitoso).toBe('N');
@@ -146,7 +169,9 @@ it('updateById retorna error si ocurre excepción no Error', async () => {
 });
 
 it('deleteById retorna error si ocurre excepción no Error', async () => {
-  (pgPool.query as jest.Mock).mockRejectedValue({ custom: 'fail' });
+  (pgPool.query as jest.Mock)
+    .mockRejectedValueOnce({ custom: 'fail' })
+    .mockResolvedValueOnce({ rows: [] });
   const result = await dataSource.deleteById('1');
   expect(result.exitoso).toBe('N');
   expect(result.mensaje).toMatch(/Error al eliminar persona sede:/);

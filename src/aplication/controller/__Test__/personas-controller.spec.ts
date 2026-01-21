@@ -9,6 +9,10 @@ import {
   GetAliadosSedeUseCase,
   GetBeneficiariosSedeUseCase,
   RespuestaGrap,
+  GetPersonaByTipoIdenficacionNumeroIdentificacionUseCase,
+  GetPersonasParamsUseCase,
+  GetPreBeneficiarioUseCase,
+  UpdateBeneficiariosUseCase,
 } from '../../../domain';
 
 describe('PersonasController', () => {
@@ -19,12 +23,20 @@ describe('PersonasController', () => {
   const createPersonaUseCase = { execute: jest.fn() };
   const updatePersonaUseCase = { execute: jest.fn() };
   const deletePersonaUseCase = { execute: jest.fn() };
+  const getPersonaByTipoIdenficacionNumeroIdentificacionUseCase = { execute: jest.fn() };
+  const getPersonasParamsUseCase = { execute: jest.fn() };
+  const getPreBeneficiariosUseCase = { execute: jest.fn() };
+  const updateBeneficiariosUseCase = { execute: jest.fn() };
 
   const controller = new PersonasController(
     getPersonaUseCase as GetPersonaUseCase,
     getPersonasUseCase as GetPersonasUseCase,
     getAliadosSedeUseCase as GetAliadosSedeUseCase,
     getBeneficiariosSedeUseCase as GetBeneficiariosSedeUseCase,
+    getPersonaByTipoIdenficacionNumeroIdentificacionUseCase as GetPersonaByTipoIdenficacionNumeroIdentificacionUseCase,
+    getPersonasParamsUseCase as GetPersonasParamsUseCase,
+    getPreBeneficiariosUseCase as GetPreBeneficiarioUseCase,
+    updateBeneficiariosUseCase as UpdateBeneficiariosUseCase,
     createPersonaUseCase as CreatePersonaUseCase,
     updatePersonaUseCase as UpdatePersonaUseCase,
     deletePersonaUseCase as DeletePersonaUseCase,
